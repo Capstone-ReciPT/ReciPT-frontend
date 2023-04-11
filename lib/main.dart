@@ -7,6 +7,7 @@ void main() {
   runApp(GetMaterialApp(
       theme : ThemeData(
         textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.black)),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData()
       ),
       home : MyApp())
   );
@@ -76,15 +77,29 @@ class MyApp extends StatelessWidget {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //
-      //   items: [
-      //     TextButton(
-      //       child: Icon(Icons.home_outlined),
-      //       onPressed: (){},
-      //     ),
-      //   ],
-      // ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: '홈',
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list_rounded),
+              label: '레시피'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.camera_rounded),
+              label: '음식 추천'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: '설정'
+          ),
+        ],
+      ),
     );
     // 8줄의 Navigator.push를 간단한 Get.to()로 변경합니다. context는 필요없습니다.
     // body: Center(child: ElevatedButton(
