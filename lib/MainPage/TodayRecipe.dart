@@ -4,11 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/main.dart';
 
-var image2 = [
-  "assets/bibim.jpg",
-  "assets/spageti.jpg",
-  "assets/ramyun.jpg",
-];
 
 var foodList = {
   {'name' : '비빔밥', 'path':'assets/bibim.jpg'},

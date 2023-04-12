@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'MainPage/TodayRecipe.dart';
+import 'RecipePage/Category.dart';
 
 void main() {
   runApp(GetMaterialApp(
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
         ],
       ),
 
-      body: Obx(() => [HomePage(),Text('2'),Text('3'),Text('4')][c.currentTab.value]),
+      body: Obx(() => [HomePage(),SelectCategory(),Text('3'),Text('4')][c.currentTab.value]),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
         selectedItemColor: Colors.orange,
         unselectedItemColor: Colors.black,
