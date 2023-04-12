@@ -15,10 +15,13 @@ void main() {
 
 class Controller extends GetxController{
   var count= 0.obs;
-  RxInt currentIndex = 0.obs;
-
-  changeIndex(index){
-    currentIndex.value = index;
+  var currentDotIndex = 0.obs;
+  var currentTab = 0.obs;
+  changeDotIndex(index){
+    currentDotIndex.value = index;
+  }
+  changeTab(index){
+    currentTab.value = index;
   }
 }
 
@@ -65,22 +68,13 @@ class MyApp extends StatelessWidget {
         ],
       ),
 
-      body: Container(
-        margin: EdgeInsets.only(top: 20),
-        child: Column(
-          children: [
-            Text('오늘의 레시피',style: TextStyle(fontWeight: FontWeight.w800,
-                color: Colors.black, fontSize: 30),),
-            // 오늘의 레시피
-            Container( margin: EdgeInsets.only(top: 20), child: SlidePage()),
-
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
+      body: Obx(() => [HomePage(),Text('2'),Text('3'),Text('4')][c.currentTab.value]),
+      bottomNavigationBar: Obx(() => BottomNavigationBar(
+        selectedItemColor: Colors.orange,
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
+        currentIndex: c.currentTab.value,
+        onTap: (index) => c.changeTab(index),
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
@@ -100,7 +94,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
     // 8줄의 Navigator.push를 간단한 Get.to()로 변경합니다. context는 필요없습니다.
     // body: Center(child: ElevatedButton(
     //     child: Text("Go to Other"), onPressed: () => Get.to(Other()))),
@@ -109,17 +103,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
-class TextBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.centerLeft,
-      color: Colors.white,
-      child: TextField(
-        decoration:
-        InputDecoration(border: InputBorder.none, hintText: 'Search'),
+      margin: EdgeInsets.only(top: 20),
+      child: Column(
+        children: [
+          Text('오늘의 레시피',style: TextStyle(fontWeight: FontWeight.w800,
+              color: Colors.black, fontSize: 30),),
+          // 오늘의 레시피
+          Container( margin: EdgeInsets.only(top: 20), child: SlidePage()),
+
+        ],
       ),
     );
   }
 }
+
+
