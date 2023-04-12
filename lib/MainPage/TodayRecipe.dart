@@ -26,7 +26,7 @@ class SlidePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        autoPlay: true,
+        autoPlay: false,
         onPageChanged: (index, reason) {
           controller.changeDotIndex(index);
         },
