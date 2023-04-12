@@ -1,16 +1,14 @@
-# recipt
+# 상명대학교 소프트웨어학과 캡스톤디자인
 
-A new Flutter project.
+ReciPT 팀 (손지석, 이재현, 남혁준)
 
-## Getting Started
+## 프로젝트 개요
 
-This project is a starting point for a Flutter application.
+AI 기술을 통해 요리를 더욱 편리하게 만들 수 있게 도와주는 레시피 애플리케이션
 
-A few resources to get you started if this is your first Flutter project:
+## 프로젝트 소개
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+최근 인플레이션으로 인해 외부 음식 가격의 상승세가 가파르고, 이를 반영하듯 편스토랑, 윤식당 등 직접 요리하는 법을 알려주는 프로그램이 많이 등장함.
+그러나 기존 레시피 애플리케이션의 불편한 조작 방법, 데이터베이스에 없는 레시피는 보여주지 못하는 문제 등이 많아
+STT, TTS, GPT 와 같은 기술들을 활용하여 이를 해결하고자 함.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
