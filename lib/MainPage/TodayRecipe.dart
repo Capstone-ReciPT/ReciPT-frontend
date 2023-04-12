@@ -28,7 +28,7 @@ class SlidePage extends StatelessWidget {
       options: CarouselOptions(
         autoPlay: true,
         onPageChanged: (index, reason) {
-          controller.changeIndex(index);
+          controller.changeDotIndex(index);
         },
       ),
       items: image2.map((i) {
@@ -52,7 +52,7 @@ class SlidePage extends StatelessWidget {
                 Expanded(child: Image.asset(i)),
                 Obx(() => DotsIndicator(
                   dotsCount: image2.length,
-                  position: controller.currentIndex.value.toDouble(),
+                  position: controller.currentDotIndex.value.toDouble(),
                 )),
               ],
             ),
