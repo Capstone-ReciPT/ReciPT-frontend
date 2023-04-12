@@ -5,16 +5,16 @@ import 'package:get/get.dart';
 import 'package:recipt/main.dart';
 
 var image2 = [
-  "assets/img.jpg",
-  "assets/img-1.jpg",
-  "assets/img-2.jpg",
-  "assets/img-3.jpg",
-  "assets/img-4.jpg",
-  "assets/img-5.jpg",
-  "assets/img-6.jpg",
-  "assets/img-7.jpg",
-  "assets/op.jpg",
+  "assets/bibim.jpg",
+  "assets/spageti.jpg",
+  "assets/ramyun.jpg",
 ];
+
+var foodList = {
+  {'name' : '비빔밥', 'path':'assets/bibim.jpg'},
+  {'name' : '스파게티 카르보나라', 'path':'assets/spageti.jpg'},
+  {'name' : '라면', 'path':'assets/ramyun.jpg'},
+};
 
 
 class SlidePage extends StatelessWidget {
@@ -31,7 +31,7 @@ class SlidePage extends StatelessWidget {
           controller.changeDotIndex(index);
         },
       ),
-      items: image2.map((i) {
+      items: foodList.map((data) {
         return Builder(builder: (BuildContext context){
           return Container(
             decoration: BoxDecoration(
@@ -41,7 +41,7 @@ class SlidePage extends StatelessWidget {
             height: 200,
             child: Column(
               children: [
-                Text('@ 만들기', style: TextStyle(fontSize: 20)),
+                Text('${data['name']} 만들기', style: TextStyle(fontSize: 20)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -49,9 +49,9 @@ class SlidePage extends StatelessWidget {
                     Text('볶음/구이'),
                   ],
                 ),
-                Expanded(child: Image.asset(i)),
+                Expanded(child: Image.asset(data['path']!)),
                 Obx(() => DotsIndicator(
-                  dotsCount: image2.length,
+                  dotsCount: foodList.length,
                   position: controller.currentDotIndex.value.toDouble(),
                 )),
               ],
