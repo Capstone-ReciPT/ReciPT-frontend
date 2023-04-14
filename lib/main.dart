@@ -7,7 +7,9 @@ import 'RecipePage/Category.dart';
 void main() {
   runApp(GetMaterialApp(
       theme : ThemeData(
-        textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.black)),
+          textTheme: TextTheme(
+            bodyLarge: TextStyle(color: Colors.black)
+          ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData()
       ),
       home : MyApp())
@@ -113,8 +115,7 @@ class HomePage extends StatelessWidget {
       margin: EdgeInsets.only(top: 20),
       child: Column(
         children: [
-          Text('오늘의 레시피',style: TextStyle(fontWeight: FontWeight.w800,
-              color: Colors.black, fontSize: 30),),
+          Text('오늘의 레시피',style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),),
           // 오늘의 레시피
           Container( margin: EdgeInsets.only(top: 20), child: SlidePage()),
 

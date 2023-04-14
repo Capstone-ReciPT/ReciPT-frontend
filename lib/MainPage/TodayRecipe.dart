@@ -3,6 +3,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/main.dart';
+import 'package:recipt/Recipe_on/RecipePage.dart';
 
 
 var foodList = {
@@ -44,7 +45,13 @@ class SlidePage extends StatelessWidget {
                     Text('볶음/구이'),
                   ],
                 ),
-                Expanded(child: Image.asset(data['path']!)),
+                GestureDetector(
+                  onTap: () {
+                    //TODO 클릭 후 이동할 페이지 만들기 (maybe 재료)
+                    Get.to(() => Ingredient());
+                  },
+                  child: Image.asset(data['path']!, width: 200),
+                ),
                 Obx(() => DotsIndicator(
                   dotsCount: foodList.length,
                   position: controller.currentDotIndex.value.toDouble(),
