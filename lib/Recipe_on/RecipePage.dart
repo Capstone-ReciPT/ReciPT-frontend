@@ -2,10 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/main.dart';
 import 'package:recipt/RecipePage/Category.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+
+var text = [
+  '떡을 물에 행궈서 한번 데쳐주세요\n떡이 좀 더 야들야들해집니다.',
+  '떡을 물에 행궈서 한번 데쳐주세요\n떡이 좀 더 야들야들해집니다.2',
+  '떡을 물에 행궈서 한번 데쳐주세요\n떡이 좀 더 야들야들해집니다.3',
+];
+
+class CookingMenuController extends GetxController{
+  stt.SpeechToText speech = stt.SpeechToText();
+  final FlutterTts tts = FlutterTts();
+  var index = 0.obs;
+  void speakText(String text) async{
+    await tts.setLanguage('en');
+    await tts.setSpeechRate(0.4);
+    await tts.speak(text);
+  }
+
+  nextIndex(){
+    index++;
+    update();
+  }
+}
 
 class Ingredient extends StatelessWidget {
-  const Ingredient({Key? key}) : super(key: key);
-
+  Ingredient({Key? key}) : super(key: key);
+  final CookingMenuController controller = Get.put(CookingMenuController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +59,7 @@ class Ingredient extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: (){
+            controller.speakText(text[controller.index.value]);
             Get.to(CookingMenu());
           },
           child: Icon(Icons.navigate_next),
@@ -44,8 +69,10 @@ class Ingredient extends StatelessWidget {
 }
 
 class CookingMenu extends StatelessWidget {
-  const CookingMenu({Key? key}) : super(key: key);
 
+  CookingMenu({Key? key}) : super(key: key);
+
+  final CookingMenuController controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +81,7 @@ class CookingMenu extends StatelessWidget {
         elevation: 0.0,
         title: Text('Step 1/10',style: TextStyle(fontWeight: FontWeight.w400,color: Colors.black)),
         actions: [
-          IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.close),color: Colors.black,)
+          IconButton(onPressed: (){Get.back(); controller.index.value = 0;}, icon: Icon(Icons.close),color: Colors.black,)
         ],
       ),
       body: Container(
@@ -73,19 +100,21 @@ class CookingMenu extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('떡을 물에 행궈서 한번 데쳐주세요\n떡이 좀 더 야들야들해집니다.',style: TextStyle(fontSize: 20)),
+                  Obx(() => Text(text[controller.index.value],style: TextStyle(fontSize: 20))),
                 ],
-              )
+              ),
             )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Get.to(CookingMenu());
+          controller.speakText(text[controller.index.value]);
+          controller.nextIndex();
         },
         child: Icon(Icons.navigate_next),
       ),
     );
   }
 }
+

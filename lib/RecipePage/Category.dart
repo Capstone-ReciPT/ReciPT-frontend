@@ -31,20 +31,3 @@ class SelectCategory extends StatelessWidget {
     );
   }
 }
-// Row(
-// mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-// children: [
-// TextButton(
-// onPressed: (){},
-// child: Text('찜/조림'),
-// ),
-// TextButton(
-// onPressed: (){},
-// child: Text('국/탕/찌개'),
-// ),
-// TextButton(
-// onPressed: (){},
-// child: Text('볶음/구이'),
-// ),
-// ],
-// ),
