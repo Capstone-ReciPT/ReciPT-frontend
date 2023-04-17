@@ -36,6 +36,8 @@ class SlidePage extends StatelessWidget {
             width: 500,
             height: 200,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text('${data['name']} 만들기', style: TextStyle(fontSize: 20)),
                 Row(
