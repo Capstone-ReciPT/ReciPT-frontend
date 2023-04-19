@@ -10,7 +10,7 @@ void main() {
           textTheme: TextTheme(
             bodyLarge: TextStyle(color: Colors.black)
           ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData()
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(),
       ),
       home : MyApp())
   );
