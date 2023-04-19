@@ -94,65 +94,12 @@ class MyApp extends StatelessWidget {
         ],
       ),
     ));
-    // 8줄의 Navigator.push를 간단한 Get.to()로 변경합니다. context는 필요없습니다.
-    // body: Center(child: ElevatedButton(
-    //     child: Text("Go to Other"), onPressed: () => Get.to(Other()))),
-    // floatingActionButton:
-    // FloatingActionButton(child: Icon(Icons.add), onPressed: c.increment));
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container( margin: EdgeInsets.only(top: 20,bottom: 20), child: HomeBanner()),
-          MainButtons(),
-
-        ],
-      ),
-    );
   }
 }
 
 
-class MainButtons extends StatelessWidget {
-  const MainButtons({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        TextButton(onPressed: (){}, child: Column(
-          children: [
-            Icon(Icons.camera_alt_outlined,size: 50,),
-            Text('냉장고\n파먹기',textAlign: TextAlign.center),
-          ],
-        )),TextButton(onPressed: (){}, child: Column(
-          children: [
-            Icon(Icons.camera_alt_outlined,size: 50,),
-            Text('오늘\n뭐먹지',textAlign: TextAlign.center),
-          ],
-        )),TextButton(onPressed: (){}, child: Column(
-          children: [
-            Icon(Icons.camera_alt_outlined,size: 50,),
-            Text('레시피\n쓰기',textAlign: TextAlign.center),
-          ],
-        )),TextButton(onPressed: (){}, child: Column(
-          children: [
-            Icon(Icons.camera_alt_outlined,size: 50,),
-            Text('리뷰\n작성',textAlign: TextAlign.center),
-          ],
-        )),
-      ],
-    );
-  }
-}
+
+
 
 
