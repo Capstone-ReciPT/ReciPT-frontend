@@ -40,33 +40,29 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        title: Container(
-          margin: EdgeInsets.only(top: 20),
-          child: Row(
-            children: [
-              Image.asset('assets/cover.jpg',width: 50,height: 50),
-            ],
-          ),
-        ),
         actions: [
           Container(
-            width: 200,
+            width: 300,
             margin: EdgeInsets.only(top: 10,right: 15),
             child: TextField(
               decoration: InputDecoration(
-                labelText: '검색',
+                labelText: '요리, 재료 검색',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
               ),
             ),
           ),
-          IconButton(
-              icon: Icon(Icons.search,color: Colors.black),
-              onPressed: () {
-                // TODO 검색 기능 구현
-                print('search button is clicked');
-              }
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            alignment: Alignment.center,
+            child: IconButton(
+                icon: Icon(Icons.keyboard_voice,color: Colors.black,size: 35),
+                onPressed: () {
+                  // TODO 검색 기능 구현
+                  print('search button is clicked');
+                }
+            ),
           ),
         ],
       ),
@@ -112,15 +108,49 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
       child: Column(
         children: [
-          Text('오늘의 레시피',style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),),
-          // 오늘의 레시피
-          Container( margin: EdgeInsets.only(top: 20), child: SlidePage()),
+          Container( margin: EdgeInsets.only(top: 20,bottom: 20), child: HomeBanner()),
+          MainButtons(),
 
         ],
       ),
+    );
+  }
+}
+
+
+class MainButtons extends StatelessWidget {
+  const MainButtons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TextButton(onPressed: (){}, child: Column(
+          children: [
+            Icon(Icons.camera_alt_outlined,size: 50,),
+            Text('냉장고\n파먹기',textAlign: TextAlign.center),
+          ],
+        )),TextButton(onPressed: (){}, child: Column(
+          children: [
+            Icon(Icons.camera_alt_outlined,size: 50,),
+            Text('오늘\n뭐먹지',textAlign: TextAlign.center),
+          ],
+        )),TextButton(onPressed: (){}, child: Column(
+          children: [
+            Icon(Icons.camera_alt_outlined,size: 50,),
+            Text('레시피\n쓰기',textAlign: TextAlign.center),
+          ],
+        )),TextButton(onPressed: (){}, child: Column(
+          children: [
+            Icon(Icons.camera_alt_outlined,size: 50,),
+            Text('리뷰\n작성',textAlign: TextAlign.center),
+          ],
+        )),
+      ],
     );
   }
 }

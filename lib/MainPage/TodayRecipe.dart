@@ -13,8 +13,8 @@ var foodList = {
 };
 
 
-class SlidePage extends StatelessWidget {
-  SlidePage({Key? key}) : super(key: key);
+class HomeBanner extends StatelessWidget {
+  HomeBanner({Key? key}) : super(key: key);
 
   final controller = Get.put(Controller());
 
@@ -22,7 +22,9 @@ class SlidePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
+        height: 100,
         autoPlay: false,
+        viewportFraction: 1,
         onPageChanged: (index, reason) {
           controller.changeDotIndex(index);
         },
@@ -31,33 +33,14 @@ class SlidePage extends StatelessWidget {
         return Builder(builder: (BuildContext context){
           return Container(
             decoration: BoxDecoration(
-              border: Border.all(),
+                borderRadius: BorderRadius.circular(50), //모서리를 둥글게
+                border: Border.all(color: Colors.black12, width: 3), //테두리
             ),
-            width: 500,
-            height: 200,
+            width: 400,
+            height: 50,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('${data['name']} 만들기', style: TextStyle(fontSize: 20)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.category),
-                    Text('볶음/구이'),
-                  ],
-                ),
-                GestureDetector(
-                  onTap: () {
-                    //TODO 클릭 후 이동할 페이지 만들기 (maybe 재료)
-                    Get.to(() => Ingredient());
-                  },
-                  child: Image.asset(data['path']!, width: 200),
-                ),
-                Obx(() => DotsIndicator(
-                  dotsCount: foodList.length,
-                  position: controller.currentDotIndex.value.toDouble(),
-                )),
+
               ],
             ),
           );
