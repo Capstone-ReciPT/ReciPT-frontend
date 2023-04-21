@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
         elevation: 0.0,
         actions: [
           Container(
-            width: 300,
-            margin: EdgeInsets.only(top: 10,right: 15),
+            width: 320,
+            margin: EdgeInsets.only(top: 10,right: 5),
             child: TextField(
               decoration: InputDecoration(
                 labelText: '요리, 재료 검색',
