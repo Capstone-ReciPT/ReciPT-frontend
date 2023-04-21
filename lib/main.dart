@@ -20,11 +20,16 @@ class Controller extends GetxController{
   var count= 0.obs;
   var currentDotIndex = 0.obs;
   var currentTab = 0.obs;
+  var bannerIndex = 0.obs;
   changeDotIndex(index){
     currentDotIndex.value = index;
   }
   changeTab(index){
     currentTab.value = index;
+  }
+  changeBannerIndex(index){
+    bannerIndex.value = index;
+    print(bannerIndex.value);
   }
 }
 
@@ -42,8 +47,8 @@ class MyApp extends StatelessWidget {
         elevation: 0.0,
         actions: [
           Container(
-            width: 300,
-            margin: EdgeInsets.only(top: 10,right: 15),
+            width: 320,
+            margin: EdgeInsets.only(top: 10,right: 5),
             child: TextField(
               decoration: InputDecoration(
                 labelText: '요리, 재료 검색',

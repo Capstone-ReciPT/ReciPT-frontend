@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:recipt/main.dart';
 import 'package:recipt/Recipe_on/RecipePage.dart';
 
-
+import 'package:flutter_svg/flutter_svg.dart';
 var foodList = {
   {'name' : '비빔밥', 'path':'assets/bibim.jpg'},
   {'name' : '스파게티 카르보나라', 'path':'assets/spageti.jpg'},
@@ -25,24 +25,39 @@ class HomeBanner extends StatelessWidget {
         height: 100,
         autoPlay: false,
         viewportFraction: 1,
+        initialPage: 0,
+        enableInfiniteScroll: false,
         onPageChanged: (index, reason) {
-          controller.changeDotIndex(index);
+          controller.changeBannerIndex(index);
         },
       ),
       items: foodList.map((data) {
         return Builder(builder: (BuildContext context){
-          return Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25), //모서리를 둥글게
-                border: Border.all(color: Colors.black12, width: 3), //테두리
-            ),
-            width: 400,
-            height: 50,
-            child: Column(
-              children: [
-
-              ],
-            ),
+          return Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.asset(
+                  'assets/Banner/banner.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                bottom: 15,
+                right: 15,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: Container(
+                    color: Colors.black54,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Obx(() => Text(
+                      "${controller.bannerIndex.value+1} / 3",
+                      style: TextStyle(color: Colors.white70,fontWeight: FontWeight.w800),
+                    ),)
+                  ),
+                )
+              )
+            ],
           );
         }
         );
@@ -77,23 +92,43 @@ class MainButtons extends StatelessWidget {
       children: [
         TextButton(onPressed: (){}, child: Column(
           children: [
-            Icon(Icons.camera_alt_outlined,size: 50,),
-            Text('냉장고\n파먹기',textAlign: TextAlign.center),
+            SvgPicture.asset(
+              'assets/icons/refrigerator.svg',
+              width: 50,
+              height: 50,
+            ),
+            SizedBox(height: 8,),
+            Text('냉장고\n파먹기',textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600)),
           ],
         )),TextButton(onPressed: (){}, child: Column(
           children: [
-            Icon(Icons.camera_alt_outlined,size: 50,),
-            Text('오늘\n뭐먹지',textAlign: TextAlign.center),
+            SvgPicture.asset(
+              'assets/icons/today.svg',
+              width: 60,
+              height: 50,
+            ),
+            SizedBox(height: 8,),
+            Text('오늘\n뭐먹지',textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600),),
           ],
         )),TextButton(onPressed: (){}, child: Column(
           children: [
-            Icon(Icons.camera_alt_outlined,size: 50,),
-            Text('레시피\n쓰기',textAlign: TextAlign.center),
+            SvgPicture.asset(
+              'assets/icons/writing.svg',
+              width: 50,
+              height: 50,
+            ),
+            SizedBox(height: 8,),
+            Text('레시피\n쓰기',textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600),),
           ],
         )),TextButton(onPressed: (){}, child: Column(
           children: [
-            Icon(Icons.camera_alt_outlined,size: 50,),
-            Text('리뷰\n작성',textAlign: TextAlign.center),
+            SvgPicture.asset(
+              'assets/icons/review.svg',
+              width: 50,
+              height: 50,
+            ),
+            SizedBox(height: 8,),
+            Text('리뷰\n작성',textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600),),
           ],
         )),
       ],
@@ -120,7 +155,7 @@ class PopularRecipe extends StatelessWidget {
             textBaseline: TextBaseline.ideographic,
             children: [
               Text('인기 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),),
-              TextButton(onPressed: (){}, child: Text('See all',)),
+              TextButton(onPressed: (){}, child: Text('See all',style: TextStyle(color: Colors.orange),)),
             ],
           ),
         CarouselSlider(
@@ -153,7 +188,7 @@ class PopularRecipe extends StatelessWidget {
             textBaseline: TextBaseline.ideographic,
             children: [
               Text('오늘의 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),),
-              TextButton(onPressed: (){}, child: Text('See all',)),
+              TextButton(onPressed: (){}, child: Text('See all',style: TextStyle(color: Colors.orange),)),
             ],
           ),
           TodayRecipe(),
@@ -163,7 +198,7 @@ class PopularRecipe extends StatelessWidget {
             textBaseline: TextBaseline.ideographic,
             children: [
               Text('새로운 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),),
-              TextButton(onPressed: (){}, child: Text('See all',)),
+              TextButton(onPressed: (){}, child: Text('See all',style: TextStyle(color: Colors.orange),)),
             ],
           ),
           NewRecipe(),
@@ -179,17 +214,26 @@ class TodayRecipe extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      height: MediaQuery.of(context).size.height * 0.35,
+      height: MediaQuery.of(context).size.height * 0.36,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: foodList.length, itemBuilder: (context, index) {
         return Container(
           width: MediaQuery.of(context).size.width * 0.6,
-          child: Card(
-            color: Colors.blue,
-            child: Container(
-              child: Center(child: Text('1', style: TextStyle(color: Colors.white, fontSize: 36.0),)),
-            ),
+          height: 300,
+          margin: EdgeInsets.only(right: 50),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.asset(
+                  'assets/Banner/banner.png',
+                  fit: BoxFit.fill,
+                  height: 200,
+                ),
+              ),
+              Container(margin: EdgeInsets.only(top: 10),child: Text('예시',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
+            ],
           ),
         );
       }),
@@ -204,21 +248,30 @@ class NewRecipe extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      height: MediaQuery.of(context).size.height * 0.35,
+      height: MediaQuery.of(context).size.height * 0.36,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: foodList.length, itemBuilder: (context, index) {
         return Container(
           width: MediaQuery.of(context).size.width * 0.6,
-          child: Card(
-            color: Colors.blue,
-            child: Container(
-              child: Center(child: Text('1', style: TextStyle(color: Colors.white, fontSize: 36.0),)),
-            ),
+          height: 300,
+          margin: EdgeInsets.only(right: 50),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.asset(
+                  'assets/Banner/banner.png',
+                  fit: BoxFit.fill,
+                  height: 200,
+                ),
+              ),
+              Container(margin: EdgeInsets.only(top: 10),child: Text('예시',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
+            ],
           ),
         );
       }),
-    );;
+    );
   }
 }
 
