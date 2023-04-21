@@ -144,7 +144,7 @@ class PopularRecipe extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 350,
-      margin: EdgeInsets.only(top: 20,left: 10,right: 10),
+      margin: EdgeInsets.only(top: 40,left: 10,right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -174,7 +174,13 @@ class PopularRecipe extends StatelessWidget {
                 width: 400,
                 child: Column(
                   children: [
-                    Image.asset(data['path'] ?? '',width:400,height: 220,fit: BoxFit.fill),
+                    GestureDetector(
+                      onTap: (){
+                        Get.to(Ingredient());
+                        return;
+                      },
+                      child: Image.asset(data['path'] ?? '',width:400,height: 220,fit: BoxFit.fill),
+                    ),
                     Container(margin: EdgeInsets.only(top: 10),child: Text(data['name']?? '3',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
                   ],
                 ),
@@ -182,6 +188,7 @@ class PopularRecipe extends StatelessWidget {
             });
           }).toList(),
         ),
+          SizedBox(height: 20,),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,13 +221,12 @@ class TodayRecipe extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      height: MediaQuery.of(context).size.height * 0.36,
+      height: 325,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: foodList.length, itemBuilder: (context, index) {
         return Container(
           width: MediaQuery.of(context).size.width * 0.6,
-          height: 300,
           margin: EdgeInsets.only(right: 50),
           child: Column(
             children: [
@@ -229,6 +235,7 @@ class TodayRecipe extends StatelessWidget {
                 child: Image.asset(
                   'assets/Banner/banner.png',
                   fit: BoxFit.fill,
+                  // : TODO 이거 폰마다 맞는지 테스트
                   height: 200,
                 ),
               ),
@@ -248,13 +255,12 @@ class NewRecipe extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      height: MediaQuery.of(context).size.height * 0.36,
+      height: 325,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: foodList.length, itemBuilder: (context, index) {
         return Container(
           width: MediaQuery.of(context).size.width * 0.6,
-          height: 300,
           margin: EdgeInsets.only(right: 50),
           child: Column(
             children: [
@@ -263,6 +269,7 @@ class NewRecipe extends StatelessWidget {
                 child: Image.asset(
                   'assets/Banner/banner.png',
                   fit: BoxFit.fill,
+                  // : TODO 이거 폰마다 맞는지 테스트
                   height: 200,
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/MainPage/TodayRecipe.dart';
 import 'package:recipt/main.dart';
 import 'package:recipt/RecipePage/Category.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -172,7 +173,7 @@ class CookingMenu extends StatelessWidget {
                             TextButton(
                               child: Text('확인'),
                               onPressed: () {
-                                Get.back();
+                                Get.offAll(()=> MyApp());
                                 controller.index.value = 0;
                               },
                             ),
