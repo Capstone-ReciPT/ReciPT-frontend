@@ -25,8 +25,10 @@ class HomeBanner extends StatelessWidget {
         height: 100,
         autoPlay: false,
         viewportFraction: 1,
+        initialPage: 0,
+        enableInfiniteScroll: false,
         onPageChanged: (index, reason) {
-          controller.changeDotIndex(index);
+          controller.changeBannerIndex(index);
         },
       ),
       items: foodList.map((data) {
@@ -48,10 +50,10 @@ class HomeBanner extends StatelessWidget {
                   child: Container(
                     color: Colors.black54,
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      "1 / 4",
+                    child: Obx(() => Text(
+                      "${controller.bannerIndex.value+1} / 3",
                       style: TextStyle(color: Colors.white70,fontWeight: FontWeight.w800),
-                    ),
+                    ),)
                   ),
                 )
               )
@@ -153,7 +155,7 @@ class PopularRecipe extends StatelessWidget {
             textBaseline: TextBaseline.ideographic,
             children: [
               Text('인기 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),),
-              TextButton(onPressed: (){}, child: Text('See all',)),
+              TextButton(onPressed: (){}, child: Text('See all',style: TextStyle(color: Colors.orange),)),
             ],
           ),
         CarouselSlider(
@@ -186,7 +188,7 @@ class PopularRecipe extends StatelessWidget {
             textBaseline: TextBaseline.ideographic,
             children: [
               Text('오늘의 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),),
-              TextButton(onPressed: (){}, child: Text('See all',)),
+              TextButton(onPressed: (){}, child: Text('See all',style: TextStyle(color: Colors.orange),)),
             ],
           ),
           TodayRecipe(),
@@ -196,7 +198,7 @@ class PopularRecipe extends StatelessWidget {
             textBaseline: TextBaseline.ideographic,
             children: [
               Text('새로운 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),),
-              TextButton(onPressed: (){}, child: Text('See all',)),
+              TextButton(onPressed: (){}, child: Text('See all',style: TextStyle(color: Colors.orange),)),
             ],
           ),
           NewRecipe(),
@@ -212,17 +214,26 @@ class TodayRecipe extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      height: MediaQuery.of(context).size.height * 0.35,
+      height: MediaQuery.of(context).size.height * 0.36,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: foodList.length, itemBuilder: (context, index) {
         return Container(
           width: MediaQuery.of(context).size.width * 0.6,
-          child: Card(
-            color: Colors.blue,
-            child: Container(
-              child: Center(child: Text('1', style: TextStyle(color: Colors.white, fontSize: 36.0),)),
-            ),
+          height: 300,
+          margin: EdgeInsets.only(right: 50),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.asset(
+                  'assets/Banner/banner.png',
+                  fit: BoxFit.fill,
+                  height: 200,
+                ),
+              ),
+              Container(margin: EdgeInsets.only(top: 10),child: Text('예시',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
+            ],
           ),
         );
       }),
@@ -237,21 +248,30 @@ class NewRecipe extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      height: MediaQuery.of(context).size.height * 0.35,
+      height: MediaQuery.of(context).size.height * 0.36,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: foodList.length, itemBuilder: (context, index) {
         return Container(
           width: MediaQuery.of(context).size.width * 0.6,
-          child: Card(
-            color: Colors.blue,
-            child: Container(
-              child: Center(child: Text('1', style: TextStyle(color: Colors.white, fontSize: 36.0),)),
-            ),
+          height: 300,
+          margin: EdgeInsets.only(right: 50),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.asset(
+                  'assets/Banner/banner.png',
+                  fit: BoxFit.fill,
+                  height: 200,
+                ),
+              ),
+              Container(margin: EdgeInsets.only(top: 10),child: Text('예시',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
+            ],
           ),
         );
       }),
-    );;
+    );
   }
 }
 
