@@ -4,7 +4,7 @@ import 'package:recipt/MainPage/TodayRecipe.dart';
 import 'package:recipt/main.dart';
 import 'package:recipt/RecipePage/Category.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 var text = [
@@ -14,7 +14,6 @@ var text = [
 ];
 
 class CookingMenuController extends GetxController{
-  stt.SpeechToText speech = stt.SpeechToText();
   final FlutterTts tts = FlutterTts();
   var index = 0.obs;
   void speakText(String text) async{
@@ -37,10 +36,56 @@ class CookingMenuController extends GetxController{
     index.value = text.length-1;
   }
 }
+class SttController extends GetxController {
+  final CookingMenuController controller = Get.find();
+  SpeechToText _speech = SpeechToText();
+  RxBool _isListening = false.obs;
+  var text = '임시'.obs;
 
+  @override
+  void onInit() async {
+    super.onInit();
+    await _initializeSpeechToText();
+  }
+
+  Future<void> _initializeSpeechToText() async {
+    if (!_speech.isAvailable) {
+      bool available = await _speech.initialize();
+      if (available) {
+        print("Speech to text initialized");
+      } else {
+        print("Speech to text not available");
+      }
+    }
+  }
+
+  void startListening() async {
+    if (!_isListening.value) {
+        _isListening.value = true;
+        _speech.listen(
+          onResult: (val) => processVoiceCommand(val.recognizedWords),
+        );
+    } else {
+      _isListening.value = false;
+      _speech.stop();
+    }
+  }
+
+  void processVoiceCommand(String command) {
+    if (command.contains('다음')) {
+      text.value = '다음';
+      controller.nextIndex();
+    } else if (command.contains('이전')) {
+      text.value = '이전';
+      controller.prevIndex();
+    }
+    update();
+  }
+}
 class Ingredient extends StatelessWidget {
   Ingredient({Key? key}) : super(key: key);
   final CookingMenuController controller = Get.put(CookingMenuController());
+  final SttController sttController = Get.put(SttController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +116,7 @@ class Ingredient extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           onPressed: (){
             controller.speakText(text[controller.index.value]);
+            sttController.startListening();
             Get.to(CookingMenu());
           },
           child: Icon(Icons.navigate_next),
@@ -84,6 +130,7 @@ class CookingMenu extends StatelessWidget {
   CookingMenu({Key? key}) : super(key: key);
 
   final CookingMenuController controller = Get.find();
+  final SttController sttController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,6 +163,7 @@ class CookingMenu extends StatelessWidget {
                 ],
               ),
             ),
+            Obx(() => Text(sttController.text.value)),
           ],
         ),
       ),
@@ -143,6 +191,7 @@ class CookingMenu extends StatelessWidget {
             child: FloatingActionButton(
               onPressed: (){
                 controller.nextIndex();
+                sttController.startListening();
                 if(controller.index.value >= text.length){
                   controller.fixIndex();
                   showDialog(
