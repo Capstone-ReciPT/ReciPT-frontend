@@ -55,7 +55,10 @@ class MajorCategory extends StatelessWidget {
           crossAxisSpacing: 10,
         ),
         itemBuilder: (context, index) {
-          return TextButton(onPressed: (){},
+          return TextButton(
+              onPressed: (){
+                Get.to(CategoryClick());
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -99,7 +102,7 @@ class BoardMenu extends StatelessWidget {
                   children: [
                     Text('라면을 먹어보아요',style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
                     Text('면',style: TextStyle(color: Colors.black45)),
-                    Text('라면을 맛잇게 먹어보아요 하 배고파 시발'),
+                    Text('라면을 맛잇게 먹어보아요 하 배고파 시발',style: TextStyle(color: Colors.black),),
                   ],
                 ),
               ],
@@ -108,6 +111,18 @@ class BoardMenu extends StatelessWidget {
           )
         );
       },
+    );
+  }
+}
+
+class CategoryClick extends StatelessWidget {
+  const CategoryClick({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: BoardMenu(),
+      bottomNavigationBar: DefalutBNB(),
     );
   }
 }
