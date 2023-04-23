@@ -19,10 +19,19 @@ class SelectCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
       child: Column(
         children: [
-          MajorCategory()
+          MajorCategory(),
+          Divider( // 이 줄을 추가하세요.
+            color: Colors.grey,
+            thickness: 1,
+            height: 20, // 간격 조절을 원하시면 height 값을 변경하세요.
+          ),
+          SizedBox(height: 8,),
+          Text('최근에 사람들이',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
+          Text('이런 조리법으로 요리했어요',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w800),),
+          BoardMenu(),
         ],
       ),
     );
@@ -37,6 +46,8 @@ class MajorCategory extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 30,left: 10,right: 10),
       child: GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 3/1.5,
@@ -57,6 +68,46 @@ class MajorCategory extends StatelessWidget {
         },
         itemCount: category.length,
       ),
+    );
+  }
+}
+
+class BoardMenu extends StatelessWidget {
+  const BoardMenu({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(border: Border(
+            bottom: BorderSide(
+              color: Colors.grey, width: 1,
+            )
+          )),
+          margin: EdgeInsets.only(bottom: 10),
+          child: TextButton(
+            child: Row(
+              children: [
+                Image.asset('assets/ramyun.jpg',width: 100,height: 100,),
+                SizedBox(width: 12,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('라면을 먹어보아요',style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
+                    Text('면',style: TextStyle(color: Colors.black45)),
+                    Text('라면을 맛잇게 먹어보아요 하 배고파 시발'),
+                  ],
+                ),
+              ],
+            ),
+            onPressed: (){},
+          )
+        );
+      },
     );
   }
 }
