@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/RecipePage/Category.dart';
 import 'package:recipt/main.dart';
 import 'package:recipt/Recipe_on/RecipePage.dart';
 
@@ -155,7 +156,11 @@ class PopularRecipe extends StatelessWidget {
             textBaseline: TextBaseline.ideographic,
             children: [
               Text('인기 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),),
-              TextButton(onPressed: (){}, child: Text('See all',style: TextStyle(color: Colors.orange),)),
+              TextButton(
+                  onPressed: (){
+                    Get.to(CategoryClick());
+                  },
+                  child: Text('See all',style: TextStyle(color: Colors.orange),)),
             ],
           ),
         CarouselSlider(
@@ -195,7 +200,11 @@ class PopularRecipe extends StatelessWidget {
             textBaseline: TextBaseline.ideographic,
             children: [
               Text('오늘의 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),),
-              TextButton(onPressed: (){}, child: Text('See all',style: TextStyle(color: Colors.orange),)),
+              TextButton(
+                  onPressed: (){
+                    Get.to(CategoryClick());
+                  },
+                  child: Text('See all',style: TextStyle(color: Colors.orange),)),
             ],
           ),
           TodayRecipe(),
@@ -205,7 +214,11 @@ class PopularRecipe extends StatelessWidget {
             textBaseline: TextBaseline.ideographic,
             children: [
               Text('새로운 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),),
-              TextButton(onPressed: (){}, child: Text('See all',style: TextStyle(color: Colors.orange),)),
+              TextButton(
+                  onPressed: (){
+                    Get.to(CategoryClick());
+                  },
+                  child: Text('See all',style: TextStyle(color: Colors.orange),)),
             ],
           ),
           NewRecipe(),

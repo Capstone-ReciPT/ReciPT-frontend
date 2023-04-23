@@ -73,36 +73,44 @@ class MyApp extends StatelessWidget {
       ),
 
       body: Obx(() => [HomePage(),SelectCategory(),Text('3'),Text('4')][c.currentTab.value]),
-      bottomNavigationBar: Obx(() => BottomNavigationBar(
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.black,
-        showUnselectedLabels: true,
-        currentIndex: c.currentTab.value,
-        onTap: (index) => c.changeTab(index),
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              label: '홈',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.list_rounded),
-              label: '레시피'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.camera_rounded),
-              label: '음식 추천'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: '설정'
-          ),
-        ],
-      ),
-    ));
+      bottomNavigationBar: DefalutBNB()
+    );
   }
 }
 
+class DefalutBNB extends StatelessWidget {
+  DefalutBNB({Key? key}) : super(key: key);
 
+  final Controller c = Get.put(Controller());
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => BottomNavigationBar(
+      selectedItemColor: Colors.orange,
+      unselectedItemColor: Colors.black,
+      showUnselectedLabels: true,
+      currentIndex: c.currentTab.value,
+      onTap: (index) => c.changeTab(index),
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          label: '홈',
+        ),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.list_rounded),
+            label: '레시피'
+        ),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.camera_rounded),
+            label: '음식 추천'
+        ),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: '설정'
+        ),
+      ],
+    ));
+  }
+}
 
 
 
