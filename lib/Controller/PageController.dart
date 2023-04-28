@@ -84,7 +84,12 @@ class SttController extends GetxController {
   Future<void> stopListening() async {
     await _speech.stop();
   }
-
+  //테스트 코드
+  int countNum = 0;
+  void increaseCountNum(){
+    countNum +=1;
+    update();
+  }
   Future<void> processVoiceCommand(command) async {
     if (isProcessingCommand) {
       return;
@@ -93,31 +98,40 @@ class SttController extends GetxController {
       isProcessingCommand = true;
       if (command.contains('시작') || command.contains('시장')
           || (command.contains('시') && command.contains('작'))) {
-        text1.value = buffer[0];
         ttsController.stopTTS();
-        await ttsController.speakText(text[cookingMenuController.index.value]);
+        increaseCountNum();
+        if(countNum > 1){
+          await ttsController.speakText(text[cookingMenuController.index.value]);
+          countNum = 0;
+        }
       }
       if (command.contains('다음') || command.contains('다응')
           || (command.contains('다') && command.contains('음'))) {
-        text1.value = '다음';
         ttsController.stopTTS();
-        cookingMenuController.nextIndex();
-        if (cookingMenuController.index.value >= text.length) {
-          cookingMenuController.fixIndex();
-        } else {
-          await ttsController.speakText(text[cookingMenuController.index.value]);
+        increaseCountNum();
+        if(countNum > 1){
+          cookingMenuController.nextIndex();
+          if (cookingMenuController.index.value >= text.length) {
+            cookingMenuController.fixIndex();
+          } else {
+            await ttsController.speakText(text[cookingMenuController.index.value]);
+          }
+          countNum = 0;
         }
       }
       if (command.contains('이전') || command.contains('이정')
           || (command.contains('이') && command.contains('전'))) {
-        text1.value = '이전';
         ttsController.stopTTS();
-        cookingMenuController.prevIndex();
-        if (cookingMenuController.index.value <= 0) {
-          cookingMenuController.index.value = 0;
-        } else {
-          await ttsController.speakText(
-              text[cookingMenuController.index.value]);
+        increaseCountNum();
+        if(countNum > 1){
+          cookingMenuController.prevIndex();
+          if (cookingMenuController.index.value <= 0) {
+            cookingMenuController.index.value = 0;
+          } else {
+            await ttsController.speakText(
+                text[cookingMenuController.index.value]);
+          }
+          countNum = 0;
         }
       }
 

@@ -92,6 +92,7 @@ class CookingMenu extends StatelessWidget {
               ),
             ),
             Obx(() => Text(sttController.text1.value)),
+            Obx(() => Text(sttController.text2.value)),
           ],
         ),
       ),
