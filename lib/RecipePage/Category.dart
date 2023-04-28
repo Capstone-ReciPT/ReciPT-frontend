@@ -102,12 +102,14 @@ class BoardMenu extends StatelessWidget {
                   children: [
                     Text('라면을 먹어보아요',style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
                     Text('면',style: TextStyle(color: Colors.black45)),
-                    Text('라면을 맛잇게 먹어보아요 하 배고파 시발',style: TextStyle(color: Colors.black),),
+                    Text('라면을 맛잇게 먹어보아요',style: TextStyle(color: Colors.black),),
                   ],
                 ),
               ],
             ),
-            onPressed: (){},
+            onPressed: (){
+              Get.to(CategoryClick());
+            },
           )
         );
       },

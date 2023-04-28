@@ -1,91 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipt/MainPage/TodayRecipe.dart';
 import 'package:recipt/main.dart';
-import 'package:recipt/RecipePage/Category.dart';
-import 'package:flutter_tts/flutter_tts.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:recipt/Controller/PageController.dart';
 
-var text = [
-  '떡을 물에 행궈서 한번 데쳐주세요\n떡이 좀 더 야들야들해집니다.',
-  '떡을 물에 행궈서 한번 데쳐주세요\n떡이 좀 더 야들야들해집니다.2',
-  '떡을 물에 행궈서 한번 데쳐주세요\n떡이 좀 더 야들야들해집니다.3',
-];
-
-class CookingMenuController extends GetxController{
-  final FlutterTts tts = FlutterTts();
-  var index = 0.obs;
-  void speakText(String text) async{
-    await tts.setLanguage('ko-KR');
-    await tts.setSpeechRate(0.4);
-    await tts.speak(text);
-  }
-
-  nextIndex(){
-    index++;
-    update();
-  }
-
-  prevIndex(){
-    index--;
-    update();
-  }
-
-  fixIndex(){
-    index.value = text.length-1;
-  }
-}
-class SttController extends GetxController {
-  final CookingMenuController controller = Get.find();
-  SpeechToText _speech = SpeechToText();
-  RxBool _isListening = false.obs;
-  var text = '임시'.obs;
-
-  @override
-  void onInit() async {
-    super.onInit();
-    await _initializeSpeechToText();
-  }
-
-  Future<void> _initializeSpeechToText() async {
-    if (!_speech.isAvailable) {
-      bool available = await _speech.initialize();
-      if (available) {
-        print("Speech to text initialized");
-      } else {
-        print("Speech to text not available");
-      }
-    }
-  }
-
-  void startListening() async {
-    if (!_isListening.value) {
-        _isListening.value = true;
-        _speech.listen(
-          onResult: (val) => processVoiceCommand(val.recognizedWords),
-        );
-    } else {
-      _isListening.value = false;
-      _speech.stop();
-    }
-  }
-
-  void processVoiceCommand(String command) {
-    if (command.contains('다음')) {
-      text.value = '다음';
-      controller.nextIndex();
-    } else if (command.contains('이전')) {
-      text.value = '이전';
-      controller.prevIndex();
-    }
-    update();
-  }
-}
 class Ingredient extends StatelessWidget {
   Ingredient({Key? key}) : super(key: key);
   final CookingMenuController controller = Get.put(CookingMenuController());
   final SttController sttController = Get.put(SttController());
+  final TtsController ttsController = Get.put(TtsController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,8 +38,7 @@ class Ingredient extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: (){
-            controller.speakText(text[controller.index.value]);
-            sttController.startListening();
+            sttController.show();
             Get.to(CookingMenu());
           },
           child: Icon(Icons.navigate_next),
@@ -129,7 +51,8 @@ class CookingMenu extends StatelessWidget {
 
   CookingMenu({Key? key}) : super(key: key);
 
-  final CookingMenuController controller = Get.find();
+  final CookingMenuController menuController = Get.find();
+  final TtsController ttsController = Get.find();
   final SttController sttController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -138,9 +61,13 @@ class CookingMenu extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         centerTitle: true,
-        title: Obx(() => Text('Step ${controller.index.value+1}/${text.length}',style: TextStyle(fontWeight: FontWeight.w400,color: Colors.black))),
+        title: Obx(() => Text('Step ${menuController.index.value+1}/${text.length}',style: TextStyle(fontWeight: FontWeight.w400,color: Colors.black))),
         actions: [
-          IconButton(onPressed: (){Get.back(); controller.index.value = 0;}, icon: Icon(Icons.close),color: Colors.black,)
+          IconButton(onPressed: (){
+            Get.offAll(Ingredient());
+            menuController.index.value = 0;
+            sttController.stopListening();
+            }, icon: Icon(Icons.close),color: Colors.black,)
         ],
       ),
       body: Container(
@@ -159,11 +86,11 @@ class CookingMenu extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Obx(() => Text(text[controller.index.value],style: TextStyle(fontSize: 20))),
+                  Obx(() => Text(text[menuController.index.value],style: TextStyle(fontSize: 20))),
                 ],
               ),
             ),
-            Obx(() => Text(sttController.text.value)),
+            Obx(() => Text(sttController.text1.value)),
           ],
         ),
       ),
@@ -175,11 +102,11 @@ class CookingMenu extends StatelessWidget {
               margin: EdgeInsets.only(left: 30),
               child: FloatingActionButton(
                 onPressed: (){
-                  if(controller.index.value > 0){
-                    controller.prevIndex();
-                    controller.speakText(text[controller.index.value]);
+                  if(menuController.index.value > 0){
+                    menuController.prevIndex();
                   } else {
-                    Get.back();
+                    sttController.stopListening();
+                    Get.offAll(Ingredient());
                   }
                 },
                 child: Icon(Icons.chevron_left),
@@ -190,48 +117,19 @@ class CookingMenu extends StatelessWidget {
             alignment: Alignment.bottomRight,
             child: FloatingActionButton(
               onPressed: (){
-                controller.nextIndex();
-                sttController.startListening();
-                if(controller.index.value >= text.length){
-                  controller.fixIndex();
+                menuController.nextIndex();
+                if(menuController.index.value >= text.length){
+                  menuController.fixIndex();
                   showDialog(
                       context: context,
                       barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Container(
-                            height: 130,
-                            child: Column(
-                              children: [
-                                Text('요리는 즐겁게 하셨나요? \n레시피에 대한 별점을 작성해주세요!',style: TextStyle(fontSize: 20)),
-                                Container(
-                                  margin: EdgeInsets.only(top: 20),
-                                  child: RatingStar(),
-                                ),
-                              ],
-                            ),
-                          ),
-                          insetPadding: const  EdgeInsets.fromLTRB(0,80,0, 80),
-                          actions: [
-                            TextButton(
-                              child: Text('취소'),
-                              onPressed: (){
-                                Get.back();
-                              },
-                            ),
-                            TextButton(
-                              child: Text('확인'),
-                              onPressed: () {
-                                Get.offAll(()=> MyApp());
-                                controller.index.value = 0;
-                              },
-                            ),
-                          ],
-                        );
+                        return ReviewDialog();
                       }
                   );
+                  sttController.stopListening();
                 } else {
-                  controller.speakText(text[controller.index.value]);
+                  // ttsController.speakText(text[menuController.index.value]);
                 }
               },
               child: Icon(Icons.navigate_next),
@@ -265,6 +163,47 @@ class RatingStar extends StatelessWidget {
       onRatingUpdate: (rating) {
         print(rating);
       },
+    );
+  }
+}
+
+class ReviewDialog extends StatelessWidget {
+  ReviewDialog({Key? key}) : super(key: key);
+
+  final SttController sttController = Get.find();
+  final CookingMenuController menuController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Container(
+        height: 130,
+        child: Column(
+          children: [
+            Text('요리는 즐겁게 하셨나요? \n레시피에 대한 별점을 작성해주세요!',style: TextStyle(fontSize: 20)),
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: RatingStar(),
+            ),
+          ],
+        ),
+      ),
+      insetPadding: const  EdgeInsets.fromLTRB(0,80,0, 80),
+      actions: [
+        TextButton(
+          child: Text('취소'),
+          onPressed: (){
+            Get.back();
+          },
+        ),
+        TextButton(
+          child: Text('확인'),
+          onPressed: () {
+            sttController.stopListening();
+            Get.offAll(()=> MyApp());
+            menuController.index.value = 0;
+          },
+        ),
+      ],
     );
   }
 }
