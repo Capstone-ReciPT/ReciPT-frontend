@@ -14,14 +14,17 @@ class CookingMenuController extends GetxController{
   var index = 0.obs;
   nextIndex(){
     index+=1;
+    update();
   }
 
   prevIndex(){
     index-=1;
+    update();
   }
 
   fixIndex(){
     index.value = text.length-1;
+    update();
   }
 }
 
@@ -30,13 +33,24 @@ class SttController extends GetxController {
   final TtsController ttsController = Get.put(TtsController());
   final SpeechToText _speech = SpeechToText();
   var text1 = '임시'.obs;
+  var text2 = '임시'.obs;
   bool isProcessingCommand = false;
-
+  bool showFlag = true;
   var buffer = [];
   @override
   void onInit() async {
     super.onInit();
     await _initializeSpeechToText();
+  }
+
+  void canShowFlag(){
+    showFlag = true;
+    update();
+  }
+
+  void cantShowFlag(){
+    showFlag = false;
+    update();
   }
 
   Future<void> _initializeSpeechToText() async {
@@ -50,8 +64,11 @@ class SttController extends GetxController {
     }
   }
   void show() {
-    startListening();
-    Timer(Duration(seconds: 1), show);
+    if(showFlag){
+      startListening();
+      Timer(Duration(seconds: 1), show);
+    }
+
   }
   Future<void> startListening() async {
     await _speech.listen(
@@ -88,8 +105,7 @@ class SttController extends GetxController {
         if (cookingMenuController.index.value >= text.length) {
           cookingMenuController.fixIndex();
         } else {
-          await ttsController.speakText(
-              text[cookingMenuController.index.value]);
+          await ttsController.speakText(text[cookingMenuController.index.value]);
         }
       }
       if (command.contains('이전') || command.contains('이정')

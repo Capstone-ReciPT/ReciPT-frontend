@@ -38,6 +38,7 @@ class Ingredient extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: (){
+            sttController.canShowFlag();
             sttController.show();
             Get.to(CookingMenu());
           },
@@ -66,7 +67,7 @@ class CookingMenu extends StatelessWidget {
           IconButton(onPressed: (){
             Get.offAll(Ingredient());
             menuController.index.value = 0;
-            sttController.stopListening();
+            sttController.cantShowFlag();
             }, icon: Icon(Icons.close),color: Colors.black,)
         ],
       ),
@@ -105,7 +106,7 @@ class CookingMenu extends StatelessWidget {
                   if(menuController.index.value > 0){
                     menuController.prevIndex();
                   } else {
-                    sttController.stopListening();
+                    sttController.cantShowFlag();
                     Get.offAll(Ingredient());
                   }
                 },
@@ -127,7 +128,7 @@ class CookingMenu extends StatelessWidget {
                         return ReviewDialog();
                       }
                   );
-                  sttController.stopListening();
+                  sttController.cantShowFlag();
                 } else {
                   // ttsController.speakText(text[menuController.index.value]);
                 }
@@ -198,7 +199,7 @@ class ReviewDialog extends StatelessWidget {
         TextButton(
           child: Text('확인'),
           onPressed: () {
-            sttController.stopListening();
+            sttController.cantShowFlag();
             Get.offAll(()=> MyApp());
             menuController.index.value = 0;
           },
