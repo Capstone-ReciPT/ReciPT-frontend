@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:recipt/MainPage/Mypage.dart';
 import 'MainPage/TodayRecipe.dart';
 import 'RecipePage/Category.dart';
 
@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
         ],
       ),
 
-      body: Obx(() => [HomePage(),SelectCategory(),Text('3'),Text('4')][c.currentTab.value]),
+      body: Obx(() => [HomePage(),SelectCategory(),Text('3'),MyPage()][c.currentTab.value]),
       bottomNavigationBar: DefalutBNB()
     );
   }
@@ -104,8 +104,8 @@ class DefalutBNB extends StatelessWidget {
             label: '음식 추천'
         ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '설정'
+            icon: Icon(Icons.account_circle_outlined),
+            label: '마이페이지'
         ),
       ],
     ));
