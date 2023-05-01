@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:recipt/MainPage/Mypage.dart';
 import 'MainPage/TodayRecipe.dart';
 import 'RecipePage/Category.dart';
-
+import 'package:recipt/Controller/PageController.dart';
 void main() {
   runApp(GetMaterialApp(
       theme : ThemeData(
@@ -16,22 +16,7 @@ void main() {
   );
 }
 
-class Controller extends GetxController{
-  var count= 0.obs;
-  var currentDotIndex = 0.obs;
-  var currentTab = 0.obs;
-  var bannerIndex = 0.obs;
-  changeDotIndex(index){
-    currentDotIndex.value = index;
-  }
-  changeTab(index){
-    currentTab.value = index;
-  }
-  changeBannerIndex(index){
-    bannerIndex.value = index;
-    print(bannerIndex.value);
-  }
-}
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

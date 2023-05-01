@@ -19,21 +19,23 @@ class SelectCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          MajorCategory(),
-          Divider( // 이 줄을 추가하세요.
-            color: Colors.grey,
-            thickness: 1,
-            height: 20, // 간격 조절을 원하시면 height 값을 변경하세요.
-          ),
-          SizedBox(height: 8,),
-          Text('최근에 사람들이',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
-          Text('이런 조리법으로 요리했어요',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w800),),
-          BoardMenu(),
-        ],
-      ),
+    return ListView(
+      children: [
+        Column(
+          children: [
+            MajorCategory(),
+            Divider( // 이 줄을 추가하세요.
+              color: Colors.grey,
+              thickness: 1,
+              height: 20, // 간격 조절을 원하시면 height 값을 변경하세요.
+            ),
+            SizedBox(height: 8,),
+            Text('최근에 사람들이',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
+            Text('이런 조리법으로 요리했어요',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w800),),
+            BoardMenu(),
+          ],
+        ),
+      ],
     );
   }
 }

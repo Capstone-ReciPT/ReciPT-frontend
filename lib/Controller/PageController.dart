@@ -10,6 +10,29 @@ var text = [
   '떡을 물에 행궈서 한번 데쳐주세요\n떡이 좀 더 야들야들해집니다.3',
 ];
 
+class Controller extends GetxController{
+  var count= 0.obs;
+  var currentDotIndex = 0.obs;
+  var currentTab = 0.obs;
+  var bannerIndex = 0.obs;
+
+  changeDotIndex(index){
+    currentDotIndex.value = index;
+  }
+  changeTab(index){
+    currentTab.value = index;
+  }
+  changeBannerIndex(index){
+    bannerIndex.value = index;
+    print(bannerIndex.value);
+  }
+  Future<bool> clickLikeButton(bool isLiked) async{
+    print('하트 클릭');
+    return !isLiked;
+  }
+
+}
+
 class CookingMenuController extends GetxController{
   var index = 0.obs;
   nextIndex(){
@@ -156,5 +179,6 @@ class TtsController extends GetxController {
     await tts.stop();
   }
 }
+
 
 

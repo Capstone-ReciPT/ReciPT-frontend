@@ -3,9 +3,9 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/RecipePage/Category.dart';
-import 'package:recipt/main.dart';
+import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Recipe_on/RecipePage.dart';
-
+import 'package:like_button/like_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 var foodList = {
   {'name' : '비빔밥', 'path':'assets/bibim.jpg'},
@@ -184,7 +184,32 @@ class PopularRecipe extends StatelessWidget {
                         Get.to(Ingredient());
                         return;
                       },
-                      child: Image.asset(data['path'] ?? '',width:400,height: 220,fit: BoxFit.fill),
+                      child: Stack(
+                        children: [
+                          Image.asset(data['path'] ?? '',width:400,height: 220,fit: BoxFit.fill),
+                          Positioned(
+                            top: 5,
+                            right: 5,
+                            child: LikeButton(
+                              size: 40,
+                              circleColor:
+                              CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                              bubblesColor: BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
+                              ),
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  Icons.favorite,
+                                  color: isLiked ? Colors.red : Colors.black54,
+                                  size: 40,
+                                );
+                              },
+                              onTap: controller.clickLikeButton,
+                            ),
+                          )
+                        ],
+                      )
                     ),
                     Container(margin: EdgeInsets.only(top: 10),child: Text(data['name']?? '3',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
                   ],
@@ -228,8 +253,9 @@ class PopularRecipe extends StatelessWidget {
 }
 
 class TodayRecipe extends StatelessWidget {
-  const TodayRecipe({Key? key}) : super(key: key);
+  TodayRecipe({Key? key}) : super(key: key);
 
+  final Controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -245,12 +271,37 @@ class TodayRecipe extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
-                child: Image.asset(
-                  'assets/Banner/banner.png',
-                  fit: BoxFit.fill,
-                  // : TODO 이거 폰마다 맞는지 테스트
-                  height: 200,
-                ),
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      'assets/Banner/banner.png',
+                      fit: BoxFit.fill,
+                      // : TODO 이거 폰마다 맞는지 테스트
+                      height: 200,
+                    ),
+                    Positioned(
+                      top: 5,
+                      right: 5,
+                      child: LikeButton(
+                        size: 40,
+                        circleColor:
+                        CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                        bubblesColor: BubblesColor(
+                          dotPrimaryColor: Color(0xff33b5e5),
+                          dotSecondaryColor: Color(0xff0099cc),
+                        ),
+                        likeBuilder: (bool isLiked) {
+                          return Icon(
+                            Icons.favorite,
+                            color: isLiked ? Colors.red : Colors.black54,
+                            size: 40,
+                          );
+                        },
+                        onTap: controller.clickLikeButton,
+                      ),
+                    )
+                  ],
+                )
               ),
               Container(margin: EdgeInsets.only(top: 10),child: Text('예시',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
             ],
@@ -262,8 +313,9 @@ class TodayRecipe extends StatelessWidget {
 }
 
 class NewRecipe extends StatelessWidget {
-  const NewRecipe({Key? key}) : super(key: key);
+  NewRecipe({Key? key}) : super(key: key);
 
+  final Controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -279,12 +331,37 @@ class NewRecipe extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
-                child: Image.asset(
-                  'assets/Banner/banner.png',
-                  fit: BoxFit.fill,
-                  // : TODO 이거 폰마다 맞는지 테스트
-                  height: 200,
-                ),
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      'assets/Banner/banner.png',
+                      fit: BoxFit.fill,
+                      // : TODO 이거 폰마다 맞는지 테스트
+                      height: 200,
+                    ),
+                    Positioned(
+                      top: 5,
+                      right: 5,
+                      child: LikeButton(
+                        size: 40,
+                        circleColor:
+                        CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                        bubblesColor: BubblesColor(
+                          dotPrimaryColor: Color(0xff33b5e5),
+                          dotSecondaryColor: Color(0xff0099cc),
+                        ),
+                        likeBuilder: (bool isLiked) {
+                          return Icon(
+                            Icons.favorite,
+                            color: isLiked ? Colors.red : Colors.black54,
+                            size: 40,
+                          );
+                        },
+                        onTap: controller.clickLikeButton,
+                      ),
+                    )
+                  ],
+                )
               ),
               Container(margin: EdgeInsets.only(top: 10),child: Text('예시',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
             ],
