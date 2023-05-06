@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/MainPage/Mypage.dart';
+import 'package:recipt/MainPage/SearchBar.dart';
+import 'MainPage/RecipeRecommend.dart';
 import 'MainPage/TodayRecipe.dart';
+import 'MainPage/imsi.dart';
 import 'RecipePage/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
 void main() {
@@ -15,8 +18,6 @@ void main() {
       home : MyApp())
   );
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -34,13 +35,23 @@ class MyApp extends StatelessWidget {
           Container(
             width: 320,
             margin: EdgeInsets.only(top: 10,right: 5),
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: '요리, 재료 검색',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
+            child: TextButton(
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          side: BorderSide(color: Colors.black45)
+                      )
+                  )
               ),
+              child: Container(
+                padding: EdgeInsets.only(left: 15),
+                alignment: Alignment.centerLeft,
+                  child: Text('요리, 재료 검색',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.w700,fontSize: 15),)
+              ),
+              onPressed: (){
+                Get.to(SearchBarMain());
+              },
             ),
           ),
           Container(
@@ -57,7 +68,7 @@ class MyApp extends StatelessWidget {
         ],
       ),
 
-      body: Obx(() => [HomePage(),SelectCategory(),Text('3'),MyPage()][c.currentTab.value]),
+      body: Obx(() => [HomePage(),SelectCategory(),YoloImage(),MyPage()][c.currentTab.value]),
       bottomNavigationBar: DefalutBNB()
     );
   }
@@ -82,7 +93,7 @@ class DefalutBNB extends StatelessWidget {
         ),
         BottomNavigationBarItem(
             icon: Icon(Icons.list_rounded),
-            label: '레시피'
+            label: '카테고리'
         ),
         BottomNavigationBarItem(
             icon: Icon(Icons.camera_rounded),

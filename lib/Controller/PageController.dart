@@ -136,9 +136,8 @@ class SttController extends GetxController {
           cookingMenuController.nextIndex();
           if (cookingMenuController.index.value >= text.length) {
             cookingMenuController.fixIndex();
-          } else {
-            await ttsController.speakText(text[cookingMenuController.index.value]);
           }
+          await ttsController.speakText(text[cookingMenuController.index.value]);
           countNum = 0;
         }
       }
@@ -150,10 +149,8 @@ class SttController extends GetxController {
           cookingMenuController.prevIndex();
           if (cookingMenuController.index.value <= 0) {
             cookingMenuController.index.value = 0;
-          } else {
-            await ttsController.speakText(
-                text[cookingMenuController.index.value]);
           }
+          await ttsController.speakText(text[cookingMenuController.index.value]);
           countNum = 0;
         }
       }
