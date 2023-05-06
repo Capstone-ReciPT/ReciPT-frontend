@@ -165,7 +165,7 @@ class PopularRecipe extends StatelessWidget {
           ),
         CarouselSlider(
           options: CarouselOptions(
-            height: 300,
+            height: 330,
             autoPlay: false,
             viewportFraction: 1,
             onPageChanged: (index, reason) {
@@ -192,12 +192,6 @@ class PopularRecipe extends StatelessWidget {
                             right: 5,
                             child: LikeButton(
                               size: 40,
-                              circleColor:
-                              CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                              bubblesColor: BubblesColor(
-                                dotPrimaryColor: Color(0xff33b5e5),
-                                dotSecondaryColor: Color(0xff0099cc),
-                              ),
                               likeBuilder: (bool isLiked) {
                                 return Icon(
                                   Icons.favorite,
@@ -205,11 +199,21 @@ class PopularRecipe extends StatelessWidget {
                                   size: 40,
                                 );
                               },
+                              likeCount: 71,
+                              countDecoration: (count, likeCount) {
+                                return Text(likeCount.toString(), style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800),);
+                              },
                               onTap: controller.clickLikeButton,
                             ),
                           )
                         ],
-                      )
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        IconButton(onPressed: (){}, icon: Icon(Icons.favorite_border)),
+                        Text('좋아요 수 82'),
+                      ],
                     ),
                     Container(margin: EdgeInsets.only(top: 10),child: Text(data['name']?? '3',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
                   ],

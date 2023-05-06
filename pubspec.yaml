@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   get:
   http: ^0.13.4
+  image: ^4.0.16
   image_picker: ^0.8.4+4
   shared_preferences: ^2.0.11
   flutter_local_notifications: ^9.1.5
@@ -48,6 +49,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^2.0.5
   like_button: ^2.0.5
+  flutter_vision: ^1.1.1
+  input_history_text_field: ^0.2.0
+
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +81,7 @@ flutter:
     - assets/icons/
     - assets/Banner/
     - assets/icons/category/
+    - assets/yolo/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

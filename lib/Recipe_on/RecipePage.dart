@@ -178,14 +178,22 @@ class ReviewDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
-        height: 130,
+        height: 210,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('요리는 즐겁게 하셨나요? \n레시피에 대한 별점을 작성해주세요!',style: TextStyle(fontSize: 20)),
             Container(
               margin: EdgeInsets.only(top: 20),
               child: RatingStar(),
             ),
+            SizedBox(height: 20,),
+            TextField(
+              decoration: InputDecoration(
+                hintText: '한줄 후기를 입력해주세요',
+                border: OutlineInputBorder()
+              ),
+            )
           ],
         ),
       ),
