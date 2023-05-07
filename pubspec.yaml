@@ -51,6 +51,7 @@ dependencies:
   like_button: ^2.0.5
   flutter_vision: ^1.1.1
   input_history_text_field: ^0.2.0
+  search_page: ^2.3.0
 
 
 dev_dependencies:

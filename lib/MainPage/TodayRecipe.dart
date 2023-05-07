@@ -201,19 +201,13 @@ class PopularRecipe extends StatelessWidget {
                               },
                               likeCount: 71,
                               countDecoration: (count, likeCount) {
-                                return Text(likeCount.toString(), style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800),);
+                                return Text(likeCount.toString(), style: TextStyle(color: Colors.pink,fontWeight: FontWeight.w800),);
                               },
                               onTap: controller.clickLikeButton,
                             ),
                           )
                         ],
                       ),
-                    ),
-                    Row(
-                      children: [
-                        IconButton(onPressed: (){}, icon: Icon(Icons.favorite_border)),
-                        Text('좋아요 수 82'),
-                      ],
                     ),
                     Container(margin: EdgeInsets.only(top: 10),child: Text(data['name']?? '3',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
                   ],

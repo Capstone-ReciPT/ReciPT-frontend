@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/MainPage/Mypage.dart';
 import 'package:recipt/MainPage/SearchBar.dart';
+import 'package:search_page/search_page.dart';
+import 'Controller/SearchController.dart';
 import 'MainPage/RecipeRecommend.dart';
 import 'MainPage/TodayRecipe.dart';
-import 'MainPage/imsi.dart';
 import 'RecipePage/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
 void main() {
@@ -26,45 +27,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get.put()을 사용하여 클래스를 인스턴스화하여 모든 "child'에서 사용가능하게 합니다.
     final Controller c = Get.put(Controller());
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         actions: [
-          Container(
-            width: 320,
-            margin: EdgeInsets.only(top: 10,right: 5),
-            child: TextButton(
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          side: BorderSide(color: Colors.black45)
-                      )
-                  )
-              ),
-              child: Container(
-                padding: EdgeInsets.only(left: 15),
-                alignment: Alignment.centerLeft,
-                  child: Text('요리, 재료 검색',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.w700,fontSize: 15),)
-              ),
-              onPressed: (){
-                Get.to(SearchBarMain());
-              },
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            alignment: Alignment.center,
-            child: IconButton(
-                icon: Icon(Icons.keyboard_voice,color: Colors.black,size: 35),
-                onPressed: () {
-                  // TODO 검색 기능 구현
-                  print('search button is clicked');
-                }
-            ),
-          ),
+          SearchButton(),
+          VoiceSearchButton(),
         ],
       ),
 
