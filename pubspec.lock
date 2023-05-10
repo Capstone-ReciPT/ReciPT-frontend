@@ -105,14 +105,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.8"
-  dots_indicator:
+  dotted_border:
     dependency: "direct main"
     description:
-      name: dots_indicator
-      sha256: e59dfc90030ee5a4fd4c53144a8ce97cc7a823c2067b8fb9814960cd1ae63f89
+      name: dotted_border
+      sha256: "07a5c5e8d4e6e992279e190e0352be8faa5b8f96d81c77a78b2d42f060279840"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.0.0+3"
   fake_async:
     dependency: transitive
     description:
@@ -248,6 +248,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  iconly:
+    dependency: "direct main"
+    description:
+      name: iconly
+      sha256: "22f16dd28984d232891299ead9d9b75ae5a32b4d9cdf63e8e574f1ceb11dcbd9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   image:
     dependency: "direct main"
     description:
@@ -296,14 +304,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.3"
-  input_history_text_field:
-    dependency: "direct main"
-    description:
-      name: input_history_text_field
-      sha256: "136e6bce8bbf13afb09a00e86c243b3db6038f29797237e3179b5e6f87e4389e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0"
   js:
     dependency: transitive
     description:
@@ -368,6 +368,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      sha256: bbb1934c0cbb03091af082a6389ca2080345291ef07a5fa6d6e078ba8682f977
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   path_parsing:
     dependency: transitive
     description:
@@ -678,21 +686,13 @@ packages:
     source: hosted
     version: "0.2.0+3"
   xml:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: xml
       sha256: "979ee37d622dec6365e2efa4d906c37470995871fe9ae080d967e192d88286b5"
       url: "https://pub.dev"
     source: hosted
     version: "6.2.2"
-  xml2json:
-    dependency: "direct main"
-    description:
-      name: xml2json
-      sha256: c8cb35b83cce879c2ea86951fd257f4e765b0030a0298b35cf94f2b3d0f32095
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.3.6"
 sdks:
   dart: ">=3.0.0-387.0.dev <4.0.0"
   flutter: ">=3.7.0-0"
