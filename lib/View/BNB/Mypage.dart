@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipt/RecipePage/Category.dart';
+import 'package:recipt/View/BNB/Category.dart';
+import 'package:recipt/View/Other/UploadCoverAndDes.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage ({Key? key}) : super(key: key);
@@ -13,7 +14,6 @@ class MyPage extends StatelessWidget {
             body: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 20),
                   width: 800,
                   height: 150,
                   decoration: BoxDecoration(
@@ -35,9 +35,11 @@ class MyPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('손지석',style: TextStyle(color: Colors.white,fontSize: 30),),
-                          Text('팔로워 0, 팔로잉 0',style: TextStyle(color: Colors.white),),
                           SizedBox(height: 8,),
-                          TextButton(onPressed: (){},
+                          TextButton(
+                              onPressed: (){
+                                Get.to(UploadTab());
+                              },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(

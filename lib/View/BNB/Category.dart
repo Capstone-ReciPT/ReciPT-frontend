@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/View/Other/RecipePage.dart';
+import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/main.dart';
 
 var category = [
@@ -19,26 +21,28 @@ class SelectCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Column(
-          children: [
-            MajorCategory(),
-            Divider( // 이 줄을 추가하세요.
-              color: Colors.grey,
-              thickness: 1,
-              height: 20, // 간격 조절을 원하시면 height 값을 변경하세요.
-            ),
-            SizedBox(height: 8,),
-            Text('최근에 사람들이',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
-            Text('이런 조리법으로 요리했어요',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w800),),
-            BoardMenu(),
-          ],
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ButtonToSearchTab(),
+          SizedBox(height: 10,),
+          MajorCategory(),
+          Divider( // 이 줄을 추가하세요.
+            color: Colors.grey,
+            thickness: 1,
+            height: 20, // 간격 조절을 원하시면 height 값을 변경하세요.
+          ),
+          SizedBox(height: 8,),
+          Text('최근에 사람들이',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
+          Text('이런 조리법으로 요리했어요',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w800),),
+          BoardMenu(),
+        ],
+      ),
     );
   }
 }
+
+
 
 class MajorCategory extends StatelessWidget {
   const MajorCategory({Key? key}) : super(key: key);
@@ -46,7 +50,7 @@ class MajorCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 30,left: 10,right: 10),
+      margin: EdgeInsets.only(left: 10,right: 10),
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -110,7 +114,7 @@ class BoardMenu extends StatelessWidget {
               ],
             ),
             onPressed: (){
-              Get.to(CategoryClick());
+              Get.to(Ingredient());
             },
           )
         );

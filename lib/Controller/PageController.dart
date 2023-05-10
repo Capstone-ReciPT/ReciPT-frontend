@@ -15,6 +15,7 @@ class Controller extends GetxController{
   var currentDotIndex = 0.obs;
   var currentTab = 0.obs;
   var bannerIndex = 0.obs;
+  var favorite = false.obs;
 
   changeDotIndex(index){
     currentDotIndex.value = index;
@@ -26,10 +27,11 @@ class Controller extends GetxController{
     bannerIndex.value = index;
     print(bannerIndex.value);
   }
-  Future<bool> clickLikeButton(bool isLiked) async{
-    print('하트 클릭');
-    return !isLiked;
+  changeLikeButtonState(){
+    favorite.value = !favorite.value;
+    update();
   }
+
 
 }
 
