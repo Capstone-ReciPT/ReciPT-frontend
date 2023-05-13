@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/Controller/TotalController.dart';
+import 'package:recipt/Controller/test.dart';
 import 'package:recipt/View/BNB/HomePage.dart';
 import 'package:recipt/View/BNB/Mypage.dart';
+import 'package:recipt/View/BNB/Yolo.dart';
 import 'package:recipt/View/Other/Start/StartScreen.dart';
 import 'package:recipt/constans/colors.dart';
 import 'View/BNB/RecipeRecommend.dart';
 import 'View/BNB/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
 void main() {
+  
   runApp(GetMaterialApp(
       theme : ThemeData(
           textTheme: TextTheme(
@@ -61,9 +65,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get.put()을 사용하여 클래스를 인스턴스화하여 모든 "child'에서 사용가능하게 합니다.
-    final Controller c = Get.put(Controller());
+    final TotalController totalController = Get.put(TotalController());
+    final Controller c = Get.find();
     return SafeArea(child: Scaffold(
-        body: Obx(() => [HomePage(),SelectCategory(),YoloImage(),MyPage()][c.currentTab.value]),
+        body: Obx(() => [HomePage(),SelectCategory(),YoloFirstPage(),MyPage()][c.currentTab.value]),
         bottomNavigationBar: DefalutBNB()
     ));
   }
@@ -73,7 +78,7 @@ class MyApp extends StatelessWidget {
 class DefalutBNB extends StatelessWidget {
   DefalutBNB({Key? key}) : super(key: key);
 
-  final Controller c = Get.put(Controller());
+  final Controller c = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(() => BottomNavigationBar(

@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
 class HomeBanner extends StatelessWidget {
   HomeBanner({Key? key}) : super(key: key);
 
-  final controller = Get.put(Controller());
+  final controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -100,17 +100,22 @@ class MainButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        TextButton(
+            onPressed: (){
+            },
+            child: Column(
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/refrigerator.svg',
+                  width: 50,
+                  height: 50,
+                ),
+                SizedBox(height: 8,),
+                Text('냉장고\n파먹기',textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600)),
+              ],
+            )
+        ),
         TextButton(onPressed: (){}, child: Column(
-          children: [
-            SvgPicture.asset(
-              'assets/icons/refrigerator.svg',
-              width: 50,
-              height: 50,
-            ),
-            SizedBox(height: 8,),
-            Text('냉장고\n파먹기',textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600)),
-          ],
-        )),TextButton(onPressed: (){}, child: Column(
           children: [
             SvgPicture.asset(
               'assets/icons/today.svg',

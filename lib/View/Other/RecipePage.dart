@@ -1,52 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/View/Other/Ingredient.dart';
 import 'package:recipt/main.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:recipt/Controller/PageController.dart';
-
-class Ingredient extends StatelessWidget {
-  Ingredient({Key? key}) : super(key: key);
-  final CookingMenuController controller = Get.put(CookingMenuController());
-  final SttController sttController = Get.put(SttController());
-  final TtsController ttsController = Get.put(TtsController());
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          title: Text('비빔밥 만들기',style: TextStyle(fontSize: 30,color: Colors.black,fontWeight: FontWeight.w800)),
-        centerTitle: true,
-      ),
-        body: ListView.builder(
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            return Container(
-                padding: EdgeInsets.all(8.0),
-                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1.0),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text('고추장 1숟가락')
-                  ],
-                )
-            );
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            sttController.canShowFlag();
-            sttController.show();
-            Get.to(CookingMenu());
-          },
-          child: Icon(Icons.navigate_next),
-        ),
-    );
-  }
-}
 
 class CookingMenu extends StatelessWidget {
 
@@ -65,7 +22,7 @@ class CookingMenu extends StatelessWidget {
         title: Obx(() => Text('Step ${menuController.index.value+1}/${text.length}',style: TextStyle(fontWeight: FontWeight.w400,color: Colors.black))),
         actions: [
           IconButton(onPressed: (){
-            Get.offAll(Ingredient());
+            Get.offAll(ProductItemScreen());
             menuController.index.value = 0;
             sttController.cantShowFlag();
             }, icon: Icon(Icons.close),color: Colors.black,)
@@ -108,7 +65,7 @@ class CookingMenu extends StatelessWidget {
                     menuController.prevIndex();
                   } else {
                     sttController.cantShowFlag();
-                    Get.offAll(Ingredient());
+                    Get.offAll(ProductItemScreen());
                   }
                 },
                 child: Icon(Icons.chevron_left),

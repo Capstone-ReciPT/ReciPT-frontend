@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/View/Other/Ingredient.dart';
 import 'package:recipt/View/Other/RecipePage.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/main.dart';
@@ -114,7 +115,7 @@ class BoardMenu extends StatelessWidget {
               ],
             ),
             onPressed: (){
-              Get.to(Ingredient());
+              Get.to(ProductItemScreen());
             },
           )
         );

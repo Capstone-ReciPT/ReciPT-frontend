@@ -45,7 +45,7 @@ class _YoloImageState extends State<YoloImage> {
     if (!isLoaded) {
       return const Scaffold(
         body: Center(
-          child: Text("Model not loaded, waiting for it"),
+          child: CircularProgressIndicator(),
         ),
       );
     }

@@ -8,6 +8,8 @@ import 'package:recipt/View/Other/RecipePage.dart';
 import 'package:like_button/like_button.dart';
 import 'package:recipt/Widget/Like_button.dart';
 import 'package:recipt/constans/colors.dart';
+
+import '../Other/Ingredient.dart';
 var foodList = {
   {'name' : '비빔밥', 'path':'assets/bibim.jpg'},
   {'name' : '스파게티 카르보나라', 'path':'assets/spageti.jpg'},
@@ -56,7 +58,7 @@ class PopularRecipe extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Get.to(Ingredient());
+                      Get.to(ProductItemScreen());
                       return;
                     },
                     child: Stack(
@@ -104,7 +106,7 @@ class TodayRecipeNotice extends StatelessWidget {
 class TodayRecipe extends StatelessWidget {
   TodayRecipe({Key? key}) : super(key: key);
 
-  final Controller controller = Get.find();
+  final Controller controller = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -164,7 +166,7 @@ class NewRecipeNotice extends StatelessWidget {
 class NewRecipe extends StatelessWidget {
   NewRecipe({Key? key}) : super(key: key);
 
-  final Controller controller = Get.find();
+  final Controller controller = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
     return Container(
