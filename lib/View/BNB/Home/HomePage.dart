@@ -1,14 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
-import 'package:recipt/Controller/PageController.dart';
-import 'package:recipt/View/BNB/MainPresentRecipes.dart';
+import 'package:recipt/View/BNB/Home/MainPresentRecipes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipt/View/Other/SearchPage.dart';
 import 'package:recipt/View/Other/UploadCoverAndDes.dart';
 import 'package:recipt/Widget/Custom_button.dart';
-import 'package:recipt/constans/colors.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

@@ -1,15 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipt/Controller/ImageController.dart';
 import 'package:recipt/View/BNB/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
-import 'package:recipt/View/Other/RecipePage.dart';
-import 'package:like_button/like_button.dart';
 import 'package:recipt/Widget/Like_button.dart';
 import 'package:recipt/constans/colors.dart';
 
-import '../Other/Ingredient.dart';
+import '../../Other/Ingredient.dart';
 var foodList = {
   {'name' : '비빔밥', 'path':'assets/bibim.jpg'},
   {'name' : '스파게티 카르보나라', 'path':'assets/spageti.jpg'},

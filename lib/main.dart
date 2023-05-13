@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/TotalController.dart';
-import 'package:recipt/Controller/test.dart';
-import 'package:recipt/View/BNB/HomePage.dart';
+import 'package:recipt/View/BNB/Home/HomePage.dart';
 import 'package:recipt/View/BNB/Mypage.dart';
-import 'package:recipt/View/BNB/Yolo.dart';
 import 'package:recipt/View/Other/Start/StartScreen.dart';
 import 'package:recipt/constans/colors.dart';
-import 'View/BNB/RecipeRecommend.dart';
+import 'View/BNB/Yolo/RecipeRecommend.dart';
 import 'View/BNB/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
 void main() {
@@ -68,7 +66,7 @@ class MyApp extends StatelessWidget {
     final TotalController totalController = Get.put(TotalController());
     final Controller c = Get.find();
     return SafeArea(child: Scaffold(
-        body: Obx(() => [HomePage(),SelectCategory(),YoloFirstPage(),MyPage()][c.currentTab.value]),
+        body: Obx(() => [HomePage(),SelectCategory(),YoloImage(),MyPage()][c.currentTab.value]),
         bottomNavigationBar: DefalutBNB()
     ));
   }
@@ -98,7 +96,7 @@ class DefalutBNB extends StatelessWidget {
         ),
         BottomNavigationBarItem(
             icon: Icon(Icons.camera_rounded),
-            label: '음식 추천'
+            label: '냉장고 파먹기'
         ),
         BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_outlined),

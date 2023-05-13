@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart' as img;
 import 'package:flutter_vision/flutter_vision.dart';
 
 class YoloImage extends StatefulWidget {
@@ -20,7 +18,7 @@ class _YoloImageState extends State<YoloImage> {
   int imageHeight = 1;
   int imageWidth = 1;
   bool isLoaded = false;
-
+  bool isDetected = false;
   @override
   void initState() {
     super.initState();
@@ -43,37 +41,106 @@ class _YoloImageState extends State<YoloImage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     if (!isLoaded) {
-      return const Scaffold(
+      return SafeArea(child: Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
-      );
+      ));
     }
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        imageFile != null ? Image.file(imageFile!) : const SizedBox(),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: pickImage,
-                child: const Text("Pick image"),
+    return SafeArea(child: Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          imageFile != null ? Container(
+              child: Image.file(imageFile!,width: 200,height: 200,))
+              : YoloFirstPage2(),
+          ...displayBoxesAroundRecognizedObjects(size),
+          isDetected ?
+          Positioned(
+            bottom: 40,
+            left: 90,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                border: Border.all(width: 2,color: Colors.black45)
               ),
-              ElevatedButton(
-                onPressed: yoloOnImage,
-                child: const Text("Detect"),
-              )
-            ],
-          ),
-        ),
-        ...displayBoxesAroundRecognizedObjects(size),
-      ],
+              width: 200,
+              height: 50,
+              child: TextButton(
+                onPressed: (){},
+                child: Text('다음으로',style: Theme.of(context).textTheme.displayLarge,),
+              ),
+            ),
+          ) : SizedBox()
+        ],
+      ),
+    ),
     );
   }
 
+
+  YoloFirstPage2(){
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/icons/ChatGPT_logo.png',width: 150,height: 150,),
+          SizedBox(height: 50,),
+          Container(
+              width: 250,
+              child: Text('사진 / 카메라로 인식한 식재료로 \n\n GPT가 음식을 추천해드립니다!',style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 18),)
+          ),
+          SizedBox(height: 40,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                onTap: (){
+                  takeImage();
+                },
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    border: Border.all(width: 1),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.camera_alt_outlined),
+                      SizedBox(height: 5,),
+                      Text('카메라'),
+                    ],
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: (){
+                  pickImage();
+                },
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(width: 1)
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.image),
+                      SizedBox(height: 5,),
+                      Text('갤러리'),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 30,),
+        ],
+    );
+  }
   Future<void> loadYoloModel() async {
     await vision.loadYoloModel(
         labels: 'assets/yolo/coco.txt',
@@ -93,8 +160,21 @@ class _YoloImageState extends State<YoloImage> {
     if (photo != null) {
       setState(() {
         imageFile = File(photo.path);
+        yoloOnImage();
       });
     }
+  }
+  Future<void> takeImage() async {
+    final ImagePicker picker = ImagePicker();
+    // Capture a photo
+    final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      setState(() {
+        imageFile = File(photo.path);
+        yoloOnImage();
+      });
+    }
+
   }
 
   yoloOnImage() async {
@@ -113,6 +193,7 @@ class _YoloImageState extends State<YoloImage> {
     if (result.isNotEmpty) {
       setState(() {
         yoloResults = result;
+        isDetected = true;
       });
     }
   }
