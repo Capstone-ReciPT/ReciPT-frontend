@@ -34,58 +34,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class HomeBanner extends StatelessWidget {
-  HomeBanner({Key? key}) : super(key: key);
-
-  final controller = Get.find();
-
-  @override
-  Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 100,
-        autoPlay: false,
-        viewportFraction: 1,
-        initialPage: 0,
-        enableInfiniteScroll: false,
-        onPageChanged: (index, reason) {
-          controller.changeBannerIndex(index);
-        },
-      ),
-      items: foodList.map((data) {
-        return Builder(builder: (BuildContext context){
-          return Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Image.asset(
-                  'assets/Banner/banner.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Positioned(
-                  bottom: 15,
-                  right: 15,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Container(
-                        color: Colors.black54,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Obx(() => Text(
-                          "${controller.bannerIndex.value+1} / 3",
-                          style: TextStyle(color: Colors.white70,fontWeight: FontWeight.w800),
-                        ),)
-                    ),
-                  )
-              )
-            ],
-          );
-        }
-        );
-      }).toList(),
-    );
-  }
-}
 
 class MainButtons extends StatelessWidget {
   const MainButtons({Key? key}) : super(key: key);

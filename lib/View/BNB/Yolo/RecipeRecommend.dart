@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_vision/flutter_vision.dart';
+import 'package:recipt/View/BNB/Yolo/GPTanswer.dart';
 
 class YoloImage extends StatefulWidget {
   YoloImage({Key? key}) : super(key: key);
@@ -67,7 +69,9 @@ class _YoloImageState extends State<YoloImage> {
               width: 200,
               height: 50,
               child: TextButton(
-                onPressed: (){},
+                onPressed: (){
+                  Get.to(GPTanswer());
+                },
                 child: Text('다음으로',style: Theme.of(context).textTheme.displayLarge,),
               ),
             ),

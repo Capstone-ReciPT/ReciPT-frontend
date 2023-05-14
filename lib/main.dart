@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/TotalController.dart';
+import 'package:recipt/Controller/test.dart';
 import 'package:recipt/View/BNB/Home/HomePage.dart';
 import 'package:recipt/View/BNB/Mypage.dart';
 import 'package:recipt/View/Other/Start/StartScreen.dart';
@@ -66,7 +67,7 @@ class MyApp extends StatelessWidget {
     final TotalController totalController = Get.put(TotalController());
     final Controller c = Get.find();
     return SafeArea(child: Scaffold(
-        body: Obx(() => [HomePage(),SelectCategory(),YoloImage(),MyPage()][c.currentTab.value]),
+        body: Obx(() => [HomePage(),SelectCategory(),Test(),MyPage()][c.currentTab.value]),
         bottomNavigationBar: DefalutBNB()
     ));
   }

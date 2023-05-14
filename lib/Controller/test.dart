@@ -27,6 +27,7 @@ class _TestState extends State<Test> {
 
   printMessage() async{
     Uri uri = Uri.parse('http://10.0.2.2:8080/api/test/connect');
+    print(uri);
     final response = await http.get(uri);
     var res;
     res = jsonDecode(response.body);
