@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
+import 'package:recipt/Server/SearchServer.dart';
 import 'package:recipt/Widget/CustomCategoryList.dart';
 import 'package:recipt/Widget/CustomSlider.dart';
 import 'package:recipt/Widget/Custom_Text_Form_field.dart';
@@ -109,39 +110,41 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
 
                 // Search Suggestions
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "추천 검색어",
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Row(
+            FutureBuilder<List<String>>(
+                future: fetchSuggest(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      width: double.infinity,
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          searchSuggestionsTiem("스시"),
-                          searchSuggestionsTiem("샌드위치"),
-                          searchSuggestionsTiem("햄버거"),
+                          Text(
+                            "추천 검색어",
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          Wrap(
+                            spacing: 8.0, // gap between adjacent chips
+                            runSpacing: 4.0, // gap between lines
+                            children: snapshot.data!
+                                .map<Widget>((name) => searchSuggestionsTiem(name))
+                                .toList(),
+                          ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          searchSuggestionsTiem("라면"),
-                          searchSuggestionsTiem("수육"),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
+                    );
+                  }
+                  else if (snapshot.hasError) {
+                    return Text("${snapshot.error}");
+                  }
+                  return CircularProgressIndicator();
+                }
+            ),
               ],
             ),
           ),

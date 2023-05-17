@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
+import 'package:recipt/Server/LoginServer.dart';
 import 'package:recipt/View/Other/Start/Sign_up_screen.dart';
 import 'package:recipt/Widget/Custom_Text_Form_field.dart';
 import 'package:recipt/Widget/Custom_button.dart';
@@ -88,6 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         onTap: (){
                           setState(() {
                             if (key.currentState!.validate()){
+                              getHttp();
                               Get.to(MyApp());
                             }
                           });

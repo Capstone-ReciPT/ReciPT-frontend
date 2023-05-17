@@ -2,19 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import 'package:recipt/View/Other/Start/Sigin_up_age.dart';
 import 'package:recipt/Widget/Custom_Text_Form_field.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/constans/colors.dart';
+import 'package:recipt/main.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+class SignUpAge extends StatefulWidget {
+  const SignUpAge({Key? key}) : super(key: key);
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpAge> createState() => _SignUpAgenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpAgenState extends State<SignUpAge> {
   // The variable related to showing or hidingf the text
   bool obscure = false;
 
@@ -22,8 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final key = GlobalKey<FormState>();
 
   //The validator key related to the text field
-  bool _contansANumber = false;
-  bool _numberofDigits = false;
+  var _selectedValue = '20';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,52 +56,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           CustomTextFormField(
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "이메일을 입력해주세요.";
+                                return "나이를 입력해주세요";
+                              } else if (!value.isNum){
+                                return "올바른 나이 값을 입력해주세요.";
                               } else {
                                 return null;
                               }
                             },
-                            hint: "이메일 또는 전화번호",
-                            prefixIcon: IconlyBroken.message,
-                          ),
-                          CustomTextFormField(
-                            onChanged: (value) {
-                              setState(() {
-                                _numberofDigits = value.length < 6 ? false : true;
-                              });
-                            },
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "비밀번호를 입력해주세요.";
-                              } else {
-                                return null;
-                              }
-                            },
-                            obscureText: obscure,
-                            hint: "비밀번호",
-                            prefixIcon: IconlyBroken.lock,
-                            suffixIcon: obscure == true
-                                ? IconlyBroken.show
-                                : IconlyBroken.hide,
-                            onTapSuffixIcon: () {
-                              setState(() {});
-                              obscure = !obscure;
-                            },
+                            hint: "나이",
+                            prefixIcon: Icons.numbers_outlined,
                           ),
                           // Part about password terms
-                          passwordTerms(
-                              contains: _contansANumber, ateast6: _numberofDigits),
                         ],
                       ),
                     ),
                     CustomButton(
-                        onTap: () {
-                          Get.to(SignUpAge());
-                          setState(() {
-                            key.currentState!.validate();
-                          });
-                        },
-                        text: "회원 가입",color: Colors.black,)
+                      onTap: () {
+                        Get.to(MyApp());
+                      },
+                      text: "회원 가입",color: Colors.black,)
                   ],
                 ),
               ),

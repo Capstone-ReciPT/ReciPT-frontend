@@ -50,6 +50,7 @@ dependencies:
   search_page: ^2.3.0
   iconly: ^1.0.1
   dotted_border: ^2.0.0+3
+  dio: ^5.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipt/Controller/ServerController.dart';
+import 'package:recipt/Server/MainPageServer.dart';
 import 'package:recipt/View/BNB/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Widget/Like_button.dart';
@@ -116,7 +116,7 @@ class TodayRecipe extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      height: 325,
+      height: 300,
       child: FutureBuilder<List<MainRecipe>>(
           future: fetchUser('view'),
           builder: (context, snapshot) {

@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
     final TotalController totalController = Get.put(TotalController());
     final Controller c = Get.find();
     return SafeArea(child: Scaffold(
-        body: Obx(() => [HomePage(),SelectCategory(),Test(),MyPage()][c.currentTab.value]),
+        body: Obx(() => [HomePage(),SelectCategory(),YoloImage(),MyPage()][c.currentTab.value]),
         bottomNavigationBar: DefalutBNB()
     ));
   }
