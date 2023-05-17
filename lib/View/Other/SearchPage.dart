@@ -108,43 +108,43 @@ class _SearchScreenState extends State<SearchScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-
+                FutureBuilder<List<String>>(
+                    future: fetchSuggest(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Container(
+                          width: double.infinity,
+                          color: Colors.white,
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "추천 검색어",
+                                style: Theme.of(context).textTheme.displayMedium,
+                              ),
+                              const SizedBox(
+                                height: 24,
+                              ),
+                              Wrap(
+                                spacing: 8.0, // gap between adjacent chips
+                                runSpacing: 4.0, // gap between lines
+                                children: snapshot.data!
+                                    .map<Widget>((name) => searchSuggestionsTiem(name))
+                                    .toList(),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return CircularProgressIndicator();
+                    }
+                ),
                 // Search Suggestions
-            FutureBuilder<List<String>>(
-                future: fetchSuggest(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Container(
-                      width: double.infinity,
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "추천 검색어",
-                            style: Theme.of(context).textTheme.displayMedium,
-                          ),
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          Wrap(
-                            spacing: 8.0, // gap between adjacent chips
-                            runSpacing: 4.0, // gap between lines
-                            children: snapshot.data!
-                                .map<Widget>((name) => searchSuggestionsTiem(name))
-                                .toList(),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
-                  }
-                  return CircularProgressIndicator();
-                }
-            ),
+
               ],
             ),
           ),

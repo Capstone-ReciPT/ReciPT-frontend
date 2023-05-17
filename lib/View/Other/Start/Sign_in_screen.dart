@@ -89,8 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         onTap: (){
                           setState(() {
                             if (key.currentState!.validate()){
-                              getHttp();
-                              Get.to(MyApp());
+                              Get.offAll(MyApp());
                             }
                           });
                         },

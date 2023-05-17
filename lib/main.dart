@@ -58,6 +58,35 @@ void main() {
   );
 }
 
+//휴대폰 피지컬 버튼 뒤로 가기 눌렀을때,
+Future<bool> _onBackKey(context) async {
+  return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color(0xFFFFFFFF),
+          title: Text(
+            '끝내시겠습니까?',
+            style: TextStyle(color: mainText),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  //onWillpop에 true가 전달되어 앱이 종료 된다.
+                  Navigator.pop(context, true);
+                },
+                child: Text('끝내기',style: TextStyle(color: SecondaryText),)),
+            TextButton(
+                onPressed: () {
+                  //onWillpop에 false 전달되어 앱이 종료되지 않는다.
+                  Navigator.pop(context, false);
+                },
+                child: Text('아니요',style: TextStyle(color: SecondaryText),)),
+          ],
+        );
+      });
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -66,13 +95,18 @@ class MyApp extends StatelessWidget {
     // Get.put()을 사용하여 클래스를 인스턴스화하여 모든 "child'에서 사용가능하게 합니다.
     final TotalController totalController = Get.put(TotalController());
     final Controller c = Get.find();
-    return SafeArea(child: Scaffold(
-        body: Obx(() => [HomePage(),SelectCategory(),YoloImage(),MyPage()][c.currentTab.value]),
-        bottomNavigationBar: DefalutBNB()
-    ));
+    return WillPopScope(
+      onWillPop: () => _onBackKey(context),
+      child: SafeArea(child: Scaffold(
+          body: Obx(() => [HomePage(),SelectCategory(),YoloImage(),MyPage()][c.currentTab.value]),
+          bottomNavigationBar: DefalutBNB()
+      )),
+    );
   }
 
 }
+
+
 
 class DefalutBNB extends StatelessWidget {
   DefalutBNB({Key? key}) : super(key: key);
