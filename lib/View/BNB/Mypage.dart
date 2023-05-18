@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/View/BNB/Category.dart';
 import 'package:recipt/View/Other/UploadCoverAndDes.dart';
+import 'package:recipt/constans/colors.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage ({Key? key}) : super(key: key);
@@ -72,7 +73,7 @@ class Notice extends StatelessWidget {
     return Container(
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
         DefaultTabController(
-            length: 4, // length of tabs
+            length: 3, // length of tabs
             initialIndex: 0,
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
               Container(
@@ -83,7 +84,6 @@ class Notice extends StatelessWidget {
                     Tab(text: '레시피'),
                     Tab(text: '요리 후기'),
                     Tab(text: '좋아요'),
-                    Tab(text: '설정'),
                   ],
                 ),
               ),
@@ -101,10 +101,6 @@ class Notice extends StatelessWidget {
                     ),
                     Container(
                       child: MyFavorite(),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 5),
-                      child: Setting(),
                     ),
                   ])
               )
@@ -250,30 +246,65 @@ class Setting extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 3,
-      itemBuilder: (context, index) {
-        return Container(
+    return SafeArea(child: Scaffold(
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  margin: EdgeInsets.only(left: 20),
-                  child: TextButton(
-                    onPressed: (){},
-                    child: Text('로그 아웃',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color: Colors.black87))),
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back_ios,
+                              color: mainText,
+                            )
+                        ),
+                        SizedBox(width: 90,),
+                        Text('설정',style: Theme.of(context).textTheme.displayLarge,)
+                      ]
                   ),
-              Divider( // 이 줄을 추가하세요.
-                color: Colors.grey,
-                thickness: 1,
-                height: 10, // 간격 조절을 원하시면 height 값을 변경하세요.
+                ),
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return Container(
+                      decoration: BoxDecoration(border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey, width: 1,
+                          )
+                      )),
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: TextButton(
+                        child: Row(
+                          children: [
+                            SizedBox(width: 20,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('1',style: Theme.of(context).textTheme.displayLarge,),
+                              ],
+                            ),
+                          ],
+                        ),
+                        onPressed: (){
+                        },
+                      )
+                  );
+                },
               ),
             ],
           ),
-        );
-      },
-    );
+        )));
   }
 }
 

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:recipt/Widget/CustomSlider.dart';
 import 'package:recipt/constans/colors.dart';
 
 class CustomCategoriesList extends StatefulWidget {
@@ -33,8 +34,7 @@ class _CustomCategoriesListState extends State<CustomCategoriesList> {
                 },
                 color: _index == 0 ? Colors.black : form,
                 text: "모두",
-                textColor: _index == 0 ? Colors.white : SecondaryText,
-                width: _index == 0 ? 65 : 85),
+                textColor: _index == 0 ? Colors.white : SecondaryText,),
             menuButton(
                 onTap: () {
                   setState(() {
@@ -44,7 +44,7 @@ class _CustomCategoriesListState extends State<CustomCategoriesList> {
                 color: _index == 1 ? Colors.black : form,
                 text: "야채",
                 textColor: _index == 1 ? Colors.white : SecondaryText,
-                width: _index == 1 ? 65 : 85),
+            ),
             menuButton(
                 onTap: () {
                   setState(() {
@@ -53,8 +53,8 @@ class _CustomCategoriesListState extends State<CustomCategoriesList> {
                 },
                 color: _index == 2 ? Colors.black : form,
                 text: "고기",
-                textColor: _index == 2 ? Colors.white : SecondaryText,
-                width: _index == 2 ? 65 : 85),
+                textColor: _index == 2 ? Colors.white : SecondaryText,),
+
           ],
         ),
       ],
@@ -65,7 +65,6 @@ class _CustomCategoriesListState extends State<CustomCategoriesList> {
       {required String text,
         required Color color,
         required Color textColor,
-        required double width,
         required VoidCallback onTap}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -73,7 +72,7 @@ class _CustomCategoriesListState extends State<CustomCategoriesList> {
         onTap: onTap,
         child: Container(
           alignment: Alignment.center,
-          width: width,
+          width: 65,
           height: 45,
           decoration: BoxDecoration(
             color: color,

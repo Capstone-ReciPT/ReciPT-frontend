@@ -12,10 +12,10 @@ var category = [
   {'name' : '고기','path' : 'assets/icons/category/gogi_color.png'},
   {'name' : '해산물','path' : 'assets/icons/category/fish_color.png'},
   {'name' : '샐러드','path' : 'assets/icons/category/salad_color.png'},
-  {'name' : '수프','path' : 'assets/icons/category/soup_color.png'},
+  {'name' : '국','path' : 'assets/icons/category/soup_color.png'},
   {'name' : '밥','path' : 'assets/icons/category/rice_color.png'},
   {'name' : '면','path' : 'assets/icons/category/myun_color.png'},
-  {'name' : '국','path' : 'assets/icons/category/dosirock_color.png'},
+  {'name' : '찌개','path' : 'assets/icons/category/jjigae.png'},
   {'name' : '기타','path' : 'assets/icons/category/more.png'},
 ];
 

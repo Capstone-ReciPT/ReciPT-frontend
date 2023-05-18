@@ -4,27 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:recipt/constans/colors.dart';
 
 class CustomSlider extends StatefulWidget {
-  const CustomSlider({Key? key}) : super(key: key);
+  CustomSlider({Key? key,this.DurationName}) : super(key: key);
 
+  final DurationName;
   @override
   State<CustomSlider> createState() => _CustomSliderState();
 }
 
 class _CustomSliderState extends State<CustomSlider> {
+
   double slider = 30;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Cooking Duration",
+              widget.DurationName,
               style: Theme.of(context).textTheme.displayMedium,
-            ),
-            Text(
-              "( in minutes )",
-              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],
         ),
@@ -43,29 +42,29 @@ class _CustomSliderState extends State<CustomSlider> {
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
-                        .copyWith(color: primary),
+                        .copyWith(color: mainText),
                   ),
                   Text(
                     "30",
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
-                        .copyWith(color: primary),
+                        .copyWith(color: mainText),
                   ),
                   Text(
                     "> 50",
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
-                        .copyWith(color: primary),
+                        .copyWith(color: mainText),
                   ),
                 ],
               ),
             ),
             Slider(
                 divisions: 2,
-                activeColor: primary,
-                thumbColor: primary,
+                activeColor: Colors.black45,
+                thumbColor: Colors.black,
                 max: 60,
                 min: 10,
                 value: slider,

@@ -21,7 +21,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = TextEditingController();
   static List previousSearchs = [];
-
+  var _userInput;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -59,12 +59,14 @@ class _SearchScreenState extends State<SearchScreen> {
                               searchController.clear();
                             },
                             onChanged: (pure) {
-                              setState(() {});
+                              setState(() {
+                                _userInput = pure;
+                              });
                             },
                             onEditingComplete: () {
                               previousSearchs.add(searchController.text);
                               // TODO 검색어 입력하고 그 페이지 가는거
-                              //Get.to(page);
+                              print(fetchSearch(_userInput));
                             },
                           ),
                         ),
@@ -108,7 +110,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                FutureBuilder<List<String>>(
+                FutureBuilder<List<SuggestFood>>(
                     future: fetchSuggest(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -127,11 +129,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                 height: 24,
                               ),
                               Wrap(
-                                spacing: 8.0, // gap between adjacent chips
-                                runSpacing: 4.0, // gap between lines
-                                children: snapshot.data!
-                                    .map<Widget>((name) => searchSuggestionsTiem(name))
-                                    .toList(),
+                                children: [
+                                  for (SuggestFood food in snapshot.data!)
+                                    searchSuggestionsTiem(food),
+                                ],
                               ),
                             ],
                           ),
@@ -190,57 +191,60 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  searchSuggestionsTiem(String text) {
+  searchSuggestionsTiem(SuggestFood suggestFood) {
     return Container(
       margin: EdgeInsets.only(left: 8),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       decoration:
       BoxDecoration(color: form, borderRadius: BorderRadius.circular(30)),
       child: Text(
-        text,
+        suggestFood.foodName, // 여기를 모르겠어,
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mainText),
       ),
     );
   }
 
   _custombottomSheetFilter(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      height: 300,
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            "필터",
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
-          CustomCategoriesList(),
-          Row(
-            children: [
-              Expanded(
-                  child: CustomButton(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    text: "취소",
-                    color: form,
-                    textColor: mainText,
-                  )),
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                  child: CustomButton(
-                    onTap: () {
-                      Get.back();
-                    },
-                    color: Colors.black,
-                    text: "완료",
-                  ))
-            ],
-          )
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(20),
+        height: 450,
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              "필터",
+              style: Theme.of(context).textTheme.displayLarge,
+            ),
+            CustomSlider(DurationName: '조회수',),
+            CustomSlider(DurationName: '좋아요 수',),
+            Row(
+              children: [
+                Expanded(
+                    child: CustomButton(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      text: "취소",
+                      color: form,
+                      textColor: mainText,
+                    )),
+                SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                    child: CustomButton(
+                      onTap: () {
+                        Get.back();
+                      },
+                      color: Colors.black,
+                      text: "완료",
+                    ))
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

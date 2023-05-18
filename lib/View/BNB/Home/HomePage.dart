@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/View/BNB/Home/MainPresentRecipes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:recipt/View/BNB/Mypage.dart';
 import 'package:recipt/View/Other/UploadCoverAndDes.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 
@@ -86,16 +87,14 @@ class MainButtons extends StatelessWidget {
             )
         ),
         TextButton(
-            onPressed: (){},
+            onPressed: (){
+              Get.to(Setting());
+            },
             child: Column(
               children: [
-                SvgPicture.asset(
-                  'assets/icons/review.svg',
-                  width: 50,
-                  height: 50,
-                ),
-                SizedBox(height: 8,),
-                Text('리뷰\n작성',textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600),),
+                Icon(Icons.settings,size: 50,color: Colors.black,),
+                SizedBox(height: 10,),
+                Text('설정',textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,),),
               ],
             )
         ),
