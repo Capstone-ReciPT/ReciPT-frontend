@@ -46,6 +46,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           validator: (value) {
                             if(value!.isEmpty){
                               return '이메일 형식으로 입력해주세요';
+                            // } else if (!value.isEmail){
+                            //   return '이메일 형식으로 입력해주세요';
                             } else{
                               return null;
                             }

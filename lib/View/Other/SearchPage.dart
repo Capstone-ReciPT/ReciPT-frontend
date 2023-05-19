@@ -64,6 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               });
                             },
                             onEditingComplete: () {
+                              print('검색');
                               previousSearchs.add(searchController.text);
                               // TODO 검색어 입력하고 그 페이지 가는거
                               print(fetchSearch(_userInput));
@@ -94,6 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
 
+                
                 const SizedBox(
                   height: 8,
                 ),
@@ -144,8 +146,29 @@ class _SearchScreenState extends State<SearchScreen> {
                       return CircularProgressIndicator();
                     }
                 ),
+                SizedBox(height: 20,),
                 // Search Suggestions
-
+                InkWell(
+                  onTap: () {
+                    print('클릭');
+                  },
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Image.asset('assets/icons/ChatGPT_logo.png',width: 50,height: 50,),
+                        SizedBox(width: 12,),
+                        Column(
+                          children: [
+                            Text('찾는 레시피가 없다면?',style: Theme.of(context).textTheme.displaySmall),
+                            Text('GPT에게 물어보세요!',style: Theme.of(context).textTheme.displaySmall),
+                          ],
+                        ),
+                        SizedBox(width: 20,)
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -193,7 +216,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   searchSuggestionsTiem(SuggestFood suggestFood) {
     return Container(
-      margin: EdgeInsets.only(left: 8),
+      margin: EdgeInsets.only(left: 8,bottom: 10),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       decoration:
       BoxDecoration(color: form, borderRadius: BorderRadius.circular(30)),

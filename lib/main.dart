@@ -81,7 +81,7 @@ Future<bool> _onBackKey(context) async {
                   //onWillpop에 false 전달되어 앱이 종료되지 않는다.
                   Navigator.pop(context, false);
                 },
-                child: Text('아니요',style: TextStyle(color: SecondaryText),)),
+                child: Text('아니요',style: TextStyle(color: SecondaryText ),)),
           ],
         );
       });

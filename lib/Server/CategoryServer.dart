@@ -23,7 +23,7 @@ class CategoryRecipe {
 }
 
 Future<List<CategoryRecipe>> fetchCategory(String selectedCategory) async{
-  final response = await dio.get('http://10.0.2.2:8080/api/category/recipes?category=$selectedCategory');
+  final response = await dio.get('http://192.168.0.9:8080/api/category/recipes?category=$selectedCategory');
   print(makeCategoryList(response.data));
   return makeCategoryList(response.data);
 }

@@ -16,7 +16,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   // The variable related to showing or hidingf the text
-  bool obscure = false;
+  bool obscure = true;
 
   //The variable key related to the txt fild
   final key = GlobalKey<FormState>();
@@ -24,6 +24,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   //The validator key related to the text field
   bool _contansANumber = false;
   bool _numberofDigits = false;
+
+  var _id;
+  var _password;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,9 +61,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "이메일을 입력해주세요.";
+                              } else if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                                return "유효한 이메일 형식이 아닙니다.";
                               } else {
                                 return null;
                               }
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _id = value;
+                              });
                             },
                             hint: "이메일 또는 전화번호",
                             prefixIcon: IconlyBroken.message,
@@ -69,15 +79,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (value) {
                               setState(() {
                                 _numberofDigits = value.length < 6 ? false : true;
+                                _contansANumber = RegExp(r'\d').hasMatch(value) == true ? true : false;
+                                _password = value;
                               });
                             },
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "비밀번호를 입력해주세요.";
-                              } else {
+                              } else if (!_numberofDigits || !_contansANumber) {
+                                return "비밀번호는 최소 6자 이상이며, 최소 하나의 숫자를 \n포함해야 합니다.";
+                              }
+                              else {
                                 return null;
                               }
                             },
+
                             obscureText: obscure,
                             hint: "비밀번호",
                             prefixIcon: IconlyBroken.lock,
@@ -97,9 +113,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     CustomButton(
                         onTap: () {
-                          Get.to(SignUpAge());
                           setState(() {
-                            key.currentState!.validate();
+                            if (key.currentState!.validate()){
+                              Get.to(SignUpAge(id: _id, pw: _password,));
+                            }
                           });
                         },
                         text: "회원 가입",color: Colors.black,)
@@ -167,7 +184,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
             Text(
-              "  숫자를 포함해야 함",
+              "  하나의 숫자를 포함해야 함",
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: contains == false ? SecondaryText : mainText),
             )
