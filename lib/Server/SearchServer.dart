@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:recipt/Server/CategoryServer.dart';
 
-final dio = Dio();
+
 
 class SuggestFood{
   final String foodName;
@@ -14,7 +15,8 @@ class SuggestFood{
 }
 
 Future<List<SuggestFood>> fetchSuggest() async{
-  final response = await dio.get('http://10.0.2.2:8080/api/search');
+  final dio = Dio();
+  final response = await dio.get('http://192.168.0.15:8080/api/search');
   print(response.data);
   return makeCategoryList(response.data);
 }
@@ -26,13 +28,10 @@ List<SuggestFood> makeCategoryList(Map<String, dynamic> data) {
   for(int i = 0; i < foodNames.length; i++) {
     res.add(SuggestFood.fromJson(foodNames[i]));
   }
-  print(res);
   return res;
 }
 
-Future<List<String>> fetchSearch(_userInput) async{
-  final response = await dio.post('http://10.0.2.2:8080/api/search',data: {'foodName':_userInput, 'like':'','view':''});
-  print(response.data['foodName']);
-  return response.data['foodName'];
-}
+
+
+
 

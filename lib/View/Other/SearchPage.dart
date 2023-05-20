@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:recipt/Server/SearchServer.dart';
+import 'package:recipt/View/Other/AfterSearch.dart';
 import 'package:recipt/Widget/CustomCategoryList.dart';
 import 'package:recipt/Widget/CustomSlider.dart';
 import 'package:recipt/Widget/Custom_Text_Form_field.dart';
@@ -64,10 +65,11 @@ class _SearchScreenState extends State<SearchScreen> {
                               });
                             },
                             onEditingComplete: () {
-                              print('검색');
-                              previousSearchs.add(searchController.text);
+                              if (!previousSearchs.contains(searchController.text)){
+                                previousSearchs.add(searchController.text);
+                              }
                               // TODO 검색어 입력하고 그 페이지 가는거
-                              print(fetchSearch(_userInput));
+                              Get.to(AfterSearch(userInput: searchController.text,));
                             },
                           ),
                         ),

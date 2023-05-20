@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 
-final dio = Dio();
+
 
 Future<String> signUpFunc(id, pw,profileImage,age,username) async {
+  final dio = Dio();
   FormData formData = FormData.fromMap({
     "profile": await MultipartFile.fromFile(profileImage.path, contentType: MediaType('image', 'png')),
     'username' : username,

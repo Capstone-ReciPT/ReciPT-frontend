@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-final dio = Dio();
+
 
 class CategoryRecipe {
   final int recipeId;
@@ -23,8 +23,8 @@ class CategoryRecipe {
 }
 
 Future<List<CategoryRecipe>> fetchCategory(String selectedCategory) async{
-  final response = await dio.get('http://192.168.0.9:8080/api/category/recipes?category=$selectedCategory');
-  print(makeCategoryList(response.data));
+  final dio = Dio();
+  final response = await dio.get('http://192.168.0.15:8080/api/category/recipes?category=$selectedCategory');
   return makeCategoryList(response.data);
 }
 

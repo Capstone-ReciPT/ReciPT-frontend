@@ -54,7 +54,7 @@ class PopularRecipe extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: (){
-                              Get.to(ProductItemScreen());
+                              Get.to(ProductItemScreen(id: data.recipeId,));
                               return;
                             },
                             child: Stack(

@@ -12,8 +12,9 @@ import 'package:recipt/View/Other/RecipePage.dart';
 import 'package:recipt/constans/colors.dart';
 
 class ProductItemScreen extends StatelessWidget {
-  ProductItemScreen({Key? key}) : super(key: key);
+  ProductItemScreen({this.id,Key? key}) : super(key: key);
 
+  final id;
   final TotalController totalController = Get.put(TotalController());
   final SttController sttController = Get.find();
   @override
