@@ -8,6 +8,7 @@ import 'package:iconly/iconly.dart';
 import 'package:like_button/like_button.dart';
 import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Controller/TotalController.dart';
+import 'package:recipt/Server/RecipeServer.dart';
 import 'package:recipt/View/Other/RecipePage.dart';
 import 'package:recipt/constans/colors.dart';
 
@@ -19,27 +20,39 @@ class ProductItemScreen extends StatelessWidget {
   final SttController sttController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-          body: Stack(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: Image.asset("assets/bibim.jpg"),
-              ),
-              buttonArrow(context),
-              scroll(),
-            ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: (){
-              sttController.canShowFlag();
-              sttController.show();
-              Get.to(CookingMenu());
-            },
-            child: Icon(Icons.navigate_next),
-          ),
-        ));
+    return FutureBuilder<RecipeDataInput>(
+        future: fetchRecipe(id),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SafeArea(
+                child: Scaffold(
+                  body: Stack(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: Image.network(snapshot.data!.data.thumbnailImage),
+                      ),
+                      buttonArrow(context),
+                      scroll(snapshot),
+                    ],
+                  ),
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: (){
+                      sttController.canShowFlag();
+                      sttController.show();
+                      Get.to(CookingMenu());
+                    },
+                    child: Icon(Icons.navigate_next),
+                  ),
+                ));
+          }
+          else if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("${snapshot.error}");
+          }
+          return CircularProgressIndicator();
+        }
+    );
   }
 
   buttonArrow(BuildContext context) {
@@ -74,7 +87,7 @@ class ProductItemScreen extends StatelessWidget {
     );
   }
 
-  scroll() {
+  scroll(snapshot) {
     return DraggableScrollableSheet(
         initialChildSize: 0.6,
         maxChildSize: 1.0,
@@ -107,37 +120,11 @@ class ProductItemScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Text(
-                    "맛있는 비빔밥 만들기",
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
                   Row(
                     children: [
-                      InkWell(
-                        onTap: () {
-
-                        },
-                        child: const CircleAvatar(
-                          radius: 25,
-                          backgroundImage:
-                          AssetImage("assets/bibim.jpg"),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
                       Text(
-                        "손지석",
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall!
-                            .copyWith(color: mainText),
+                        snapshot.data!.data.foodName,
+                        style: Theme.of(context).textTheme.displayMedium,
                       ),
                       const Spacer(),
                       Column(
@@ -175,26 +162,14 @@ class ProductItemScreen extends StatelessWidget {
 
                     ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    child: Divider(
-                      height: 4,
-                    ),
-                  ),
-                  Text(
-                    "설명",
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
+
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    '가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: SecondaryText),
+                  const SizedBox(
+                    height: 15,
                   ),
+
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
@@ -211,8 +186,8 @@ class ProductItemScreen extends StatelessWidget {
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: 3,
-                    itemBuilder: (context, index) => ingredients(context),
+                    itemCount: snapshot.data!.data.ingredient.length,
+                    itemBuilder: (context, index) => ingredients(context,snapshot,index),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
@@ -231,7 +206,7 @@ class ProductItemScreen extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: 3,
-                    itemBuilder: (context, index) => steps(context, index),
+                    itemBuilder: (context, index) => steps(context, index,snapshot),
                   ),
                 ],
               ),
@@ -240,7 +215,7 @@ class ProductItemScreen extends StatelessWidget {
         });
   }
 
-  ingredients(BuildContext context) {
+  ingredients(BuildContext context,snapshot,index) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -258,7 +233,7 @@ class ProductItemScreen extends StatelessWidget {
             width: 10,
           ),
           Text(
-            "고추장 1숟가락",
+            snapshot.data!.data.ingredient[index],
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
@@ -266,7 +241,7 @@ class ProductItemScreen extends StatelessWidget {
     );
   }
 
-  steps(BuildContext context, int index) {
+  steps(BuildContext context, int index,snapshot) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
@@ -278,29 +253,32 @@ class ProductItemScreen extends StatelessWidget {
             radius: 12,
             child: Text("${index + 1}"),
           ),
-          Column(
-            children: [
-              SizedBox(
-                width: 270,
-                child: Text(
-                  "가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하",
-                  maxLines: 3,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: mainText),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Image.asset(
-                "assets/bibim.jpg",
-                height: 155,
-                width: 270,
+          Expanded(
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 270,
+                    child: Text(
+                      snapshot.data!.data.context[index],
+                      maxLines: 3,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: mainText),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Image.network(
+                    snapshot.data!.data.image[index],
+                    height: 200,
+                    width: 300,
+                  )
+                ],
               )
-            ],
-          )
+          ),
+
         ],
       ),
     );

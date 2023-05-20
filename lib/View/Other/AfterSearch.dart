@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Server/CategoryServer.dart';
 import 'package:recipt/Server/SearchServer.dart';
-import 'package:recipt/Server/SearchServer2.dart';
 import 'package:recipt/constans/colors.dart';
 
 class AfterSearch extends StatelessWidget {

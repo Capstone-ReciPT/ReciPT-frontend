@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import 'package:recipt/Server/SearchServer.dart';
+import 'package:recipt/Server/SearchSuggestServer.dart';
 import 'package:recipt/View/Other/AfterSearch.dart';
 import 'package:recipt/Widget/CustomCategoryList.dart';
 import 'package:recipt/Widget/CustomSlider.dart';

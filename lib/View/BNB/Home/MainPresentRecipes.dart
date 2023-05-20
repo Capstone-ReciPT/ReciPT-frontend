@@ -129,19 +129,24 @@ class TodayRecipe extends StatelessWidget {
                   margin: EdgeInsets.only(right: 50),
                   child: Column(
                     children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Stack(
-                            children: [
-                              Image.network(snapshot.data![index].thumbnailImage,fit: BoxFit.fill,height: 200,),
-                              Positioned(
-                                top: 5,
-                                right: 5,
-                                child: LikeButtonWidget(),
-                              )
-                            ],
-                          )
+                      InkWell(
+                        onTap: () => Get.to(ProductItemScreen(id: snapshot.data![index].recipeId)),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Stack(
+                              children: [
+                                Image.network(snapshot.data![index].thumbnailImage,fit: BoxFit.fill,height: 200,),
+                                Positioned(
+                                  top: 5,
+                                  right: 5,
+                                  child: LikeButtonWidget(),
+                                )
+                              ],
+                            )
+                        ),
+
                       ),
+
                       Container(margin: EdgeInsets.only(top: 10),child: Text(snapshot.data![index].foodName,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
                     ],
                   ),
