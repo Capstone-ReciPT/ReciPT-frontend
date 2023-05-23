@@ -32,6 +32,7 @@ Future<List<String>> fetchGPTsuggest(String ingre) async{
   return parseStringToList(response.data['data']);
 }
 
+
 List<String> parseStringToList(String jsonString) {
   List<String> resultList = [];
 
@@ -46,3 +47,5 @@ List<String> parseStringToList(String jsonString) {
 
   return resultList;
 }
+
+

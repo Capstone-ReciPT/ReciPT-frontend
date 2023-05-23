@@ -66,7 +66,7 @@ class _GPTanswerState extends State<GPTanswer> {
       children: [
         InkWell(
           onTap:(){
-            Get.to(SelectedRecipe());
+            Get.to(SelectedRecipe(selectedFood: snapshotText,));
           },
           child: Container(
             width: MediaQuery.of(context).size.width * 0.7,

@@ -8,41 +8,65 @@ import 'package:iconly/iconly.dart';
 import 'package:like_button/like_button.dart';
 import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Controller/TotalController.dart';
+import 'package:recipt/Server/GPTRecipeServer.dart';
 import 'package:recipt/Server/RecipeServer.dart';
 import 'package:recipt/View/Other/RecipePage.dart';
 import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
 
-class SelectedRecipe extends StatelessWidget {
-  SelectedRecipe({required this.selectedFood, Key? key}) : super(key: key);
+class SelectedRecipe extends StatefulWidget {
+  SelectedRecipe({required this.selectedFood,Key? key}) : super(key: key);
 
   final selectedFood;
-  final TotalController totalController = Get.put(TotalController());
-  final SttController sttController = Get.find();
+  var gptRecipe;
+  @override
+  State<SelectedRecipe> createState() => _SelectedRecipeState();
+}
+
+class _SelectedRecipeState extends State<SelectedRecipe> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.gptRecipe = fetchGPTRecipe(widget.selectedFood);
+
+  }
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-          body: Stack(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: Image.asset('assets/icons/ChatGPT_logo.png'),
-              ),
-              buttonArrow(context),
-              scroll(),
-            ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: (){
-              // sttController.context = snapshot.data!.data.context;
-              sttController.canShowFlag();
-              sttController.show();
-              // Get.to(CookingMenu(id));
-            },
-            child: Icon(Icons.navigate_next),
-          ),
-        ));
+    return FutureBuilder<GPTRecipe>(
+        future: widget.gptRecipe,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SafeArea(
+                child: Scaffold(
+                  body: Stack(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: Image.asset('assets/icons/ChatGPT_logo.png'),
+                      ),
+                      buttonArrow(context),
+                      scroll(snapshot),
+                    ],
+                  ),
+                  // floatingActionButton: FloatingActionButton(
+                  //   onPressed: (){
+                  //     // sttController.context = snapshot.data!.data.context;
+                  //     sttController.canShowFlag();
+                  //     sttController.show();
+                  //     // Get.to(CookingMenu(id));
+                  //   },
+                  //   child: Icon(Icons.navigate_next),
+                  // ),
+                ));
+          }
+          else if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("${snapshot.error}");
+          }
+          return CircularProgressIndicator();
+        }
+    );
   }
 
   buttonArrow(BuildContext context) {
@@ -50,6 +74,7 @@ class SelectedRecipe extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: InkWell(
         onTap: () {
+          fetchGPTRefresh();
           Get.to(MyApp());
         },
         child: Container(
@@ -77,7 +102,7 @@ class SelectedRecipe extends StatelessWidget {
     );
   }
 
-  scroll() {
+  scroll(snapshot) {
     return DraggableScrollableSheet(
         initialChildSize: 0.6,
         maxChildSize: 1.0,
@@ -129,8 +154,8 @@ class SelectedRecipe extends StatelessWidget {
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: 3,
-                    itemBuilder: (context, index) => ingredients(context,index),
+                    itemCount: snapshot.data!.ingredient.length,
+                    itemBuilder: (context, index) => ingredients(context,snapshot,index),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
@@ -149,7 +174,7 @@ class SelectedRecipe extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: 3,
-                    itemBuilder: (context, index) => steps(context, index),
+                    itemBuilder: (context, index) => steps(context, snapshot,index),
                   ),
                 ],
               ),
@@ -158,7 +183,7 @@ class SelectedRecipe extends StatelessWidget {
         });
   }
 
-  ingredients(BuildContext context,index) {
+  ingredients(BuildContext context,snapshot,index) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -176,7 +201,7 @@ class SelectedRecipe extends StatelessWidget {
             width: 10,
           ),
           Text(
-            '고추장 2숟가락',
+            snapshot.data!.ingredient[index],
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
@@ -184,7 +209,7 @@ class SelectedRecipe extends StatelessWidget {
     );
   }
 
-  steps(BuildContext context, int index) {
+  steps(BuildContext context, snapshot ,int index) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
@@ -202,7 +227,7 @@ class SelectedRecipe extends StatelessWidget {
                   SizedBox(
                     width: 270,
                     child: Text(
-                      '몰라',
+                      snapshot.data!.context[index],
                       maxLines: 3,
                       style: Theme.of(context)
                           .textTheme
@@ -219,3 +244,4 @@ class SelectedRecipe extends StatelessWidget {
     );
   }
 }
+
