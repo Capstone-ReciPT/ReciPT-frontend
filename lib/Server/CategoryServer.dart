@@ -28,11 +28,10 @@ Future<List<CategoryRecipe>> fetchCategory(String selectedCategory) async{
   return makeCategoryList(response.data);
 }
 
-
 List<CategoryRecipe> makeCategoryList(Map<String, dynamic> data) {
   List<CategoryRecipe> res  = [];
 
-  for(int i = 0; i < data['dbRecipeCount']; i++) {
+  for(int i = 0; i < data['recipeCount']; i++) {
     res.add(CategoryRecipe.fromJson(data['recipeList'][i]));
   }
   for(int i = 0; i < data['registerRecipeCount']; i++) {
@@ -40,4 +39,6 @@ List<CategoryRecipe> makeCategoryList(Map<String, dynamic> data) {
   }
   return res;
 }
+
+
 

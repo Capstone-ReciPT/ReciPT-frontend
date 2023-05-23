@@ -28,7 +28,7 @@ class MainRecipe {
 }
 
 
-Future<List<MainRecipe>> fetchUser(keyword) async {
+Future<List<MainRecipe>> fetchMain(keyword) async {
   Uri uri = Uri.parse('http://192.168.0.15:8080/api/home');
   final response = await http.get(uri);
 
@@ -43,7 +43,6 @@ Future<List<MainRecipe>> fetchUser(keyword) async {
 
 List<MainRecipe> makeHomeList(mainContent,keyword) {
   List<MainRecipe> res  = [];
-
   for(int i = 0; i < mainContent[keyword]['recipeCount']; i++) {
     res.add(MainRecipe.fromJson(mainContent[keyword]['data'][i.toString()]));
   }

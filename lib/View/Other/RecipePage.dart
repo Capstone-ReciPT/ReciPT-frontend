@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/Server/RecipeServer.dart';
 import 'package:recipt/View/Other/Ingredient.dart';
 import 'package:recipt/main.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -7,95 +8,128 @@ import 'package:recipt/Controller/PageController.dart';
 
 class CookingMenu extends StatelessWidget {
 
-  CookingMenu({Key? key}) : super(key: key);
+  CookingMenu({this.id,Key? key}) : super(key: key);
 
+  final id;
   final CookingMenuController menuController = Get.find();
   final TtsController ttsController = Get.find();
   final SttController sttController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        centerTitle: true,
-        title: Obx(() => Text('Step ${menuController.index.value+1}/${text.length}',style: TextStyle(fontWeight: FontWeight.w400,color: Colors.black))),
-        actions: [
-          IconButton(onPressed: (){
-            Get.offAll(ProductItemScreen());
-            menuController.index.value = 0;
-            sttController.cantShowFlag();
-            }, icon: Icon(Icons.close),color: Colors.black,)
-        ],
-      ),
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset('assets/bibim.jpg'),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey
-              ),
-              margin: EdgeInsets.only(top: 30),
-              width: 400,
-              height: 100,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Obx(() => Text(text[menuController.index.value],style: TextStyle(fontSize: 20))),
+    return FutureBuilder<RecipeDataInput>(
+        future: fetchRecipe(id),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                centerTitle: true,
+                title: Obx(() => Text('Step ${menuController.index.value+1}/${snapshot.data!.data.context.length}',style: TextStyle(fontWeight: FontWeight.w400,color: Colors.black))),
+                actions: [
+                  IconButton(onPressed: (){
+                    Get.to(MyApp());
+                    menuController.index.value = 0;
+                    sttController.cantShowFlag();
+                  }, icon: Icon(Icons.close),color: Colors.black,)
                 ],
               ),
-            ),
-            Obx(() => Text(sttController.text1.value)),
-            Obx(() => Text(sttController.text2.value)),
-          ],
-        ),
-      ),
-      floatingActionButton: Stack(
-        children: [
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Container(
-              margin: EdgeInsets.only(left: 30),
-              child: FloatingActionButton(
-                onPressed: (){
-                  if(menuController.index.value > 0){
-                    menuController.prevIndex();
-                  } else {
-                    sttController.cantShowFlag();
-                    Get.offAll(ProductItemScreen());
+              body: FutureBuilder<RecipeDataInput>(
+                  future: fetchRecipe(id),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Obx(() =>
+                            menuController.index.value >= snapshot.data!.data.context.length-1
+                                ? Image.network('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png')
+                                : Image.network(snapshot.data!.data.image[menuController.index.value])
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black26,
+                              ),
+                              padding: EdgeInsets.only(left: 20,right: 20),
+                              margin: EdgeInsets.only(top: 30),
+                              width: 400,
+                              height: 150,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Obx(() => Text(snapshot.data!.data.context[menuController.index.value],style: Theme.of(context).textTheme.displayLarge)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    else if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return Text("${snapshot.error}");
+                    }
+                    return CircularProgressIndicator();
                   }
-                },
-                child: Icon(Icons.chevron_left),
               ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: FloatingActionButton(
-              onPressed: (){
-                menuController.nextIndex();
-                if(menuController.index.value >= text.length){
-                  menuController.fixIndex();
-                  showDialog(
-                      context: context,
-                      barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
-                      builder: (BuildContext context) {
-                        return ReviewDialog();
-                      }
-                  );
-                  sttController.cantShowFlag();
-                } else {
-                  // ttsController.speakText(text[menuController.index.value]);
-                }
-              },
-              child: Icon(Icons.navigate_next),
-            ),
-          )
-        ],
-      ),
+              floatingActionButton: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      margin: EdgeInsets.only(left: 30),
+                      child: FloatingActionButton(
+                        onPressed: (){
+                          if(menuController.index.value > 0){
+                            menuController.pageLimit = snapshot.data!.data.context.length;
+                            menuController.prevIndex();
+                          } else {
+                            sttController.cantShowFlag();
+                            Get.to(ProductItemScreen(id: id,));
+                          }
+                        },
+                        child: Icon(Icons.chevron_left),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: FloatingActionButton(
+                      onPressed: (){
+                        menuController.nextIndex();
+                        print(menuController.index.value.toString());
+                        if(menuController.index.value >= snapshot.data!.data.context.length){
+                          menuController.pageLimit = snapshot.data!.data.context.length;
+                          menuController.fixIndex();
+                          print('이거는 $menuController.index.value');
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
+                              builder: (BuildContext context) {
+                                return ReviewDialog();
+                              }
+                          );
+                          sttController.cantShowFlag();
+                        } else {
+                          menuController.pageLimit = snapshot.data!.data.context.length;
+                          // ttsController.speakText(text[menuController.index.value]);
+                        }
+                      },
+                      child: Icon(Icons.navigate_next),
+                    ),
+                  )
+                ],
+              ),
+            );
+          }
+          else if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("${snapshot.error}");
+          }
+          return CircularProgressIndicator();
+        }
     );
   }
 }
@@ -166,7 +200,7 @@ class ReviewDialog extends StatelessWidget {
           child: Text('확인'),
           onPressed: () {
             sttController.cantShowFlag();
-            Get.offAll(()=> MyApp());
+            Get.to(MyApp());
             menuController.index.value = 0;
           },
         ),

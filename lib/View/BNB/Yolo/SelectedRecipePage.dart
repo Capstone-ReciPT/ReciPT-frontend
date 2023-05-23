@@ -13,48 +13,36 @@ import 'package:recipt/View/Other/RecipePage.dart';
 import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
 
-class ProductItemScreen extends StatelessWidget {
-  ProductItemScreen({this.id,Key? key}) : super(key: key);
+class SelectedRecipe extends StatelessWidget {
+  SelectedRecipe({required this.selectedFood, Key? key}) : super(key: key);
 
-  final id;
+  final selectedFood;
   final TotalController totalController = Get.put(TotalController());
   final SttController sttController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<RecipeDataInput>(
-        future: fetchRecipe(id),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SafeArea(
-                child: Scaffold(
-                  body: Stack(
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: Image.network(snapshot.data!.data.thumbnailImage),
-                      ),
-                      buttonArrow(context),
-                      scroll(snapshot),
-                    ],
-                  ),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: (){
-                      sttController.context = snapshot.data!.data.context;
-                      sttController.canShowFlag();
-                      sttController.show();
-                      Get.to(CookingMenu(id: id,));
-                    },
-                    child: Icon(Icons.navigate_next),
-                  ),
-                ));
-          }
-          else if (snapshot.hasError) {
-            print(snapshot.error);
-            return Text("${snapshot.error}");
-          }
-          return CircularProgressIndicator();
-        }
-    );
+    return SafeArea(
+        child: Scaffold(
+          body: Stack(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: Image.asset('assets/icons/ChatGPT_logo.png'),
+              ),
+              buttonArrow(context),
+              scroll(),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: (){
+              // sttController.context = snapshot.data!.data.context;
+              sttController.canShowFlag();
+              sttController.show();
+              // Get.to(CookingMenu(id));
+            },
+            child: Icon(Icons.navigate_next),
+          ),
+        ));
   }
 
   buttonArrow(BuildContext context) {
@@ -72,24 +60,24 @@ class ProductItemScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
           ),
           child: Container(
-              height: 55,
-              width: 55,
-              decoration: BoxDecoration(
+            height: 55,
+            width: 55,
+            decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
                 color: Colors.black45
-              ),
-              child: const Icon(
-                Icons.arrow_back_ios,
-                size: 20,
-                color: Colors.white,
-              ),
+            ),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: Colors.white,
             ),
           ),
+        ),
       ),
     );
   }
 
-  scroll(snapshot) {
+  scroll() {
     return DraggableScrollableSheet(
         initialChildSize: 0.6,
         maxChildSize: 1.0,
@@ -122,56 +110,9 @@ class ProductItemScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        snapshot.data!.data.foodName,
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                      const Spacer(),
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: (){
-                            },
-                            icon: Icon(Icons.message,size: 30,),
-                          ),
-                          Text(
-                            "후기",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(color: mainText),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 10,),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(height: 8,),
-                          const LikeButton(),
-                          SizedBox(height: 10,),
-                          Text(
-                            "좋아요 273",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(color: mainText),
-                          ),
-                        ],
-                      )
-
-                    ],
-                  ),
-
                   const SizedBox(
                     height: 10,
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
@@ -188,8 +129,8 @@ class ProductItemScreen extends StatelessWidget {
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: snapshot.data!.data.ingredient.length,
-                    itemBuilder: (context, index) => ingredients(context,snapshot,index),
+                    itemCount: 3,
+                    itemBuilder: (context, index) => ingredients(context,index),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
@@ -207,8 +148,8 @@ class ProductItemScreen extends StatelessWidget {
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: snapshot.data!.data.context.length,
-                    itemBuilder: (context, index) => steps(context, index,snapshot),
+                    itemCount: 3,
+                    itemBuilder: (context, index) => steps(context, index),
                   ),
                 ],
               ),
@@ -217,7 +158,7 @@ class ProductItemScreen extends StatelessWidget {
         });
   }
 
-  ingredients(BuildContext context,snapshot,index) {
+  ingredients(BuildContext context,index) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -235,7 +176,7 @@ class ProductItemScreen extends StatelessWidget {
             width: 10,
           ),
           Text(
-            snapshot.data!.data.ingredient[index],
+            '고추장 2숟가락',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
@@ -243,7 +184,7 @@ class ProductItemScreen extends StatelessWidget {
     );
   }
 
-  steps(BuildContext context, int index,snapshot) {
+  steps(BuildContext context, int index) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
@@ -261,7 +202,7 @@ class ProductItemScreen extends StatelessWidget {
                   SizedBox(
                     width: 270,
                     child: Text(
-                      snapshot.data!.data.context[index],
+                      '몰라',
                       maxLines: 3,
                       style: Theme.of(context)
                           .textTheme
@@ -269,19 +210,6 @@ class ProductItemScreen extends StatelessWidget {
                           .copyWith(color: mainText),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  index >= snapshot.data!.data.image.length
-                  ? Image.network(
-                    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                    height: 200,
-                    width: 300,
-                  ) : Image.network(
-                    snapshot.data!.data.image[index],
-                    height: 200,
-                    width: 300,
-                  )
                 ],
               )
           ),

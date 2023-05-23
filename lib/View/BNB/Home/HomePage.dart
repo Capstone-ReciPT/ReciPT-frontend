@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:recipt/View/BNB/Home/MainPresentRecipes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipt/View/BNB/Mypage.dart';
+import 'package:recipt/View/BNB/Yolo/RecipeRecommend.dart';
 import 'package:recipt/View/Other/UploadCoverAndDes.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 
@@ -47,6 +48,7 @@ class MainButtons extends StatelessWidget {
       children: [
         TextButton(
             onPressed: (){
+              Get.to(YoloImage());
             },
             child: Column(
               children: [

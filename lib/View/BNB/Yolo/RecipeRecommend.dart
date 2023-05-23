@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_vision/flutter_vision.dart';
+import 'package:recipt/Server/GPTsend.dart';
 import 'package:recipt/View/BNB/Yolo/GPTanswer.dart';
 
 class YoloImage extends StatefulWidget {
@@ -21,6 +23,7 @@ class _YoloImageState extends State<YoloImage> {
   int imageWidth = 1;
   bool isLoaded = false;
   bool isDetected = false;
+  List<String> tagList = [];
   @override
   void initState() {
     super.initState();
@@ -70,7 +73,7 @@ class _YoloImageState extends State<YoloImage> {
               height: 50,
               child: TextButton(
                 onPressed: (){
-                  Get.to(GPTanswer());
+                  Get.to(GPTanswer(GPTSuggestListString: extractTags()));
                 },
                 child: Text('다음으로',style: Theme.of(context).textTheme.displayLarge,),
               ),
@@ -81,7 +84,17 @@ class _YoloImageState extends State<YoloImage> {
     ),
     );
   }
+  String extractTags() {
+    List<String> tags = [];
 
+    for (var result in yoloResults) {
+      String tag = result['tag'];
+      tags.add(tag);
+    }
+
+    String tagsString = tags.join(', ');
+    return tagsString;
+  }
 
   YoloFirstPage2(){
     return Column(
