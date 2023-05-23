@@ -15,11 +15,10 @@ class SuggestFood{
 Future<List<SuggestFood>> fetchSuggest() async{
   final dio = Dio();
   final response = await dio.get('http://192.168.0.15:8080/api/search');
-  print(response.data);
-  return makeCategoryList(response.data);
+  return makeSuggestList(response.data);
 }
 
-List<SuggestFood> makeCategoryList(Map<String, dynamic> data) {
+List<SuggestFood> makeSuggestList(Map<String, dynamic> data) {
   List<SuggestFood> res  = [];
   List<String> foodNames = List<String>.from(data['foodName']);
 

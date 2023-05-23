@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Server/CategoryServer.dart';
+import 'package:recipt/Server/CategoryYear.dart';
 import 'package:recipt/View/Other/Ingredient.dart';
 import 'package:recipt/View/Other/RecipePage.dart';
 import 'package:recipt/Widget/Custom_button.dart';
@@ -36,9 +37,10 @@ class SelectCategory extends StatelessWidget {
             height: 20, // 간격 조절을 원하시면 height 값을 변경하세요.
           ),
           SizedBox(height: 8,),
-          Text('최근에 사람들이',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
+          Text('20대 사람들은',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
           Text('이런 조리법으로 요리했어요',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w800),),
-          BoardMenu(),
+          SizedBox(height: 10,),
+          Top10ForYear(),
         ],
       ),
     );
@@ -94,76 +96,78 @@ class BoardPage extends StatelessWidget {
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          color: mainText,
-                        )
-                    ),
-                    SizedBox(width: 90,),
-                    Text('카테고리',style: Theme.of(context).textTheme.displayLarge,)
-                  ]
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back_ios,
+                              color: mainText,
+                            )
+                        ),
+                        SizedBox(width: 90,),
+                        Text('카테고리',style: Theme.of(context).textTheme.displayLarge,)
+                      ]
+                  ),
                 ),
               ),
-            ),
-            FutureBuilder<List<CategoryRecipe>>(
-                future: fetchCategory(selectedCategory),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                            decoration: BoxDecoration(border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.grey, width: 1,
-                                )
-                            )),
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: TextButton(
-                              child: Row(
-                                children: [
-                                  Image.network(snapshot.data![index].thumbnailImage, width: 100, height: 100),
-                                  SizedBox(width: 12,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(snapshot.data![index].foodName.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
-                                      Text(snapshot.data![index].category.toString(),style: TextStyle(color: Colors.black45)),
-                                      Text('',style: TextStyle(color: Colors.black),),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              onPressed: (){
-                                Get.to(ProductItemScreen());
-                              },
-                            )
-                        );
-                      },
-                    );
+              FutureBuilder<List<CategoryRecipe>>(
+                  future: fetchCategory(selectedCategory),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                              decoration: BoxDecoration(border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey, width: 1,
+                                  )
+                              )),
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: TextButton(
+                                child: Row(
+                                  children: [
+                                    Image.network(snapshot.data![index].thumbnailImage, width: 100, height: 100),
+                                    SizedBox(width: 12,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(snapshot.data![index].foodName.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
+                                        Text(snapshot.data![index].category.toString(),style: TextStyle(color: Colors.black45)),
+                                        Text('',style: TextStyle(color: Colors.black),),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                onPressed: (){
+                                  Get.to(ProductItemScreen());
+                                },
+                              )
+                          );
+                        },
+                      );
+                    }
+                    else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return CircularProgressIndicator();
                   }
-                  else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
-                  }
-                  return CircularProgressIndicator();
-                }
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        )
     )));
   }
 }
@@ -173,8 +177,8 @@ class Top10ForYear extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<CategoryRecipe>>(
-        future: fetchCategory('채소'),
+    return FutureBuilder<List<CategoryYear>>(
+        future: fetchYear(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -198,7 +202,14 @@ class Top10ForYear extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(snapshot.data![index].foodName.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
-                              Text(snapshot.data![index].category.toString(),style: TextStyle(color: Colors.black45)),
+                              SizedBox(height: 8,),
+                              Row(
+                                children: [
+                                  Icon(Icons.star,color: Colors.orange,),
+                                  SizedBox(width: 8,),
+                                  Text(snapshot.data![index].ratingScore.toString(),style: TextStyle(color: Colors.black45)),
+                                ],
+                              ),
                               Text('',style: TextStyle(color: Colors.black),),
                             ],
                           ),

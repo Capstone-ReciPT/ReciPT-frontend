@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:recipt/Server/MainPageServer.dart';
 import 'package:recipt/View/BNB/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
+import 'package:recipt/Widget/Custom_recipes.dart';
 import 'package:recipt/Widget/Like_button.dart';
 import 'package:recipt/constans/colors.dart';
 
@@ -27,19 +28,19 @@ class PopularRecipe extends StatelessWidget {
             Text('인기 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800,color: mainText),),
             TextButton(
                 onPressed: (){
-                  Get.to(CategoryClick());
+                  Get.to(CustomBoardMenu(location: 'like',));
                 },
                 child: Text('See all',style: TextStyle(color: Colors.orange),)),
           ],
         ),
         FutureBuilder<List<MainRecipe>>(
-          future: fetchUser('like'),
+          future: fetchMain('like'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return CarouselSlider(
                 options: CarouselOptions(
                   height: 310,
-                  autoPlay: false,
+                  autoPlay: true,
                   viewportFraction: 1,
                   onPageChanged: (index, reason) {
                     controller.changeDotIndex(index);
@@ -100,7 +101,7 @@ class TodayRecipeNotice extends StatelessWidget {
         Text('오늘의 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800,color: mainText),),
         TextButton(
             onPressed: (){
-              Get.to(CategoryClick());
+              Get.to(CustomBoardMenu(location: 'view',));
             },
             child: Text('See all',style: TextStyle(color: Colors.orange),)),
       ],
@@ -118,7 +119,7 @@ class TodayRecipe extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       height: 300,
       child: FutureBuilder<List<MainRecipe>>(
-          future: fetchUser('view'),
+          future: fetchMain('view'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
@@ -177,7 +178,7 @@ class NewRecipeNotice extends StatelessWidget {
         Text('새로운 레시피',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800,color: mainText),),
         TextButton(
             onPressed: (){
-              Get.to(CategoryClick());
+              Get.to(CustomBoardMenu(location: 'recent',));
             },
             child: Text('See all',style: TextStyle(color: Colors.orange),)),
       ],
@@ -195,7 +196,7 @@ class NewRecipe extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       height: 325,
       child: FutureBuilder<List<MainRecipe>>(
-          future: fetchUser('recent'),
+          future: fetchMain('recent'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
@@ -206,18 +207,22 @@ class NewRecipe extends StatelessWidget {
                   margin: EdgeInsets.only(right: 50),
                   child: Column(
                     children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Stack(
-                            children: [
-                              Image.network(snapshot.data![index].thumbnailImage,fit: BoxFit.fill,height: 200,),
-                              Positioned(
-                                top: 5,
-                                right: 5,
-                                child: LikeButtonWidget(),
-                              )
-                            ],
-                          )
+                      InkWell(
+                        onTap: () => Get.to(ProductItemScreen(id: snapshot.data![index].recipeId)),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Stack(
+                              children: [
+                                Image.network(snapshot.data![index].thumbnailImage,fit: BoxFit.fill,height: 200,),
+                                Positioned(
+                                  top: 5,
+                                  right: 5,
+                                  child: LikeButtonWidget(),
+                                )
+                              ],
+                            )
+                        ),
+
                       ),
                       Container(margin: EdgeInsets.only(top: 10),child: Text(snapshot.data![index].foodName,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),overflow: TextOverflow.ellipsis,)),
                     ],

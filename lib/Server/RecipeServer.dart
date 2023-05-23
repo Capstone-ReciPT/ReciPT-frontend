@@ -40,10 +40,10 @@ class RecipeData{
 
   factory RecipeData.fromJson(Map<String, dynamic> mainContent) {
     List<String> imageList = mainContent['image'].split(', ');
-    print(imageList[1]);
     List<String> ingredientList = mainContent['ingredient'].split(',');
     List<String> contextList = mainContent['context'].split(new RegExp(r'\d+\.'));
     contextList.removeAt(0);
+    print(contextList.toString());
     List<ReviewResponseDtos> reviewList = (mainContent['reviewResponseDtos'] as List?)?.map((item) => ReviewResponseDtos.fromJson(item)).toList() ?? [];
     List<HeartDtos> heartList = (mainContent['heartDtos'] as List?)?.map((item) => HeartDtos.fromJson(item)).toList() ?? [];
 
