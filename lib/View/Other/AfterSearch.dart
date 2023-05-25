@@ -6,7 +6,7 @@ import 'package:recipt/View/Other/Ingredient.dart';
 import 'package:recipt/constans/colors.dart';
 
 class AfterSearch extends StatelessWidget {
-  AfterSearch({this.userInput,Key? key}) : super(key: key);
+  AfterSearch({required this.userInput,Key? key}) : super(key: key);
 
   final userInput;
   @override

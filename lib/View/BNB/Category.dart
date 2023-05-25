@@ -152,7 +152,7 @@ class BoardPage extends StatelessWidget {
                                   ],
                                 ),
                                 onPressed: (){
-                                  Get.to(ProductItemScreen());
+                                  Get.to(ProductItemScreen(id: snapshot.data![index].recipeId,));
                                 },
                               )
                           );
@@ -216,7 +216,7 @@ class Top10ForYear extends StatelessWidget {
                         ],
                       ),
                       onPressed: (){
-                        Get.to(ProductItemScreen());
+                        Get.to(ProductItemScreen(id: snapshot.data![index].recipeId,));
                       },
                     )
                 );
