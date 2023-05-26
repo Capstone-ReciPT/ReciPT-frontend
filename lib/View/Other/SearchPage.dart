@@ -158,27 +158,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   SizedBox(height: 20,),
                   // Search Suggestions
-                  InkWell(
-                    onTap: () {
-                      print('클릭');
-                    },
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Image.asset('assets/icons/ChatGPT_logo.png',width: 50,height: 50,),
-                          SizedBox(width: 12,),
-                          Column(
-                            children: [
-                              Text('찾는 레시피가 없다면?',style: Theme.of(context).textTheme.displaySmall),
-                              Text('GPT에게 물어보세요!',style: Theme.of(context).textTheme.displaySmall),
-                            ],
-                          ),
-                          SizedBox(width: 20,)
-                        ],
-                      ),
-                    ),
-                  ),
                 ],
               ),
             )

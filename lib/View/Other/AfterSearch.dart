@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Server/CategoryServer.dart';
 import 'package:recipt/Server/SearchServer.dart';
+import 'package:recipt/View/BNB/Yolo/SelectedRecipePage.dart';
 import 'package:recipt/View/Other/Ingredient.dart';
 import 'package:recipt/constans/colors.dart';
 
@@ -79,8 +80,34 @@ class AfterSearch extends StatelessWidget {
                         );
                       }
                       else if (snapshot.hasError) {
-                        return Center(
-                          child: Text("레시피가 없습니다rk.",style: Theme.of(context).textTheme.displayLarge,),
+                        return Column(
+                          children: [
+                            Center(
+                              child: Text("찾는 레시피가 없습니다.",style: Theme.of(context).textTheme.displayLarge,),
+                            ),
+                            SizedBox(height: 80,),
+                            InkWell(
+                              onTap: () {
+                                Get.to(SelectedRecipe(selectedFood: userInput));
+                              },
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/icons/ChatGPT_logo.png',width: 50,height: 50,),
+                                    SizedBox(width: 12,),
+                                    Column(
+                                      children: [
+                                        Text('GPT에게 물어보세요!',style: Theme.of(context).textTheme.displayLarge),
+                                      ],
+                                    ),
+                                    SizedBox(width: 20,)
+                                  ],
+                                ),
+
+                              ),
+                            ),
+                          ],
                         );
                       }
                       return CircularProgressIndicator();

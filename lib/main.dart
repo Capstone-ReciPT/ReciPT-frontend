@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/TotalController.dart';
-import 'package:recipt/Controller/test.dart';
 import 'package:recipt/View/BNB/Home/HomePage.dart';
 import 'package:recipt/View/BNB/Mypage.dart';
 import 'package:recipt/View/Other/Start/StartScreen.dart';

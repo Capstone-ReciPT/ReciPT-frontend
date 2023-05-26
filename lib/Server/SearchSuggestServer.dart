@@ -14,7 +14,7 @@ class SuggestFood{
 
 Future<List<SuggestFood>> fetchSuggest() async{
   final dio = Dio();
-  final response = await dio.get('http://10.0.2.2:8080/api/search');
+  final response = await dio.get('http://192.168.0.15:8080/api/search');
   return makeSuggestList(response.data);
 }
 

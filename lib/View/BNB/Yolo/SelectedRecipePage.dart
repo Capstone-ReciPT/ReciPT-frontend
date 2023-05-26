@@ -173,7 +173,7 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: 3,
+                    itemCount: snapshot.data!.context.length,
                     itemBuilder: (context, index) => steps(context, snapshot,index),
                   ),
                 ],

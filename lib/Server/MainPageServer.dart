@@ -29,7 +29,7 @@ class MainRecipe {
 
 
 Future<List<MainRecipe>> fetchMain(keyword) async {
-  Uri uri = Uri.parse('http://10.0.2.2:8080/api/home');
+  Uri uri = Uri.parse('http://192.168.0.15:8080/api/home');
   final response = await http.get(uri);
 
   // 웹 서버로부터 정상(200) 데이터 수신

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Server/GPTsend.dart';
 import 'package:recipt/View/BNB/Yolo/SelectedRecipePage.dart';
+import 'package:recipt/Widget/Custom_button.dart';
 
 class GPTanswer extends StatefulWidget {
   GPTanswer({required this.GPTSuggestListString,Key? key}) : super(key: key);
@@ -42,7 +43,14 @@ class _GPTanswerState extends State<GPTanswer> {
                         shrinkWrap: true,
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return gptSelectContainer(context,snapshot.data?[index]);
+                          return CustomButton(
+                            onTap: (){
+                              Get.to(SelectedRecipe(selectedFood: snapshot.data?[index]));
+                            },
+                            text: snapshot.data?[index],
+                            color: Colors.black87,
+                          );
+                          // return gptSelectContainer(context,snapshot.data?[index]);
                         },
                       );
                     }
@@ -66,7 +74,7 @@ class _GPTanswerState extends State<GPTanswer> {
       children: [
         InkWell(
           onTap:(){
-            Get.to(SelectedRecipe(selectedFood: snapshotText,));
+
           },
           child: Container(
             width: MediaQuery.of(context).size.width * 0.7,
