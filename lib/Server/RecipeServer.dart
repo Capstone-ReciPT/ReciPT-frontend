@@ -43,7 +43,6 @@ class RecipeData{
     List<String> ingredientList = mainContent['ingredient'].split(',');
     List<String> contextList = mainContent['context'].split(new RegExp(r'\d+\.'));
     contextList.removeAt(0);
-    print(contextList.toString());
     List<ReviewResponseDtos> reviewList = (mainContent['reviewResponseDtos'] as List?)?.map((item) => ReviewResponseDtos.fromJson(item)).toList() ?? [];
     List<HeartDtos> heartList = (mainContent['heartDtos'] as List?)?.map((item) => HeartDtos.fromJson(item)).toList() ?? [];
 
@@ -68,7 +67,7 @@ class RecipeData{
 
 Future<RecipeDataInput> fetchRecipe(id) async{
   final dio = Dio();
-  final response = await dio.get('http://192.168.0.15:8080/api/db/$id');
+  final response = await dio.get('http://10.0.2.2:8080/api/db/$id');
 
   return makeRecipePage(response.data);
 }

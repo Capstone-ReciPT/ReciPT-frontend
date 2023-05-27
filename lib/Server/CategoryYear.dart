@@ -25,7 +25,7 @@ class CategoryYear{
 }
 Future<List<CategoryYear>> fetchYear() async{
   final dio = Dio();
-  final response = await dio.get('http://192.168.0.15:8080/api/category');
+  final response = await dio.get('http://10.0.2.2:8080/api/category');
   return makeYearList(response.data);
 }
 

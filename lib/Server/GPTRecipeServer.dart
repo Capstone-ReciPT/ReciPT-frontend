@@ -23,7 +23,7 @@ class GPTRecipe{
 Future<GPTRecipe> fetchGPTRecipe(String food) async{
 
   final dio = Dio();
-  final response = await dio.post('http://192.168.0.15:8080/api/chat/send',
+  final response = await dio.post('http://10.0.2.2:8080/api/chat/send',
     data: {food},
     options: Options(
       headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
@@ -39,10 +39,23 @@ GPTRecipe parseStringToRecipe(String jsonString) {
   print(parsedJson.toString());
   return GPTRecipe.fromJson(parsedJson);
 }
-fetchGPTRefresh() async{
+void fetchGPTRefresh() async{
   final dio = Dio();
   final response = await dio.post('http://10.0.2.2:8080/api/chat/refresh');
 
 }
 
+// GPT 레시피 검색
 
+Future<GPTRecipe> fetchGPTNoRecipe(String food) async{
+
+  final dio = Dio();
+  final response = await dio.post('http://10.0.2.2:8080/api/chat/search',
+    data: {food},
+    options: Options(
+      headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
+    ),
+  );
+  print(response.data);
+  return parseStringToRecipe(response.data['data']);
+}

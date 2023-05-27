@@ -45,8 +45,8 @@ class CookingMenu extends StatelessWidget {
                           children: [
                             Obx(() =>
                             menuController.index.value >= snapshot.data!.data.context.length-1
-                                ? Image.network('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png')
-                                : Image.network(snapshot.data!.data.image[menuController.index.value])
+                                ? Image.network('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',width: 300,height: 200,)
+                                : Image.network(snapshot.data!.data.image[menuController.index.value],fit: BoxFit.fill,width: 300,height: 200,)
                             ),
                             Container(
                               decoration: BoxDecoration(
@@ -55,11 +55,13 @@ class CookingMenu extends StatelessWidget {
                               padding: EdgeInsets.only(left: 20,right: 20),
                               margin: EdgeInsets.only(top: 30),
                               width: 400,
-                              height: 150,
+                              height: snapshot.data!.data.context[menuController.index.value].length < 40
+                              ? 150
+                              : 250,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Obx(() => Text(snapshot.data!.data.context[menuController.index.value],style: Theme.of(context).textTheme.displayLarge)),
+                                  Obx(() => Text(snapshot.data!.data.context[menuController.index.value],style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 19))),
                                 ],
                               ),
                             ),
