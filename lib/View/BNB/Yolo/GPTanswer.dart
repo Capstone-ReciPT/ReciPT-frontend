@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:recipt/Server/GPTsend.dart';
 import 'package:recipt/View/BNB/Yolo/SelectedRecipePage.dart';
 import 'package:recipt/Widget/Custom_button.dart';
+import 'package:recipt/constans/colors.dart';
 
 class GPTanswer extends StatefulWidget {
   GPTanswer({required this.GPTSuggestListString,Key? key}) : super(key: key);
@@ -48,7 +49,8 @@ class _GPTanswerState extends State<GPTanswer> {
                               Get.to(SelectedRecipe(selectedFood: snapshot.data?[index]));
                             },
                             text: snapshot.data?[index],
-                            color: Colors.black87,
+                            textColor: mainText,
+                            color: Colors.black12,
                           );
                           // return gptSelectContainer(context,snapshot.data?[index]);
                         },

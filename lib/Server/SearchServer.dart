@@ -42,7 +42,7 @@ class RecipeList{
 
 Future<List<CategoryRecipe>> fetchSearch(String userInput) async{
   final dio = Dio();
-  final response = await dio.post('http://10.0.2.2:8080/api/search/recipes?foodName=$userInput&like=&view=');
+  final response = await dio.post('http://192.168.0.15:8080/api/search/recipes?foodName=$userInput&like=&view=');
   return makeSearchedList(response.data);
 }
 

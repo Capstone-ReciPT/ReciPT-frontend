@@ -1,12 +1,13 @@
-import 'dart:convert';
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_vision/flutter_vision.dart';
-import 'package:recipt/Server/GPTsend.dart';
-import 'package:recipt/View/BNB/Yolo/GPTanswer.dart';
+import 'package:recipt/Controller/IngredientController.dart';
+import 'package:recipt/View/BNB/Yolo/addIngredient.dart';
+
 
 class YoloImage extends StatefulWidget {
   YoloImage({Key? key}) : super(key: key);
@@ -42,6 +43,8 @@ class _YoloImageState extends State<YoloImage> {
     await vision.closeYoloModel();
   }
 
+  final IngreController ingreController = Get.put(IngreController());
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -53,6 +56,7 @@ class _YoloImageState extends State<YoloImage> {
       ));
     }
     return SafeArea(child: Scaffold(
+
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -73,7 +77,24 @@ class _YoloImageState extends State<YoloImage> {
               height: 50,
               child: TextButton(
                 onPressed: (){
-                  Get.to(GPTanswer(GPTSuggestListString: extractTags()));
+                  extractTags();
+                  setState(() {
+                    showModalBottomSheet(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(25),
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => AnimatedPadding(
+                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                        duration: const Duration(milliseconds: 100),  // Specify the duration of the animation
+                        child: AddIngredient(context: context,),
+                      ),
+                    );
+                  });
                 },
                 child: Text('다음으로',style: Theme.of(context).textTheme.displayLarge,),
               ),
@@ -84,16 +105,11 @@ class _YoloImageState extends State<YoloImage> {
     ),
     );
   }
-  String extractTags() {
-    List<String> tags = [];
-
+  extractTags() {
     for (var result in yoloResults) {
       String tag = result['tag'];
-      tags.add(tag);
+      ingreController.listAdd(tag);
     }
-
-    String tagsString = tags.join(', ');
-    return tagsString;
   }
 
   YoloFirstPage2(){
@@ -251,4 +267,6 @@ class _YoloImageState extends State<YoloImage> {
       );
     }).toList();
   }
+
+
 }

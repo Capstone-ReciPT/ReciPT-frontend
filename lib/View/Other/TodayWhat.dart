@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Widget/Custom_Text_Form_field.dart';
+import 'package:recipt/constans/colors.dart';
 
 class TodayWhat extends StatefulWidget {
   TodayWhat({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _TodayWhatState extends State<TodayWhat> {
               });
             },
             onEditingComplete: () {
-              Get.to(ChatScreen());
+              Get.to(ChatScreen(firstMessage: widget._userCommandInput,));
             },
             hint: 'ex) 맵지 않고 달달한 음식',
             prefixIcon: Icons.edit_note_sharp,
@@ -40,6 +41,8 @@ class _TodayWhatState extends State<TodayWhat> {
 class ChatScreen extends StatefulWidget {
   @override
   State createState() => ChatScreenState();
+  ChatScreen({required this.firstMessage,Key? key}) : super(key: key);
+  final firstMessage;
 }
 
 class ChatMessage {
@@ -55,11 +58,37 @@ class ChatScreenState extends State<ChatScreen> {
   String _user = 'User'; // Default user
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _messages.insert(0, ChatMessage('User', widget.firstMessage));
+  }
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Chat Screen')),
+    return SafeArea(child: Scaffold(
       body: Column(
         children: [
+          Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back_ios,
+                          color: mainText,
+                        )
+                    ),
+                    SizedBox(width: 70,),
+                    Text('오늘 뭐먹지?',style: Theme.of(context).textTheme.displayLarge,)
+                  ]
+              ),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               reverse: true,
@@ -75,7 +104,7 @@ class ChatScreenState extends State<ChatScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.0),
-                      color: isMe ? Colors.blueAccent[100] : Colors.grey[300],
+                      color: isMe ? Colors.blue[100] : Colors.grey[300],
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,13 +118,13 @@ class ChatScreenState extends State<ChatScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    decoration: InputDecoration(hintText: 'Enter a message'),
+                    decoration: InputDecoration(hintText: 'GPT와 대화해보세요!'),
                     onSubmitted: (text) => _handleSubmit(_user, text),
                   ),
                 ),
@@ -106,9 +135,10 @@ class ChatScreenState extends State<ChatScreen> {
               ],
             ),
           ),
+          SizedBox(height: 20,),
         ],
       ),
-    );
+    ));
   }
 
   void _handleSubmit(String user, String message) {

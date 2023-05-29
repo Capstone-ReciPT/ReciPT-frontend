@@ -4,13 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
-import 'package:like_button/like_button.dart';
-import 'package:recipt/Controller/PageController.dart';
-import 'package:recipt/Controller/TotalController.dart';
 import 'package:recipt/Server/GPTRecipeServer.dart';
-import 'package:recipt/Server/RecipeServer.dart';
-import 'package:recipt/View/Other/RecipePage.dart';
 import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
 
@@ -64,7 +58,20 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
             print(snapshot.error);
             return Text("${snapshot.error}");
           }
-          return CircularProgressIndicator();
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/icons/ChatGPT_logo.png',width: 120,),
+                  SizedBox(height: 20,),
+                  Text('GPT가 레시피를 생성중입니다!',style: Theme.of(context).textTheme.displayLarge),
+                  Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
+                  CircularProgressIndicator()
+                ],
+              ),
+            )
+          );
         }
     );
   }

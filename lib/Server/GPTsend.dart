@@ -22,7 +22,7 @@ class GPTSuggest{
 Future<List<String>> fetchGPTsuggest(String ingre) async{
 
   final dio = Dio();
-  final response = await dio.post('http://10.0.2.2:8080/api/chat/send',
+  final response = await dio.post('http://192.168.0.15:8080/api/chat/send',
       data: {ingre},
     options: Options(
       headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
