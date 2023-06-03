@@ -144,7 +144,8 @@ class BoardPage extends StatelessWidget {
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(snapshot.data![index].foodName.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
+                                        Text(snapshot.data![index].foodName.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.black),),
+                                        SizedBox(height: 8,),
                                         Text(snapshot.data![index].category.toString(),style: TextStyle(color: Colors.black45)),
                                         Text('',style: TextStyle(color: Colors.black),),
                                       ],

@@ -67,6 +67,7 @@ class ProductItemScreen extends StatelessWidget {
                       Get.to(CookingMenu(id: id,));
                     },
                     child: Icon(Icons.navigate_next),
+                    heroTag: 'ToRecipe',
                   ),
                 ));
           }
@@ -74,7 +75,19 @@ class ProductItemScreen extends StatelessWidget {
             print(snapshot.error);
             return Text("${snapshot.error}");
           }
-          return CircularProgressIndicator();
+          return Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('레시피를 로딩중입니다!',style: Theme.of(context).textTheme.displayLarge),
+                    Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
+                    SizedBox(height: 20,),
+                    CircularProgressIndicator()
+                  ],
+                ),
+              )
+          );
         }
     );
   }
@@ -322,13 +335,14 @@ class ProductItemScreen extends StatelessWidget {
                   ),
                   index >= snapshot.data!.data.image.length
                   ? Image.network(
-                    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                    'https://previews.123rf.com/images/urfingus/urfingus1406/urfingus140600001/29322328-%EC%A0%91%EC%8B%9C%EC%99%80-%ED%8F%AC%ED%81%AC%EC%99%80-%EC%B9%BC%EC%9D%84-%EB%93%A4%EA%B3%A0-%EC%86%90%EC%9D%84-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD.jpg',
                     height: 200,
                     width: 300,
                   ) : Image.network(
                     snapshot.data!.data.image[index],
                     height: 200,
                     width: 300,
+                    fit: BoxFit.fill,
                   )
                 ],
               )

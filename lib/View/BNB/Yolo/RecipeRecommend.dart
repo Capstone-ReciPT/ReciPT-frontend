@@ -6,7 +6,10 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_vision/flutter_vision.dart';
 import 'package:recipt/Controller/IngredientController.dart';
+import 'package:recipt/Server/GPTRecipeServer.dart';
 import 'package:recipt/View/BNB/Yolo/addIngredient.dart';
+import 'package:recipt/constans/colors.dart';
+import 'package:recipt/main.dart';
 
 
 class YoloImage extends StatefulWidget {
@@ -25,6 +28,7 @@ class _YoloImageState extends State<YoloImage> {
   bool isLoaded = false;
   bool isDetected = false;
   List<String> tagList = [];
+
   @override
   void initState() {
     super.initState();

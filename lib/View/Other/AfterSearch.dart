@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:recipt/Server/CategoryServer.dart';
 import 'package:recipt/Server/SearchServer.dart';
 import 'package:recipt/View/BNB/Yolo/SelectedRecipePage.dart';
-import 'package:recipt/View/Other/GPTnoRecipe.dart';
 import 'package:recipt/View/Other/Ingredient.dart';
 import 'package:recipt/constans/colors.dart';
 
@@ -90,7 +89,7 @@ class AfterSearch extends StatelessWidget {
                               SizedBox(height: 80,),
                               InkWell(
                                 onTap: () {
-                                  Get.to(GPTNoRecipe(selectedFood: userInput));
+                                  Get.to(SelectedRecipe(selectedFood: userInput));
                                 },
                                 child: Container(
                                   child: Row(

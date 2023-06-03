@@ -3,10 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/PageController.dart';
+import 'package:recipt/Server/GPTRecipeServer.dart';
 import 'package:recipt/Server/GPTsend.dart';
 import 'package:recipt/View/BNB/Yolo/SelectedRecipePage.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/constans/colors.dart';
+import 'package:recipt/main.dart';
 
 class GPTanswer extends StatefulWidget {
   GPTanswer({required this.GPTSuggestListString,Key? key}) : super(key: key);
@@ -27,9 +29,41 @@ class _GPTanswerState extends State<GPTanswer> {
     print(widget.GPTSuggestListString);
     widget.GPTSuggestList = fetchGPTsuggest(widget.GPTSuggestListString);
   }
+
+  Future<bool> onBackKeyGPTSuggest(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Color(0xFFFFFFFF),
+            title: Text(
+              '냉장고 파먹기를 끝내시겠습니까?',
+              style: TextStyle(color: mainText),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    //onWillpop에 true가 전달되어 앱이 종료 된다.
+                    fetchGPTRefresh();
+                    Get.offAll(MyApp());
+                  },
+                  child: Text('끝내기',style: TextStyle(color: SecondaryText),)),
+              TextButton(
+                  onPressed: () {
+                    //onWillpop에 false 전달되어 앱이 종료되지 않는다.
+                    Navigator.of(context).pop(false); // 대화 상자 닫기
+                  },
+                  child: Text('아니요',style: TextStyle(color: SecondaryText),)),
+            ],
+          );
+        }) ?? false; // 취소 버튼이 눌릴 경우 false 반환
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
+    return WillPopScope(
+        onWillPop: () => onBackKeyGPTSuggest(context),
+      child: SafeArea(child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +104,8 @@ class _GPTanswerState extends State<GPTanswer> {
             ],
           ),
         ),
-    ));
+      )),
+    );
   }
 
   gptSelectContainer(context,snapshotText){

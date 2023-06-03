@@ -22,6 +22,35 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
   final SttController sttController = Get.find();
 
   bool canSttFlag = false;
+
+  Future<bool> onBackKeyGPTRecipe(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Color(0xFFFFFFFF),
+            title: Text(
+              'GPT 레시피를 종료하시겠습니까?',
+              style: TextStyle(color: mainText,fontSize: 18),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    //onWillpop에 true가 전달되어 앱이 종료 된다.
+                    fetchGPTRefresh();
+                    Get.offAll(MyApp());
+                  },
+                  child: Text('끝내기',style: TextStyle(color: SecondaryText),)),
+              TextButton(
+                  onPressed: () {
+                    //onWillpop에 false 전달되어 앱이 종료되지 않는다.
+                    Navigator.of(context).pop(false); // 대화 상자 닫기
+                  },
+                  child: Text('아니요',style: TextStyle(color: SecondaryText),)),
+            ],
+          );
+        }) ?? false; // 취소 버튼이 눌릴 경우 false 반환
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -30,11 +59,13 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
   }
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<GPTRecipe>(
-        future: widget.gptRecipe,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SafeArea(
+    return WillPopScope(
+      onWillPop: () => onBackKeyGPTRecipe(context),
+      child: FutureBuilder<GPTRecipe>(
+          future: widget.gptRecipe,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SafeArea(
                 child: Scaffold(
                   body: Stack(
                     children: [
@@ -47,23 +78,23 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
                     ],
                   ),
                   floatingActionButton: FloatingActionButton(
-                    backgroundColor: Colors.green,
-                    onPressed: (){
-                      if (!canSttFlag){
-                        sttController.context = snapshot.data!.context;
-                        sttController.canShowFlag();
-                        sttController.show();
-                        setState(() {
-                          canSttFlag = true;
-                        });
-                      } else {
-                        sttController.cantShowFlag();
-                        setState(() {
-                          canSttFlag = false;
-                        });
-                      }
-                    },
-                    child: canSttFlag == true ? Icon(Icons.stop) : Icon(Icons.keyboard_voice)
+                      backgroundColor: Colors.green,
+                      onPressed: (){
+                        if (!canSttFlag){
+                          sttController.context = snapshot.data!.context;
+                          sttController.canShowFlag();
+                          sttController.show();
+                          setState(() {
+                            canSttFlag = true;
+                          });
+                        } else {
+                          sttController.cantShowFlag();
+                          setState(() {
+                            canSttFlag = false;
+                          });
+                        }
+                      },
+                      child: canSttFlag == true ? Icon(Icons.stop) : Icon(Icons.keyboard_voice)
                   ),
                   // floatingActionButton: FloatingActionButton(
                   //   onPressed: (){
@@ -75,28 +106,29 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
                   //   child: Icon(Icons.navigate_next),
                   // ),
                 ),
+              );
+            }
+            else if (snapshot.hasError) {
+              print(snapshot.error);
+              return Text("${snapshot.error}");
+            }
+            return Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/icons/ChatGPT_logo.png',width: 120,),
+                      SizedBox(height: 20,),
+                      Text('GPT가 레시피를 생성중입니다!',style: Theme.of(context).textTheme.displayLarge),
+                      Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
+                      SizedBox(height: 20,),
+                      CircularProgressIndicator()
+                    ],
+                  ),
+                )
             );
           }
-          else if (snapshot.hasError) {
-            print(snapshot.error);
-            return Text("${snapshot.error}");
-          }
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/icons/ChatGPT_logo.png',width: 120,),
-                  SizedBox(height: 20,),
-                  Text('GPT가 레시피를 생성중입니다!',style: Theme.of(context).textTheme.displayLarge),
-                  Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
-                  SizedBox(height: 20,),
-                  CircularProgressIndicator()
-                ],
-              ),
-            )
-          );
-        }
+      ),
     );
   }
 

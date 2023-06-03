@@ -87,7 +87,7 @@ class SttController extends GetxController {
   void show() {
     if(showFlag){
       startListening();
-      Timer(Duration(seconds: 1), show);
+      Timer(Duration(seconds: 2), show);
     }
 
   }
@@ -116,18 +116,23 @@ class SttController extends GetxController {
       return;
     }
     else {
+      print(command);
       isProcessingCommand = true;
       if (command.contains('시작') || command.contains('시장')
-          || (command.contains('시') && command.contains('작'))) {
+          || (command.contains('시') && command.contains('작'))
+      ) {
+        showFlag = false;
         ttsController.stopTTS();
         increaseCountNum();
         if(countNum > 1){
           await ttsController.speakText(context[cookingMenuController.index.value]);
           countNum = 0;
         }
+        showFlag = true;
       }
-      if (command.contains('다음') || command.contains('다응')
+      else if (command.contains('다음') || command.contains('다응')
           || (command.contains('다') && command.contains('음'))) {
+        showFlag = false;
         ttsController.stopTTS();
         increaseCountNum();
         if(countNum > 1){
@@ -138,10 +143,12 @@ class SttController extends GetxController {
           await ttsController.speakText(context[cookingMenuController.index.value]);
           countNum = 0;
         }
+        showFlag = true;
       }
-      if (command.contains('이전') || command.contains('이정')
+      else if (command.contains('이전') || command.contains('이정')
           || (command.contains('이') && command.contains('전'))) {
         ttsController.stopTTS();
+        showFlag = false;
         increaseCountNum();
         if(countNum > 1){
           cookingMenuController.prevIndex();
@@ -151,6 +158,7 @@ class SttController extends GetxController {
           await ttsController.speakText(context[cookingMenuController.index.value]);
           countNum = 0;
         }
+        showFlag = true;
       }
 
       //명령어 처리 완료
