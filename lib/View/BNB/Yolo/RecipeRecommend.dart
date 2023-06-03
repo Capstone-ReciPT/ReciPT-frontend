@@ -110,6 +110,7 @@ class _YoloImageState extends State<YoloImage> {
       String tag = result['tag'];
       ingreController.listAdd(tag);
     }
+    print(ingreController.ingreList);
   }
 
   YoloFirstPage2(){

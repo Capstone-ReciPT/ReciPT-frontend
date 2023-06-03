@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GPTRecipe{
   final String foodName;
@@ -21,9 +22,9 @@ class GPTRecipe{
   }
 }
 Future<GPTRecipe> fetchGPTRecipe(String food) async{
-
+  String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.post('http://192.168.0.15:8080/api/chat/send',
+  final response = await dio.post('$baseUrl/api/chat/send',
     data: {food},
     options: Options(
       headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
@@ -40,17 +41,18 @@ GPTRecipe parseStringToRecipe(String jsonString) {
   return GPTRecipe.fromJson(parsedJson);
 }
 void fetchGPTRefresh() async{
+  String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.post('http://10.0.2.2:8080/api/chat/refresh');
-
+  final response = await dio.post('$baseUrl/api/chat/refresh');
+//10.0.2.2
 }
 
 // GPT 레시피 검색
 
 Future<GPTRecipe> fetchGPTNoRecipe(String food) async{
-
+  String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.post('http://192.168.0.15:8080/api/chat/search',
+  final response = await dio.post('$baseUrl/api/chat/search',
     data: {food},
     options: Options(
       headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정

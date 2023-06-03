@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:recipt/Server/CategoryServer.dart';
 
 class CategoryYear{
@@ -24,8 +25,9 @@ class CategoryYear{
 
 }
 Future<List<CategoryYear>> fetchYear() async{
+  String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.get('http://192.168.0.15:8080/api/category');
+  final response = await dio.get('$baseUrl/api/category');
   return makeYearList(response.data);
 }
 

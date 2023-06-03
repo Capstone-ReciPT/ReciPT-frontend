@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:recipt/Server/CategoryServer.dart';
 
 class GPTSuggest{
@@ -20,9 +21,9 @@ class GPTSuggest{
 }
 
 Future<List<String>> fetchGPTsuggest(String ingre) async{
-
+  String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.post('http://192.168.0.15:8080/api/chat/send',
+  final response = await dio.post('$baseUrl/api/chat/send',
       data: {ingre},
     options: Options(
       headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정

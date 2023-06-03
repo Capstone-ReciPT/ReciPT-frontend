@@ -45,6 +45,7 @@ class AfterSearch extends StatelessWidget {
                     future: fetchSearch(userInput),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
+                        if(snapshot.data!.length > 0){
                         return ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -78,36 +79,45 @@ class AfterSearch extends StatelessWidget {
                                 )
                             );
                           },
-                        );
+                        );}
+                        else {
+                          return Column(
+                            children: [
+                              SizedBox(height: 40,),
+                              Center(
+                                child: Text("찾는 레시피가 없습니다.",style: Theme.of(context).textTheme.displayLarge,),
+                              ),
+                              SizedBox(height: 80,),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(GPTNoRecipe(selectedFood: userInput));
+                                },
+                                child: Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset('assets/icons/ChatGPT_logo.png',width: 50,height: 50,),
+                                      SizedBox(width: 12,),
+                                      Column(
+                                        children: [
+                                          Text('GPT에게 물어보세요!',style: Theme.of(context).textTheme.displayLarge),
+                                        ],
+                                      ),
+                                      SizedBox(width: 20,)
+                                    ],
+                                  ),
+
+                                ),
+                              ),
+                            ],
+                          );
+                        }
                       }
                       else if (snapshot.hasError) {
+                        print(snapshot.error);
                         return Column(
                           children: [
-                            Center(
-                              child: Text("찾는 레시피가 없습니다.",style: Theme.of(context).textTheme.displayLarge,),
-                            ),
-                            SizedBox(height: 80,),
-                            InkWell(
-                              onTap: () {
-                                Get.to(GPTNoRecipe(selectedFood: userInput));
-                              },
-                              child: Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/icons/ChatGPT_logo.png',width: 50,height: 50,),
-                                    SizedBox(width: 12,),
-                                    Column(
-                                      children: [
-                                        Text('GPT에게 물어보세요!',style: Theme.of(context).textTheme.displayLarge),
-                                      ],
-                                    ),
-                                    SizedBox(width: 20,)
-                                  ],
-                                ),
-
-                              ),
-                            ),
+                            Text('죄송합니다.. 서버 오류가 있습니다.'),
                           ],
                         );
                       }

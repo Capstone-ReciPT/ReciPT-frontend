@@ -24,6 +24,8 @@ class GPTNoRecipe extends StatefulWidget {
 }
 
 class _GPTNoRecipeState extends State<GPTNoRecipe> {
+  final SttController sttController = Get.find();
+  bool canSttFlag = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -49,6 +51,25 @@ class _GPTNoRecipeState extends State<GPTNoRecipe> {
                       scroll(snapshot),
                     ],
                   ),
+                  floatingActionButton: FloatingActionButton(
+                      backgroundColor: Colors.green,
+                      onPressed: (){
+                        if (!canSttFlag){
+                          sttController.context = snapshot.data!.context;
+                          sttController.canShowFlag();
+                          sttController.show();
+                          setState(() {
+                            canSttFlag = true;
+                          });
+                        } else {
+                          sttController.cantShowFlag();
+                          setState(() {
+                            canSttFlag = false;
+                          });
+                        }
+                      },
+                      child: canSttFlag == true ? Icon(Icons.stop) : Icon(Icons.keyboard_voice)
+                  ),
                   // floatingActionButton: FloatingActionButton(
                   //   onPressed: (){
                   //     // sttController.context = snapshot.data!.data.context;
@@ -64,7 +85,21 @@ class _GPTNoRecipeState extends State<GPTNoRecipe> {
             print(snapshot.error);
             return Text("${snapshot.error}");
           }
-          return CircularProgressIndicator();
+          return Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/icons/ChatGPT_logo.png',width: 120,),
+                    SizedBox(height: 20,),
+                    Text('GPT가 레시피를 생성중입니다!',style: Theme.of(context).textTheme.displayLarge),
+                    Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
+                    SizedBox(height: 20,),
+                    CircularProgressIndicator()
+                  ],
+                ),
+              )
+          );
         }
     );
   }

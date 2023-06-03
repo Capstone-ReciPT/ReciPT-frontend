@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -29,7 +30,9 @@ class MainRecipe {
 
 
 Future<List<MainRecipe>> fetchMain(keyword) async {
-  Uri uri = Uri.parse('http://192.168.0.15:8080/api/home');
+  String? baseUrl = dotenv.env['BASE_URL'];
+  print(baseUrl);
+  Uri uri = Uri.parse('$baseUrl/api/home');
   final response = await http.get(uri);
 
   // 웹 서버로부터 정상(200) 데이터 수신

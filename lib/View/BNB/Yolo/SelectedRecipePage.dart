@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Server/GPTRecipeServer.dart';
 import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
@@ -18,12 +19,14 @@ class SelectedRecipe extends StatefulWidget {
 }
 
 class _SelectedRecipeState extends State<SelectedRecipe> {
+  final SttController sttController = Get.find();
+
+  bool canSttFlag = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     widget.gptRecipe = fetchGPTRecipe(widget.selectedFood);
-
   }
   @override
   Widget build(BuildContext context) {
@@ -43,6 +46,25 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
                       scroll(snapshot),
                     ],
                   ),
+                  floatingActionButton: FloatingActionButton(
+                    backgroundColor: Colors.green,
+                    onPressed: (){
+                      if (!canSttFlag){
+                        sttController.context = snapshot.data!.context;
+                        sttController.canShowFlag();
+                        sttController.show();
+                        setState(() {
+                          canSttFlag = true;
+                        });
+                      } else {
+                        sttController.cantShowFlag();
+                        setState(() {
+                          canSttFlag = false;
+                        });
+                      }
+                    },
+                    child: canSttFlag == true ? Icon(Icons.stop) : Icon(Icons.keyboard_voice)
+                  ),
                   // floatingActionButton: FloatingActionButton(
                   //   onPressed: (){
                   //     // sttController.context = snapshot.data!.data.context;
@@ -52,7 +74,8 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
                   //   },
                   //   child: Icon(Icons.navigate_next),
                   // ),
-                ));
+                ),
+            );
           }
           else if (snapshot.hasError) {
             print(snapshot.error);
@@ -67,6 +90,7 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
                   SizedBox(height: 20,),
                   Text('GPT가 레시피를 생성중입니다!',style: Theme.of(context).textTheme.displayLarge),
                   Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
+                  SizedBox(height: 20,),
                   CircularProgressIndicator()
                 ],
               ),

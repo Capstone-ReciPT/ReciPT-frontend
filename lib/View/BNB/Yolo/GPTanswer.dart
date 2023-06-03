@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Server/GPTsend.dart';
 import 'package:recipt/View/BNB/Yolo/SelectedRecipePage.dart';
 import 'package:recipt/Widget/Custom_button.dart';
@@ -18,10 +19,12 @@ class GPTanswer extends StatefulWidget {
 }
 
 class _GPTanswerState extends State<GPTanswer> {
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.GPTSuggestListString);
     widget.GPTSuggestList = fetchGPTsuggest(widget.GPTSuggestListString);
   }
   @override
@@ -66,7 +69,7 @@ class _GPTanswerState extends State<GPTanswer> {
               ),
             ],
           ),
-        )
+        ),
     ));
   }
 

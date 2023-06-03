@@ -101,11 +101,9 @@ class CookingMenu extends StatelessWidget {
                     child: FloatingActionButton(
                       onPressed: (){
                         menuController.nextIndex();
-                        print(menuController.index.value.toString());
                         if(menuController.index.value >= snapshot.data!.data.context.length){
                           menuController.pageLimit = snapshot.data!.data.context.length;
                           menuController.fixIndex();
-                          print('이거는 $menuController.index.value');
                           showDialog(
                               context: context,
                               barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:recipt/Server/CategoryServer.dart';
 
 class SuggestFood{
@@ -13,8 +14,10 @@ class SuggestFood{
 }
 
 Future<List<SuggestFood>> fetchSuggest() async{
+  String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.get('http://192.168.0.15:8080/api/search');
+  final response = await dio.get('$baseUrl/api/search');
+  print('');
   return makeSuggestList(response.data);
 }
 

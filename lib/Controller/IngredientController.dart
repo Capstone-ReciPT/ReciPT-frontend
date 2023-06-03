@@ -16,9 +16,7 @@ class IngreController extends GetxController{
 
   listPush(){
     var spreadList = [...ingreList];
-    print('이거는$spreadList');
     String tagsString = spreadList.join(', ');
-    print(tagsString);
     return tagsString;
   }
 

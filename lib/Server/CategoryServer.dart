@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-
-
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 class CategoryRecipe {
   final int recipeId;
   final String foodName;
@@ -23,8 +21,9 @@ class CategoryRecipe {
 }
 
 Future<List<CategoryRecipe>> fetchCategory(String selectedCategory) async{
+  String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.get('http://192.168.0.15:8080/api/category/recipes?category=$selectedCategory');
+  final response = await dio.get('$baseUrl/api/category/recipes?category=$selectedCategory');
   return makeCategoryList(response.data);
 }
 

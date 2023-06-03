@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:recipt/Server/CategoryServer.dart';
 
 class SearchJson{
@@ -41,8 +42,9 @@ class RecipeList{
 
 
 Future<List<CategoryRecipe>> fetchSearch(String userInput) async{
+  String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.post('http://192.168.0.15:8080/api/search/recipes?foodName=$userInput&like=&view=');
+  final response = await dio.get('$baseUrl/api/search/recipes?foodName=$userInput&like=&view=');
   return makeSearchedList(response.data);
 }
 

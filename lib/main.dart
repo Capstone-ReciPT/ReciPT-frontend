@@ -8,8 +8,10 @@ import 'package:recipt/constans/colors.dart';
 import 'View/BNB/Yolo/RecipeRecommend.dart';
 import 'View/BNB/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
-void main() {
-  
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+Future main() async {
+  await dotenv.load(fileName: 'assets/config/.env');
   runApp(GetMaterialApp(
       theme : ThemeData(
           textTheme: TextTheme(
@@ -58,14 +60,14 @@ void main() {
 }
 
 //휴대폰 피지컬 버튼 뒤로 가기 눌렀을때,
-Future<bool> _onBackKey(context) async {
+Future<bool> onBackKey(context) async {
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Color(0xFFFFFFFF),
           title: Text(
-            '끝내시겠습니까?',
+            'ReciPT를 끝내시겠습니까?',
             style: TextStyle(color: mainText),
           ),
           actions: [
@@ -95,7 +97,7 @@ class MyApp extends StatelessWidget {
     final TotalController totalController = Get.put(TotalController());
     final Controller c = Get.find();
     return WillPopScope(
-      onWillPop: () => _onBackKey(context),
+      onWillPop: () => onBackKey(context),
       child: SafeArea(child: Scaffold(
           body: Obx(() => [HomePage(),SelectCategory(),YoloImage(),MyPage()][c.currentTab.value]),
           bottomNavigationBar: DefalutBNB()

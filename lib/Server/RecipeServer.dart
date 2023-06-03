@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RecipeDataInput{
   int heartCount;
@@ -66,8 +67,9 @@ class RecipeData{
 }
 
 Future<RecipeDataInput> fetchRecipe(id) async{
+  String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.get('http://192.168.0.15:8080/api/db/$id');
+  final response = await dio.get('$baseUrl/api/db/$id');
 
   return makeRecipePage(response.data);
 }

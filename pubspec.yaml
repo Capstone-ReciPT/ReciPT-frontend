@@ -52,6 +52,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   dio: ^5.1.2
   http_parser: ^4.0.2
+  flutter_dotenv: ^5.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -81,6 +82,7 @@ flutter:
     - assets/Banner/
     - assets/icons/category/
     - assets/yolo/
+    - assets/config/.env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
