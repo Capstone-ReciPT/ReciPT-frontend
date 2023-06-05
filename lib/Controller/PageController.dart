@@ -1,4 +1,5 @@
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -55,7 +56,7 @@ class SttController extends GetxController {
   final SpeechToText _speech = SpeechToText();
   bool isProcessingCommand = false;
   bool showFlag = true;
-  var buffer = [];
+  var buffer;
   var context;
 
   @override

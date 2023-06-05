@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import 'package:recipt/Server/LoginServer.dart';
+import 'package:recipt/Server/SignUpServer.dart';
 import 'package:recipt/View/Other/Start/Sign_up_screen.dart';
 import 'package:recipt/Widget/Custom_Text_Form_field.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
+
+import '../../../Server/LoginServer.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -18,6 +20,8 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   // 비밀번호 표시
   bool obscure = true;
+  var _email;
+  var _pw;
   // textfield 키
   final key = GlobalKey<FormState>();
   @override
@@ -52,6 +56,11 @@ class _SignInScreenState extends State<SignInScreen> {
                               return null;
                             }
                           },
+                          onChanged: (value) {
+                            setState(() {
+                              _email = value;
+                            });
+                          },
                             hint: '이메일 또는 전화번호',
                             prefixIcon: IconlyBroken.message,
                         ),
@@ -74,6 +83,11 @@ class _SignInScreenState extends State<SignInScreen> {
                               obscure = !obscure;
                             });
                           },
+                          onChanged: (value) {
+                            setState(() {
+                              _pw = value;
+                            });
+                          },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -88,12 +102,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomButton(
-                        onTap: (){
-                          setState(() {
-                            if (key.currentState!.validate()){
+                        onTap: () async {
+                          if (key.currentState!.validate()){
+                            if (await loginFunc(_email,_pw)){
                               Get.offAll(MyApp());
                             }
-                          });
+                          }
                         },
                         text: '로그인',color: Colors.black,
                       ),

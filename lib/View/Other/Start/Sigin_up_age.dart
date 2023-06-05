@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:recipt/Server/LoginServer.dart';
+import 'package:recipt/Server/SignUpServer.dart';
+import 'package:recipt/View/Other/Start/Sign_in_screen.dart';
 import 'package:recipt/Widget/Custom_Text_Form_field.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/constans/colors.dart';
@@ -133,8 +134,9 @@ class _SignUpAgeState extends State<SignUpAge> {
                     CustomButton(
                       onTap: () async{
                         if (key.currentState!.validate()){
-                          await signUpFunc(widget.id,widget.pw,_selectedImageFile,_age,_name);
-                          Get.to(MyApp());
+                          if(await signUpFunc(widget.id,widget.pw,_selectedImageFile,_age,_name)){
+                            Get.to(SignInScreen());
+                          }
                         }
                       },
                       text: "회원 가입",color: Colors.black,)

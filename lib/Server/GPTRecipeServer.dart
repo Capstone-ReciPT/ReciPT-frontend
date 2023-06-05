@@ -30,14 +30,11 @@ Future<GPTRecipe> fetchGPTRecipe(String food) async{
       headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
     ),
   );
-  print(response.data);
   return parseStringToRecipe(response.data['data']);
 }
 
 GPTRecipe parseStringToRecipe(String jsonString) {
   Map<String, dynamic> parsedJson = jsonDecode(jsonString);
-
-  print(parsedJson.toString());
   return GPTRecipe.fromJson(parsedJson);
 }
 void fetchGPTRefresh() async{
@@ -58,6 +55,5 @@ Future<GPTRecipe> fetchGPTNoRecipe(String food) async{
       headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
     ),
   );
-  print(response.data);
   return parseStringToRecipe(response.data['data']);
 }

@@ -18,6 +18,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // The variable related to showing or hidingf the text
   bool obscure = true;
 
+  bool developFlag = true;
   //The variable key related to the txt fild
   final key = GlobalKey<FormState>();
 
@@ -61,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "이메일을 입력해주세요.";
-                              } else if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                              } else if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value) && !developFlag) {
                                 return "유효한 이메일 형식이 아닙니다.";
                               } else {
                                 return null;
@@ -86,7 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "비밀번호를 입력해주세요.";
-                              } else if (!_numberofDigits || !_contansANumber) {
+                              } else if ((!_numberofDigits || !_contansANumber) && !developFlag) {
                                 return "비밀번호는 최소 6자 이상이며, 최소 하나의 숫자를 \n포함해야 합니다.";
                               }
                               else {

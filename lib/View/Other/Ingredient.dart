@@ -41,54 +41,61 @@ class ProductItemScreen extends StatelessWidget {
   final id;
   final TotalController totalController = Get.put(TotalController());
   final SttController sttController = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<RecipeDataInput>(
-        future: fetchRecipe(id),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SafeArea(
-                child: Scaffold(
-                  body: Stack(
+    return WillPopScope(
+      onWillPop: () {
+        Get.offAll(MyApp());
+        return Future.value(true);
+      },
+      child: FutureBuilder<RecipeDataInput>(
+          future: fetchRecipe(id),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SafeArea(
+                  child: Scaffold(
+                    body: Stack(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Image.network(snapshot.data!.data.thumbnailImage),
+                        ),
+                        buttonArrow(context),
+                        scroll(snapshot),
+                      ],
+                    ),
+                    floatingActionButton: FloatingActionButton(
+                      onPressed: (){
+                        sttController.context = snapshot.data!.data.context;
+                        sttController.canShowFlag();
+                        sttController.show();
+                        Get.to(CookingMenu(id: id,));
+                      },
+                      child: Icon(Icons.navigate_next),
+                      heroTag: 'ToRecipe',
+                    ),
+                  ));
+            }
+            else if (snapshot.hasError) {
+              print(snapshot.error);
+              return Text("${snapshot.error}");
+            }
+            return Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: Image.network(snapshot.data!.data.thumbnailImage),
-                      ),
-                      buttonArrow(context),
-                      scroll(snapshot),
+                      Text('레시피를 로딩중입니다!',style: Theme.of(context).textTheme.displayLarge),
+                      Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
+                      SizedBox(height: 20,),
+                      CircularProgressIndicator()
                     ],
                   ),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: (){
-                      sttController.context = snapshot.data!.data.context;
-                      sttController.canShowFlag();
-                      sttController.show();
-                      Get.to(CookingMenu(id: id,));
-                    },
-                    child: Icon(Icons.navigate_next),
-                    heroTag: 'ToRecipe',
-                  ),
-                ));
+                )
+            );
           }
-          else if (snapshot.hasError) {
-            print(snapshot.error);
-            return Text("${snapshot.error}");
-          }
-          return Scaffold(
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('레시피를 로딩중입니다!',style: Theme.of(context).textTheme.displayLarge),
-                    Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
-                    SizedBox(height: 20,),
-                    CircularProgressIndicator()
-                  ],
-                ),
-              )
-          );
-        }
+      ),
     );
   }
 

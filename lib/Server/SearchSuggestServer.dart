@@ -17,7 +17,6 @@ Future<List<SuggestFood>> fetchSuggest() async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
   final response = await dio.get('$baseUrl/api/search');
-  print('');
   return makeSuggestList(response.data);
 }
 

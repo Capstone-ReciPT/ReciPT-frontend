@@ -31,7 +31,6 @@ class MainRecipe {
 
 Future<List<MainRecipe>> fetchMain(keyword) async {
   String? baseUrl = dotenv.env['BASE_URL'];
-  print(baseUrl);
   Uri uri = Uri.parse('$baseUrl/api/home');
   final response = await http.get(uri);
 

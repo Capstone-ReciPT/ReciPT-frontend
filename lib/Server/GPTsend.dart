@@ -29,7 +29,6 @@ Future<List<String>> fetchGPTsuggest(String ingre) async{
       headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
     ),
   );
-  print(response.data);
   return parseStringToList(response.data['data']);
 }
 
