@@ -17,7 +17,7 @@ Future<bool> loginFunc(id, pw) async {
   );
   if (response.statusCode == 200){
     print(response.headers['Authorization']);
-    if (response.headers['authorization'] != null) {
+    if (response.headers['Authorization'] != null) {
       // Save the token
       storeJwt(response.headers['Authorization'].toString());
       return true;

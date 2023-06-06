@@ -267,7 +267,7 @@ class BoardMenu extends StatelessWidget {
               ],
             ),
             onPressed: (){
-              Get.to(ProductItemScreen());
+              // Get.to(ProductItemScreen());
             },
           )
         );

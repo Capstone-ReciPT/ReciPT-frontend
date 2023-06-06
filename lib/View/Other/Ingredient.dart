@@ -13,6 +13,8 @@ import 'package:recipt/View/Other/RecipePage.dart';
 import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
 
+import '../../Server/HeartServer.dart';
+
 var tipContent = [
   {'w': '1큰술\n(1T,1Ts)\n= 1숟가락','content' : '15ml = 3t\n(계량스푼이 없는 경우 밥숟가락으로 볼록하게 가득 담으면 1큰술)'},
   {'w': '1작은술(1t,1ts)','content' : '5ml\n(티스푼으로는 2스푼이 1작은술)'},
@@ -35,12 +37,48 @@ var tipContent = [
   {'w': '채소 1근','content' : '400g'},
   {'w': '채소 1봉지','content' : '200g 정도'},
 ];
-class ProductItemScreen extends StatelessWidget {
-  ProductItemScreen({this.id,Key? key}) : super(key: key);
+
+class ProductItemScreen extends StatefulWidget {
+  ProductItemScreen({required this.id,Key? key}) : super(key: key);
 
   final id;
+
+  @override
+  State<ProductItemScreen> createState() => _ProductItemScreenState();
+}
+
+class _ProductItemScreenState extends State<ProductItemScreen> {
+
   final TotalController totalController = Get.put(TotalController());
   final SttController sttController = Get.find();
+  var heartCount;
+  var recipeId;
+  bool _isLiked = false;
+  bool isButtonDisabled = false; // 버튼 비활성화 여부를 나타내는 변수 추가
+
+  onLikeButtonTapped() async {
+    print('버튼 잠금 $isButtonDisabled');
+    if (isButtonDisabled) return; // 버튼이 비활성화된 경우 처리
+    // 버튼 비활성화
+    setState(() {
+      isButtonDisabled = true;
+    });
+
+    print('isliked = $_isLiked');
+    if (!_isLiked) {
+      heartCount = await heartInsertFunc(recipeId);
+    } else {
+      heartCount = await heartCancelFunc(recipeId);
+    }
+
+    // 버튼 활성화
+    setState(() {
+      isButtonDisabled = false;
+      _isLiked = !_isLiked;
+    });
+
+    return;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +88,10 @@ class ProductItemScreen extends StatelessWidget {
         return Future.value(true);
       },
       child: FutureBuilder<RecipeDataInput>(
-          future: fetchRecipe(id),
+          future: fetchRecipe(widget.id),
           builder: (context, snapshot) {
+            heartCount = snapshot.data?.heartCount;
+            recipeId = snapshot.data?.data.recipeId;
             if (snapshot.hasData) {
               return SafeArea(
                   child: Scaffold(
@@ -62,7 +102,7 @@ class ProductItemScreen extends StatelessWidget {
                           child: Image.network(snapshot.data!.data.thumbnailImage),
                         ),
                         buttonArrow(context),
-                        scroll(snapshot),
+                        scroll(snapshot,heartCount),
                       ],
                     ),
                     floatingActionButton: FloatingActionButton(
@@ -70,7 +110,7 @@ class ProductItemScreen extends StatelessWidget {
                         sttController.context = snapshot.data!.data.context;
                         sttController.canShowFlag();
                         sttController.show();
-                        Get.to(CookingMenu(id: id,));
+                        Get.to(CookingMenu(id: widget.id,));
                       },
                       child: Icon(Icons.navigate_next),
                       heroTag: 'ToRecipe',
@@ -114,24 +154,24 @@ class ProductItemScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
           ),
           child: Container(
-              height: 55,
-              width: 55,
-              decoration: BoxDecoration(
+            height: 55,
+            width: 55,
+            decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
                 color: Colors.black45
-              ),
-              child: const Icon(
-                Icons.arrow_back_ios,
-                size: 20,
-                color: Colors.white,
-              ),
+            ),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: Colors.white,
             ),
           ),
+        ),
       ),
     );
   }
 
-  scroll(snapshot) {
+  scroll(snapshot,heartCount) {
     return DraggableScrollableSheet(
         initialChildSize: 0.6,
         maxChildSize: 1.0,
@@ -175,9 +215,12 @@ class ProductItemScreen extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: (){
+
                             },
                             icon: Icon(Icons.message,size: 30,),
+                            padding: EdgeInsets.only(top: 15),
                           ),
+                          SizedBox(height: 8,),
                           Text(
                             "후기",
                             style: Theme.of(context)
@@ -192,10 +235,29 @@ class ProductItemScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           SizedBox(height: 8,),
-                          const LikeButton(),
-                          SizedBox(height: 10,),
+                          IconButton(
+                            icon: Icon(
+                              Icons.favorite,
+                              color: _isLiked ? Colors.red : Colors.grey,
+                              size: 30,
+                            ),
+
+                            onPressed: (){
+                              onLikeButtonTapped();
+                            },
+                          ),
+                          // LikeButton(
+                          //   likeBuilder: (bool isLiked) {
+                          //     return Icon(
+                          //       Icons.favorite,
+                          //       color: isLiked ? Colors.red : Colors.grey,
+                          //       size: 30,
+                          //     );
+                          //   },
+                          //   onTap: onLikeButtonTapped,
+                          // ),
                           Text(
-                            "좋아요 273",
+                            "좋아요 $heartCount",
                             style: Theme.of(context)
                                 .textTheme
                                 .displaySmall!
@@ -284,7 +346,6 @@ class ProductItemScreen extends StatelessWidget {
           );
         });
   }
-
   ingredients(BuildContext context,snapshot,index) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -341,7 +402,7 @@ class ProductItemScreen extends StatelessWidget {
                     height: 10,
                   ),
                   index >= snapshot.data!.data.image.length
-                  ? Image.network(
+                      ? Image.network(
                     'https://previews.123rf.com/images/urfingus/urfingus1406/urfingus140600001/29322328-%EC%A0%91%EC%8B%9C%EC%99%80-%ED%8F%AC%ED%81%AC%EC%99%80-%EC%B9%BC%EC%9D%84-%EB%93%A4%EA%B3%A0-%EC%86%90%EC%9D%84-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD.jpg',
                     height: 200,
                     width: 300,
@@ -360,7 +421,6 @@ class ProductItemScreen extends StatelessWidget {
     );
   }
 }
-
 
 class IngreTip extends StatelessWidget {
   const IngreTip({Key? key}) : super(key: key);

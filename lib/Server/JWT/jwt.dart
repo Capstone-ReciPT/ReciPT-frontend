@@ -7,5 +7,7 @@ Future<void> storeJwt(String jwt) async {
 
 Future<String> getJwt() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('jwt') ?? '';
+  String jwt = prefs.getString('jwt') ?? '';
+  jwt = jwt.replaceAll(new RegExp(r'[\[\]]'), '');  // 대괄호를 제거
+  return jwt;
 }

@@ -77,7 +77,7 @@ class CustomBoardMenu extends StatelessWidget {
                                       ],
                                     ),
                                     onPressed: (){
-                                      Get.to(ProductItemScreen());
+                                      // Get.to(ProductItemScreen());
                                     },
                                   )
                               );
