@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import 'package:recipt/View/Other/SearchPage.dart';
+import 'package:recipt/View/Other/Search/SearchPage.dart';
 import 'package:recipt/constans/colors.dart';
 
 class CustomButton extends StatelessWidget {

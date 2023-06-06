@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:recipt/Server/CategoryServer.dart';
+import 'package:recipt/Server/JWT/jwt.dart';
 
 class SearchJson{
   int recipeCount;
@@ -44,7 +45,15 @@ class RecipeList{
 Future<List<CategoryRecipe>> fetchSearch(String userInput) async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.post('$baseUrl/api/search/recipes?foodName=$userInput&like=&view=');
+  String jwt = await getJwt();
+  final response = await dio.post(
+      '$baseUrl/api/search/recipes?foodName=$userInput&like=&view=',
+    options: Options(
+      headers: {
+        'Authorization': jwt,  // jwt 토큰 추가
+      },
+    ),
+  );
   return makeSearchedList(response.data);
 }
 

@@ -84,6 +84,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
+        sttController.cantShowFlag();
         Get.offAll(MyApp());
         return Future.value(true);
       },

@@ -77,6 +77,7 @@ class ChatScreenState extends State<ChatScreen> {
                     children: [
                       IconButton(
                           onPressed: () {
+                            fetchGPTRefresh();
                             Get.back();
                           },
                           icon: const Icon(

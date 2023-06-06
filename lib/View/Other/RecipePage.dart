@@ -1,30 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/Server/GPTRecipeServer.dart';
 import 'package:recipt/Server/RecipeServer.dart';
 import 'package:recipt/View/Other/Ingredient.dart';
+import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:recipt/Controller/PageController.dart';
 
-class CookingMenu extends StatelessWidget {
 
-  CookingMenu({this.id,Key? key}) : super(key: key);
+class CookingMenu extends StatefulWidget {
+  CookingMenu({required this.id,Key? key}) : super(key: key);
 
   final id;
+  @override
+  State<CookingMenu> createState() => _CookingMenuState();
+}
+
+class _CookingMenuState extends State<CookingMenu> {
+
   final CookingMenuController menuController = Get.find();
   final TtsController ttsController = Get.find();
   final SttController sttController = Get.find();
 
+  Future<bool> onBackKeyRecipe(BuildContext context) async {
+
+    print(menuController.index.value);
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Color(0xFFFFFFFF),
+            title: Text(
+              '레시피를 종료하시겠습니까?',
+              style: TextStyle(color: mainText,fontSize: 18),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    sttController.cantShowFlag();
+                    menuController.index.value = 0;
+                    Get.offAll(MyApp());
+                  },
+                  child: Text('끝내기',style: TextStyle(color: SecondaryText),)),
+              TextButton(
+                  onPressed: () {
+                    //onWillpop에 false 전달되어 앱이 종료되지 않는다.
+                    Navigator.of(context).pop(false); // 대화 상자 닫기
+                  },
+                  child: Text('아니요',style: TextStyle(color: SecondaryText),)),
+            ],
+          );
+        }) ?? false; // 취소 버튼이 눌릴 경우 false 반환
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        menuController.index.value = 0;
-        sttController.cantShowFlag();
-        return Future.value(true);
-      },
+      onWillPop: () => onBackKeyRecipe(context),
       child: FutureBuilder<RecipeDataInput>(
-          future: fetchRecipe(id),
+          future: fetchRecipe(widget.id),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Scaffold(
@@ -42,7 +77,7 @@ class CookingMenu extends StatelessWidget {
                   ],
                 ),
                 body: FutureBuilder<RecipeDataInput>(
-                    future: fetchRecipe(id),
+                    future: fetchRecipe(widget.id),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Container(
@@ -96,7 +131,7 @@ class CookingMenu extends StatelessWidget {
                               menuController.prevIndex();
                             } else {
                               sttController.cantShowFlag();
-                              Get.to(ProductItemScreen(id: id,));
+                              Get.to(ProductItemScreen(id: widget.id,));
                             }
                           },
                           child: Icon(Icons.chevron_left),
@@ -142,8 +177,6 @@ class CookingMenu extends StatelessWidget {
     );
   }
 }
-
-
 
 class RatingStar extends StatelessWidget {
   const RatingStar({Key? key}) : super(key: key);

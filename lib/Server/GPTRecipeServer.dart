@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:recipt/Server/JWT/jwt.dart';
 
 class GPTRecipe{
   final String foodName;
@@ -24,12 +25,17 @@ class GPTRecipe{
 Future<GPTRecipe> fetchGPTRecipe(String food) async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
+  String jwt = await getJwt();
   final response = await dio.post('$baseUrl/api/chat/send',
     data: {food},
     options: Options(
-      headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
+      headers: {
+        'Content-Type': 'text/plain',
+        'Authorization': jwt,
+      }, // Content-Type 헤더 설정
     ),
   );
+  print(response);
   return parseStringToRecipe(response.data['data']);
 }
 
@@ -41,6 +47,8 @@ void fetchGPTRefresh() async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
   final response = await dio.post('$baseUrl/api/chat/refresh');
+  print('GPT 새로고침 완료');
+
 //10.0.2.2
 }
 

@@ -9,16 +9,16 @@ import 'package:recipt/Server/GPTRecipeServer.dart';
 import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
 
-class SelectedRecipe extends StatefulWidget {
-  SelectedRecipe({required this.selectedFood,Key? key}) : super(key: key);
+class gptNoRecipe extends StatefulWidget {
+  gptNoRecipe({required this.selectedFood,Key? key}) : super(key: key);
 
   final selectedFood;
   var gptRecipe;
   @override
-  State<SelectedRecipe> createState() => _SelectedRecipeState();
+  State<gptNoRecipe> createState() => _gptNoRecipeState();
 }
 
-class _SelectedRecipeState extends State<SelectedRecipe> {
+class _gptNoRecipeState extends State<gptNoRecipe> {
   final SttController sttController = Get.find();
 
   bool canSttFlag = false;
@@ -55,7 +55,7 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    widget.gptRecipe = fetchGPTRecipe(widget.selectedFood);
+    widget.gptRecipe = fetchGPTNoRecipe(widget.selectedFood);
   }
   @override
   Widget build(BuildContext context) {

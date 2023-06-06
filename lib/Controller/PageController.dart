@@ -89,6 +89,8 @@ class SttController extends GetxController {
     if(showFlag){
       startListening();
       Timer(Duration(seconds: 1), show);
+    } else{
+      stopListening();
     }
 
   }
