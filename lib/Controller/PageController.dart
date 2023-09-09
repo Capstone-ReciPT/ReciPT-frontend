@@ -1,9 +1,12 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:async';
+
 
 
 class Controller extends GetxController{
@@ -58,6 +61,7 @@ class SttController extends GetxController {
   bool showFlag = true;
   var buffer;
   var context;
+  var nowListen= false.obs;
 
   @override
   void onInit() async {
@@ -88,7 +92,7 @@ class SttController extends GetxController {
   void show() {
     if(showFlag){
       startListening();
-      Timer(Duration(seconds: 1), show);
+      Timer(Duration(seconds: 3 ), show);
     } else{
       stopListening();
     }
@@ -98,10 +102,11 @@ class SttController extends GetxController {
     await _speech.listen(
       listenFor: Duration(hours: 24),
       onResult: (val){
-        buffer = [];
+        nowListen.value = true;
+          buffer = [];
           buffer.add(val.recognizedWords);
           processVoiceCommand(buffer);
-          },
+        },
     );
   }
 
@@ -120,6 +125,7 @@ class SttController extends GetxController {
     }
     else {
       print(command);
+      await Future.delayed(Duration(seconds: 2));
       isProcessingCommand = true;
       if (command.contains('시작') || command.contains('시장')
           || command.contains('짝')
@@ -174,6 +180,7 @@ class SttController extends GetxController {
       }
 
       //명령어 처리 완료
+      nowListen.value = false;
       buffer = [];
       isProcessingCommand = false;
     }

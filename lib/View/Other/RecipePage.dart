@@ -7,6 +7,7 @@ import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:recipt/Controller/PageController.dart';
+import 'package:flutter_gif/flutter_gif.dart';
 
 
 class CookingMenu extends StatefulWidget {
@@ -17,7 +18,7 @@ class CookingMenu extends StatefulWidget {
   State<CookingMenu> createState() => _CookingMenuState();
 }
 
-class _CookingMenuState extends State<CookingMenu> {
+class _CookingMenuState extends State<CookingMenu>{
 
   final CookingMenuController menuController = Get.find();
   final TtsController ttsController = Get.find();
@@ -107,6 +108,19 @@ class _CookingMenuState extends State<CookingMenu> {
                                   ],
                                 ),
                               ),
+                              SizedBox(height: 100,),
+                              // 현재 에러가 나는 부분
+                              Obx(() => Visibility(
+                                visible: sttController.nowListen.value, // 조건에 따라 표시 여부 설정
+                                child: Container(
+                                    width: 250,
+                                    height: 150,
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                                      radius: 40.0,
+                                    )
+                                ),
+                              ))
                             ],
                           ),
                         );
