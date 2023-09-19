@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<bool> signUpFunc(id, pw,profileImage,age,username) async {
   final dio = Dio();
   String? baseUrl = dotenv.env['BASE_URL'];
+  print(baseUrl);
   FormData formData = FormData.fromMap({
     "profile": await MultipartFile.fromFile(profileImage.path, contentType: MediaType('image', 'png')),
     'username' : username,
@@ -20,6 +21,7 @@ Future<bool> signUpFunc(id, pw,profileImage,age,username) async {
       '$baseUrl/api/signup',
     data: formData
   );
+  print(response);
 
   return true;
 }
