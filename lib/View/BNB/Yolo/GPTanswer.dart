@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Server/GPTRecipeServer.dart';
@@ -45,7 +46,7 @@ class _GPTanswerState extends State<GPTanswer> {
                   onPressed: () async {
                     //onWillpop에 true가 전달되어 앱이 종료 된다.
                     fetchGPTRefresh();
-                    Get.offAll(MyApp());
+                    SystemNavigator.pop(); // 앱 종료
                   },
                   child: Text('끝내기',style: TextStyle(color: SecondaryText),)),
               TextButton(

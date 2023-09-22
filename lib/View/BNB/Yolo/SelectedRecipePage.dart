@@ -19,7 +19,6 @@ class SelectedRecipe extends StatefulWidget {
 }
 
 class _SelectedRecipeState extends State<SelectedRecipe> {
-  final SttController sttController = Get.find();
 
   bool canSttFlag = false;
 
@@ -78,33 +77,21 @@ class _SelectedRecipeState extends State<SelectedRecipe> {
                       scroll(snapshot),
                     ],
                   ),
-                  floatingActionButton: FloatingActionButton(
-                      backgroundColor: Colors.green,
-                      onPressed: (){
-                        if (!canSttFlag){
-                          sttController.context = snapshot.data!.context;
-                          sttController.canShowFlag();
-                          sttController.show();
-                          setState(() {
-                            canSttFlag = true;
-                          });
-                        } else {
-                          sttController.cantShowFlag();
-                          setState(() {
-                            canSttFlag = false;
-                          });
-                        }
-                      },
-                      child: canSttFlag == true ? Icon(Icons.stop) : Icon(Icons.keyboard_voice)
-                  ),
                   // floatingActionButton: FloatingActionButton(
-                  //   onPressed: (){
-                  //     // sttController.context = snapshot.data!.data.context;
-                  //     sttController.canShowFlag();
-                  //     sttController.show();
-                  //     // Get.to(CookingMenu(id));
-                  //   },
-                  //   child: Icon(Icons.navigate_next),
+                  //     backgroundColor: Colors.green,
+                  //     onPressed: (){
+                  //       if (!canSttFlag){
+                  //         setState(() {
+                  //           canSttFlag = true;
+                  //         });
+                  //       } else {
+                  //         sttController.cantShowFlag();
+                  //         setState(() {
+                  //           canSttFlag = false;
+                  //         });
+                  //       }
+                  //     },
+                  //     child: canSttFlag == true ? Icon(Icons.stop) : Icon(Icons.keyboard_voice)
                   // ),
                 ),
               );

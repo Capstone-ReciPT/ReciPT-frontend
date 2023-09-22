@@ -22,7 +22,6 @@ class _CookingMenuState extends State<CookingMenu>{
 
   final CookingMenuController menuController = Get.find();
   final TtsController ttsController = Get.find();
-  final SttController sttController = Get.find();
 
   Future<bool> onBackKeyRecipe(BuildContext context) async {
 
@@ -39,7 +38,6 @@ class _CookingMenuState extends State<CookingMenu>{
             actions: [
               TextButton(
                   onPressed: () async {
-                    sttController.cantShowFlag();
                     menuController.index.value = 0;
                     Get.offAll(MyApp());
                   },
@@ -73,7 +71,6 @@ class _CookingMenuState extends State<CookingMenu>{
                     IconButton(onPressed: (){
                       Get.to(MyApp());
                       menuController.index.value = 0;
-                      sttController.cantShowFlag();
                     }, icon: Icon(Icons.close),color: Colors.black,)
                   ],
                 ),
@@ -111,7 +108,7 @@ class _CookingMenuState extends State<CookingMenu>{
                               SizedBox(height: 100,),
                               // 현재 에러가 나는 부분
                               Obx(() => Visibility(
-                                visible: sttController.nowListen.value, // 조건에 따라 표시 여부 설정
+                                visible: ttsController.speakNow.value, // 조건에 따라 표시 여부 설정
                                 child: Container(
                                     width: 250,
                                     height: 150,
@@ -144,7 +141,6 @@ class _CookingMenuState extends State<CookingMenu>{
                               menuController.pageLimit = snapshot.data!.data.context.length;
                               menuController.prevIndex();
                             } else {
-                              sttController.cantShowFlag();
                               Get.to(ProductItemScreen(id: widget.id,));
                             }
                           },
@@ -167,7 +163,6 @@ class _CookingMenuState extends State<CookingMenu>{
                                   return ReviewDialog();
                                 }
                             );
-                            sttController.cantShowFlag();
                           } else {
                             menuController.pageLimit = snapshot.data!.data.context.length;
                             // ttsController.speakText(text[menuController.index.value]);
@@ -219,7 +214,6 @@ class RatingStar extends StatelessWidget {
 class ReviewDialog extends StatelessWidget {
   ReviewDialog({Key? key}) : super(key: key);
 
-  final SttController sttController = Get.find();
   final CookingMenuController menuController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -255,7 +249,6 @@ class ReviewDialog extends StatelessWidget {
         TextButton(
           child: Text('확인'),
           onPressed: () {
-            sttController.cantShowFlag();
             Get.to(MyApp());
             menuController.index.value = 0;
           },

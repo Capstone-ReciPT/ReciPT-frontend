@@ -50,7 +50,6 @@ class ProductItemScreen extends StatefulWidget {
 class _ProductItemScreenState extends State<ProductItemScreen> {
 
   final TotalController totalController = Get.put(TotalController());
-  final SttController sttController = Get.find();
   var heartCount;
   var recipeId;
   bool _isLiked = false;
@@ -84,7 +83,6 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        sttController.cantShowFlag();
         Get.offAll(MyApp());
         return Future.value(true);
       },
@@ -108,9 +106,6 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                     ),
                     floatingActionButton: FloatingActionButton(
                       onPressed: (){
-                        sttController.context = snapshot.data!.data.context;
-                        sttController.canShowFlag();
-                        sttController.show();
                         Get.to(CookingMenu(id: widget.id,));
                       },
                       child: Icon(Icons.navigate_next),
