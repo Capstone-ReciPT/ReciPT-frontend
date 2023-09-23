@@ -133,6 +133,9 @@ class _SignUpAgeState extends State<SignUpAge> {
                     ),
                     CustomButton(
                       onTap: () async{
+                        if(_selectedImageFile == null){
+                          _selectedImageFile = File(_defaultImage);
+                        }
                         if (key.currentState!.validate()){
                           if(await signUpFunc(widget.id,widget.pw,_selectedImageFile,_age,_name)){
                             Get.to(SignInScreen());

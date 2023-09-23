@@ -117,6 +117,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           setState(() {
                             if (key.currentState!.validate()){
                               Get.to(SignUpAge(id: _id, pw: _password,));
+                            } else{
+                              AlertDialog(
+                                backgroundColor: Color(0xFFFFFFFF),
+                                title: Text(
+                                  '조건에 만족하는 비밀번호를 입력해주세요.',
+                                  style: TextStyle(color: mainText,fontSize: 18),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false); // 대화 상자 닫기
+                                      },
+                                      child: Text('확인',style: TextStyle(color: SecondaryText),)),
+                                ],
+                              );
                             }
                           });
                         },

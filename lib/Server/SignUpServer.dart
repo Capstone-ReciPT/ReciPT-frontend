@@ -22,6 +22,9 @@ Future<bool> signUpFunc(id, pw,profileImage,age,username) async {
     data: formData
   );
   print(response);
-
-  return true;
+  if (response.statusCode == 200) {
+    return true;
+  } else{
+    return false;
+  }
 }

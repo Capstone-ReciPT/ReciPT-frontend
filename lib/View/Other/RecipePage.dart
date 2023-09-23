@@ -22,6 +22,7 @@ class _CookingMenuState extends State<CookingMenu>{
 
   final CookingMenuController menuController = Get.find();
   final TtsController ttsController = Get.find();
+  var playNow = false;
 
   Future<bool> onBackKeyRecipe(BuildContext context) async {
 
@@ -105,13 +106,12 @@ class _CookingMenuState extends State<CookingMenu>{
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 100,),
-                              // 현재 에러가 나는 부분
+                              SizedBox(height: 50,),
                               Obx(() => Visibility(
-                                visible: ttsController.speakNow.value, // 조건에 따라 표시 여부 설정
+                                visible: ttsController.speakNow.value , // 조건에 따라 표시 여부 설정
                                 child: Container(
-                                    width: 250,
-                                    height: 150,
+                                    width: 150,
+                                    height: 80,
                                     child: CircleAvatar(
                                       backgroundImage: AssetImage("assets/icons/voice2.gif"),
                                       radius: 40.0,
@@ -145,6 +145,29 @@ class _CookingMenuState extends State<CookingMenu>{
                             }
                           },
                           child: Icon(Icons.chevron_left),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: EdgeInsets.only(left: 30),
+                        child: FloatingActionButton(
+                          backgroundColor: Colors.green,
+                          onPressed: () async {
+                            if (playNow){
+                              ttsController.stopTTS();
+                            } else{
+                              setState(() {
+                                playNow = !playNow;
+                              });
+                              await ttsController.speakText(snapshot.data!.data.context[menuController.index.value])
+                                  .then((value) => setState((){
+                                playNow = !playNow;
+                              }));
+                            }
+                          },
+                          child: playNow == true ? Icon(Icons.pause) : Icon(Icons.play_arrow),
                         ),
                       ),
                     ),

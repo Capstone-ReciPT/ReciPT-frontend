@@ -54,16 +54,16 @@ class CookingMenuController extends GetxController{
 
 
 class TtsController extends GetxController {
-  var speakNow = true.obs;
-
+  var speakNow = false.obs;
   final FlutterTts tts = FlutterTts();
 
   Future<void> speakText(String text) async{
-    speakNow.value = false;
+    speakNow.value = true;
     await tts.setLanguage('ko-KR');
     await tts.setSpeechRate(0.4);
     await tts.speak(text);
-    speakNow.value =true;
+    await tts.awaitSpeakCompletion(true);
+    speakNow.value = false;
   }
 
   void stopTTS() async{
