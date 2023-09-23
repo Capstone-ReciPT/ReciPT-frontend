@@ -27,6 +27,7 @@ class _YoloImageState extends State<YoloImage> {
   int imageWidth = 1;
   bool isLoaded = false;
   bool isDetected = false;
+  bool isFailed = false;
   List<String> tagList = [];
 
   @override
@@ -60,7 +61,6 @@ class _YoloImageState extends State<YoloImage> {
       ));
     }
     return SafeArea(child: Scaffold(
-
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -103,8 +103,26 @@ class _YoloImageState extends State<YoloImage> {
                 child: Text('다음으로',style: Theme.of(context).textTheme.displayLarge,),
               ),
             ),
-          ) : SizedBox()
-        ],
+          ) : SizedBox(),
+          isFailed ? Positioned(
+            bottom: 40,
+            left: 90,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  border: Border.all(width: 2,color: Colors.black45)
+              ),
+              width: 200,
+              height: 50,
+              child: TextButton(
+                onPressed: (){
+                  Get.to(MyApp());
+                },
+                child: Text('다시하기',style: Theme.of(context).textTheme.displayLarge,),
+              ),
+            ),
+          ) : SizedBox(),
+        ]
       ),
     ),
     );
@@ -181,9 +199,9 @@ class _YoloImageState extends State<YoloImage> {
   }
   Future<void> loadYoloModel() async {
     await vision.loadYoloModel(
-        labels: 'assets/yolo/coco.txt',
-        modelPath: 'assets/yolo/best-fp16.tflite',
-        modelVersion: "yolov5",
+        labels: 'assets/yolo/coco2.txt',
+        modelPath: 'assets/yolo/model.tflite',
+        modelVersion: "yolov8",
         numThreads: 2,
         useGpu: true);
     setState(() {
@@ -232,6 +250,12 @@ class _YoloImageState extends State<YoloImage> {
       setState(() {
         yoloResults = result;
         isDetected = true;
+      });
+    }
+    else{
+      setState(() {
+        isDetected = false;
+        isFailed = true;
       });
     }
   }
