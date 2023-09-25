@@ -65,7 +65,9 @@ class _YoloImageState extends State<YoloImage> {
         fit: StackFit.expand,
         children: [
           imageFile != null ? Container(
-              child: Image.file(imageFile!,width: 200,height: 200,))
+            width: 200,
+              height: 100,
+              child: Image.file(imageFile!,width: 200,height: 100,))
               : YoloFirstPage2(),
           ...displayBoxesAroundRecognizedObjects(size),
           isDetected ?
@@ -116,7 +118,7 @@ class _YoloImageState extends State<YoloImage> {
               height: 50,
               child: TextButton(
                 onPressed: (){
-                  Get.to(MyApp());
+                  Get.offAll(MyApp());
                 },
                 child: Text('다시하기',style: Theme.of(context).textTheme.displayLarge,),
               ),
@@ -200,7 +202,7 @@ class _YoloImageState extends State<YoloImage> {
   Future<void> loadYoloModel() async {
     await vision.loadYoloModel(
         labels: 'assets/yolo/coco2.txt',
-        modelPath: 'assets/yolo/model.tflite',
+        modelPath: 'assets/yolo/newModel.tflite',
         modelVersion: "yolov8",
         numThreads: 2,
         useGpu: true);

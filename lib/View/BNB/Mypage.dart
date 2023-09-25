@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/View/BNB/Category.dart';
-import 'package:recipt/View/Other/UploadCoverAndDes.dart';
+import 'package:recipt/View/Other/Upload/UploadCoverAndDes.dart';
 import 'package:recipt/constans/colors.dart';
 
 class MyPage extends StatelessWidget {

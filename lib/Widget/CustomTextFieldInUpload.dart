@@ -8,12 +8,15 @@ class CustomTextFieldInUpload extends StatelessWidget {
         this.maxLines = 1,
         this.icon,
         required this.hint,
-        this.radius = 10})
+        this.radius = 10,
+        this.validator
+      })
       : super(key: key);
   int maxLines;
   IconData? icon;
   String hint;
   double radius;
+  String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
