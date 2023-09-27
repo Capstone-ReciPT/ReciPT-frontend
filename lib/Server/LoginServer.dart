@@ -32,3 +32,30 @@ Future<bool> loginFunc(id, pw) async {
     return false;
   }
 }
+
+Future<bool> logout(id, pw) async {
+  final dio = Dio();
+
+  String? baseUrl = dotenv.env['BASE_URL'];
+  final response = await dio.post(
+    '$baseUrl/api/logout',
+    data: {
+      'loginId': id,
+      'password': pw,
+    },
+  );
+  print(response);
+  if (response.statusCode == 200){
+    print(response.headers['Authorization']);
+    if (response.headers['Authorization'] != null) {
+      // Save the token
+      storeJwt(response.headers['Authorization'].toString());
+      return true;
+    }
+    return false;
+  }
+  else{
+    print(response.statusCode);
+    return false;
+  }
+}

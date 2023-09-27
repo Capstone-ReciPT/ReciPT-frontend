@@ -9,7 +9,11 @@ class CustomTextFieldInUpload extends StatelessWidget {
         this.icon,
         required this.hint,
         this.radius = 10,
-        this.validator
+        this.validator,
+        this.onEditingComplete,
+        this.onChanged,
+        required this.controller,
+
       })
       : super(key: key);
   int maxLines;
@@ -17,10 +21,18 @@ class CustomTextFieldInUpload extends StatelessWidget {
   String hint;
   double radius;
   String? Function(String?)? validator;
+  Function()? onEditingComplete;
+  Function(String)? onChanged;
+
+  TextEditingController controller;  // Add this line
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       maxLines: maxLines,
+      onEditingComplete: onEditingComplete,
+      onChanged: onChanged,
       decoration: InputDecoration(
         icon: icon == null ? null : Icon(icon),
         hintText: hint,

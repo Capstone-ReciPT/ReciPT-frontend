@@ -24,6 +24,9 @@ class _UploadTabState extends State<UploadTab> {
   final nextKey = GlobalKey<FormState>();
   File? imageFile;
 
+  final _valueList = ['채소','고기','해산물','샐러드','국','밥','면','찌개','기타'];
+  var _selectedCategory = '채소';
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
@@ -120,10 +123,45 @@ class _UploadTabState extends State<UploadTab> {
                         setState(() {
                         });
                       },
-                      obscureText: obscure,
+                      obscureText: false,
                       hint: "한 줄로 소개해주세요.",
                       prefixIcon: IconlyBroken.arrow_right,
                     ),
+                    SizedBox(height: 20,),
+                    Text('카테고리',style: Theme.of(context).textTheme.displayMedium,),
+                    const SizedBox(height: 20,),
+                    Container(
+                      width: double.infinity,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        border: Border.all(color: outline),
+                      ),
+                      padding: EdgeInsets.only(left: 50),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                          value: _selectedCategory,
+                          items: _valueList.map(
+                                (value) {
+                              return DropdownMenuItem (
+                                value: value,
+                                child: Text(value,style: const TextStyle(
+                                  fontFamily: "Inter",
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),),
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = value!;
+                            });
+                          },
+                        ),
+                      )
+                    ),
+
                     SizedBox(height: 20,),
                     CustomButton(onTap: (){
                       if (imageFile == null){

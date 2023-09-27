@@ -1,6 +1,9 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:recipt/Widget/CustomTextFieldInUpload.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/constans/colors.dart';
@@ -16,8 +19,11 @@ class SecondUploadScreen extends StatefulWidget {
 }
 
 class _SecondUploadScreenState extends State<SecondUploadScreen> {
-  List ingrediants = [1];
-  List steps = [1];
+  List ingredients = [];
+  List steps = [];
+  List ingreControllers = [TextEditingController()];
+  List recipeControllers = [TextEditingController()];
+  List _imageFiles = [];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -75,10 +81,10 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                     ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: ingrediants.length,
+                        itemCount: ingreControllers.length,
                         itemBuilder: (context, index) =>
                             enterIngerediant(index)),
-                    ingrediantsButton(),
+                    ingredientsButton(),
                   ],
                 ),
               ),
@@ -100,6 +106,7 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                         IconButton(
                             onPressed: () {
                               setState(() {
+                                recipeControllers.add(TextEditingController());
                                 steps.add(step(1));
                               });
                             },
@@ -112,7 +119,7 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: steps.length,
+                      itemCount: recipeControllers.length,
                       itemBuilder: (context, index) => step(index),
                     ),
                     SizedBox(
@@ -135,6 +142,9 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                         Expanded(
                             child: CustomButton(
                                 onTap: () {
+                                  List<String> ingredients = getControllersValue(ingreControllers);
+                                  List<String> recipes = getControllersValue(recipeControllers);
+                                  print(_imageFiles);
                                   openDialog();
                                 },
                                 text: "다음",color: Colors.black,)),
@@ -154,17 +164,18 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
   enterIngerediant(int index) {
     return Dismissible(
       key: GlobalKey(),
-      direction: ingrediants.length > 1
+      direction: ingredients.length > 1
           ? DismissDirection.endToStart
           : DismissDirection.none,
       onDismissed: (direction) {
         setState(() {
-          ingrediants.removeAt(index);
+          ingredients.removeAt(index);
         });
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: CustomTextFieldInUpload(
+          controller: ingreControllers[index],
           radius: 30,
           hint: "재료를 입력해주세요.",
           icon: Icons.drag_indicator,
@@ -173,13 +184,15 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
     );
   }
 
-  ingrediantsButton() {
+  ingredientsButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: InkWell(
         onTap: () {
-          setState(() {});
-          ingrediants.add(enterIngerediant(1));
+          setState(() {
+            ingreControllers.add(TextEditingController());
+            ingredients.add(enterIngerediant(1));
+          });
         },
         child: Container(
             alignment: Alignment.center,
@@ -221,24 +234,32 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
           Column(
             children: [
               CustomTextFieldInUpload(
+                controller: recipeControllers[index],
                 hint: "사진과 함께 단계별로 설명해주세요.",
                 icon: Icons.drag_indicator,
                 maxLines: 4,
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 10, left: 35),
-                width: double.infinity,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: form,
-                  borderRadius: BorderRadius.circular(10),
+              InkWell(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 10, bottom: 10, left: 35),
+                  width: double.infinity,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: form,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: _imageFiles.length > index
+                      ? Image.file(_imageFiles[index])
+                      : const Icon(
+                        Icons.camera_alt,
+                        size: 30,
+                        color: mainText,
+                        ),
                 ),
-                child: const Icon(
-                  Icons.camera_alt,
-                  size: 30,
-                  color: mainText,
-                ),
-              ),
+                onTap: (){
+                  pickImage(index);
+                },
+              )
             ],
           ),
           Align(
@@ -255,6 +276,21 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> pickImage(int index) async {
+    final ImagePicker picker = ImagePicker();
+    // Capture a photo
+    final XFile? photo1 = await picker.pickImage(source: ImageSource.gallery);
+    if (photo1 != null) {
+      setState(() {
+        // 만약 이미지를 추가할 인덱스가 _imageFiles 리스트의 길이보다 크다면 먼저 해당 인덱스까지 null로 채워줍니다.
+        while (_imageFiles.length <= index) {
+          _imageFiles.add(null);
+        }
+        _imageFiles[index] = File(photo1.path);
+      });
+    }
   }
 
   Future openDialog() {
@@ -292,4 +328,18 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
           ),
         ));
   }
+
+  List<String> getControllersValue(List<dynamic> controllers) {
+    List<String> res = [];
+    for (TextEditingController tec in controllers) {
+      res.add(tec.value.text);
+    }
+    print(res);
+    return res;
+  }
+
 }
+
+
+
+

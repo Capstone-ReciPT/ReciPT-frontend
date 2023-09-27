@@ -5,6 +5,7 @@ import 'package:recipt/View/BNB/Home/HomePage.dart';
 import 'package:recipt/View/BNB/Mypage.dart';
 import 'package:recipt/View/Other/Start/StartScreen.dart';
 import 'package:recipt/constans/colors.dart';
+import 'Server/JWT/jwt.dart';
 import 'View/BNB/Yolo/RecipeRecommend.dart';
 import 'View/BNB/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
@@ -55,8 +56,26 @@ Future main() async {
           ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(),
       ),
-      home : StartScreen())
-  );
+      home : FutureBuilder<String?>(
+        future: getJwt(),
+        builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            final jwt = snapshot.data;
+            if (jwt != '') {
+              // JWT가 있는 경우 MyApp을 표시합니다.
+              return MyApp();
+            } else {
+              // JWT가 없는 경우 StartScreen을 표시합니다.
+              return StartScreen();
+            }
+          }
+        },
+      ),
+  ));
 }
 
 //휴대폰 피지컬 버튼 뒤로 가기 눌렀을때,

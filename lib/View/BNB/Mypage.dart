@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipt/Server/JWT/jwt.dart';
 import 'package:recipt/View/BNB/Category.dart';
 import 'package:recipt/View/Other/Upload/UploadCoverAndDes.dart';
 import 'package:recipt/constans/colors.dart';
@@ -273,35 +274,59 @@ class Setting extends StatelessWidget {
                   ),
                 ),
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Container(
-                      decoration: BoxDecoration(border: Border(
-                          bottom: BorderSide(
-                            color: Colors.grey, width: 1,
-                          )
-                      )),
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: TextButton(
-                        child: Row(
-                          children: [
-                            SizedBox(width: 20,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('1',style: Theme.of(context).textTheme.displayLarge,),
-                              ],
-                            ),
-                          ],
-                        ),
-                        onPressed: (){
-                        },
-                      )
-                  );
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   itemCount: 5,
+              //   itemBuilder: (context, index) {
+              //     return Container(
+              //         decoration: BoxDecoration(border: Border(
+              //             bottom: BorderSide(
+              //               color: Colors.grey, width: 1,
+              //             )
+              //         )),
+              //         margin: EdgeInsets.only(bottom: 10),
+              //         child: TextButton(
+              //           child: Row(
+              //             children: [
+              //               SizedBox(width: 20,),
+              //               Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: [
+              //                   Text('1',style: Theme.of(context).textTheme.displayLarge,),
+              //                 ],
+              //               ),
+              //             ],
+              //           ),
+              //           onPressed: (){
+              //           },
+              //         )
+              //     );
+              //   },
+              // ),
+            Container(
+              decoration: BoxDecoration(border: Border(
+                  bottom: BorderSide(
+                    color: Colors.grey, width: 1,
+                  )
+              )),
+              margin: EdgeInsets.only(bottom: 10),
+              child: TextButton(
+                child: Row(
+                  children: [
+                    SizedBox(width: 20,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('로그아웃',style: Theme.of(context).textTheme.displayLarge,),
+                      ],
+                    ),
+                  ],
+                ),
+                onPressed: (){
+                  print(getJwt());
                 },
-              ),
+              )
+            ),
             ],
           ),
         )));
