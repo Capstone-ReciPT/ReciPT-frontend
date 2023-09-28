@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:recipt/Server/Upload/UploadRecipeServer.dart';
 import 'package:recipt/Widget/CustomTextFieldInUpload.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/constans/colors.dart';
@@ -12,14 +13,24 @@ import 'package:recipt/main.dart';
 import '../../../constans/colors.dart';
 
 class SecondUploadScreen extends StatefulWidget {
-  const SecondUploadScreen({Key? key}) : super(key: key);
+  const SecondUploadScreen({
+    Key? key,
+    this.imageFile,
+    this.foodName,
+    this.foodDescription,
+    this.foodCategory,
+  }) : super(key: key);
 
+  final imageFile;
+  final foodName;
+  final foodDescription;
+  final foodCategory;
   @override
   State<SecondUploadScreen> createState() => _SecondUploadScreenState();
 }
 
 class _SecondUploadScreenState extends State<SecondUploadScreen> {
-  List ingredients = [];
+  List ingredients = [''];
   List steps = [];
   List ingreControllers = [TextEditingController()];
   List recipeControllers = [TextEditingController()];
@@ -141,10 +152,18 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                         ),
                         Expanded(
                             child: CustomButton(
-                                onTap: () {
+                                onTap: () async {
                                   List<String> ingredients = getControllersValue(ingreControllers);
                                   List<String> recipes = getControllersValue(recipeControllers);
                                   print(_imageFiles);
+                                  await fetchUploadRecipe(
+                                      widget.imageFile,
+                                      widget.foodName,
+                                      widget.foodDescription,
+                                      widget.foodCategory,
+                                      ingredients,
+                                      recipes,
+                                      _imageFiles);
                                   openDialog();
                                 },
                                 text: "다음",color: Colors.black,)),
@@ -164,12 +183,13 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
   enterIngerediant(int index) {
     return Dismissible(
       key: GlobalKey(),
-      direction: ingredients.length > 1
+      direction: ingredients.isNotEmpty
           ? DismissDirection.endToStart
           : DismissDirection.none,
       onDismissed: (direction) {
         setState(() {
           ingredients.removeAt(index);
+          ingreControllers.removeAt(index);
         });
       },
       child: Padding(
@@ -192,6 +212,8 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
           setState(() {
             ingreControllers.add(TextEditingController());
             ingredients.add(enterIngerediant(1));
+            print(ingredients);
+            print(ingreControllers);
           });
         },
         child: Container(

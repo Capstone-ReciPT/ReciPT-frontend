@@ -23,9 +23,11 @@ class _UploadTabState extends State<UploadTab> {
   bool obscure = true;
   final nextKey = GlobalKey<FormState>();
   File? imageFile;
+  String? foodName;
+  String? foodDescription;
+  String? foodCategory;
 
   final _valueList = ['채소','고기','해산물','샐러드','국','밥','면','찌개','기타'];
-  var _selectedCategory = '채소';
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +104,7 @@ class _UploadTabState extends State<UploadTab> {
                     CustomTextFormField(
                       onChanged: (value) {
                         setState(() {
+                          foodName = value;
                         });
                       },
                       validator: (value) {
@@ -121,6 +124,7 @@ class _UploadTabState extends State<UploadTab> {
                     CustomTextFormField(
                       onChanged: (value) {
                         setState(() {
+                          foodDescription = value;
                         });
                       },
                       obscureText: false,
@@ -140,7 +144,7 @@ class _UploadTabState extends State<UploadTab> {
                       padding: EdgeInsets.only(left: 50),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
-                          value: _selectedCategory,
+                          value: foodCategory,
                           items: _valueList.map(
                                 (value) {
                               return DropdownMenuItem (
@@ -155,7 +159,7 @@ class _UploadTabState extends State<UploadTab> {
                           ).toList(),
                           onChanged: (value) {
                             setState(() {
-                              _selectedCategory = value!;
+                              foodCategory = value!;
                             });
                           },
                         ),
@@ -209,7 +213,12 @@ class _UploadTabState extends State<UploadTab> {
 
                       }
                       if (nextKey.currentState!.validate()) {
-                        Get.to(SecondUploadScreen());
+                        Get.to(SecondUploadScreen(
+                          imageFile: imageFile,
+                          foodName: foodName,
+                          foodDescription: foodDescription,
+                          foodCategory: foodCategory,
+                        ));
                       }
                     }, text: '다음',color: Colors.black,),
                   ],
