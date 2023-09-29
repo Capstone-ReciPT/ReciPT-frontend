@@ -271,7 +271,7 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: _imageFiles.length > index
-                      ? Image.file(_imageFiles[index])
+                      ? Image.file(File(_imageFiles[index].path))
                       : const Icon(
                         Icons.camera_alt,
                         size: 30,
@@ -310,7 +310,7 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
         while (_imageFiles.length <= index) {
           _imageFiles.add(null);
         }
-        _imageFiles[index] = File(photo1.path);
+        _imageFiles[index] = photo1;
       });
     }
   }

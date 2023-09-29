@@ -22,10 +22,10 @@ class UploadTab extends StatefulWidget {
 class _UploadTabState extends State<UploadTab> {
   bool obscure = true;
   final nextKey = GlobalKey<FormState>();
-  File? imageFile;
+  XFile? imageFile;
   String? foodName;
   String? foodDescription;
-  String? foodCategory;
+  String? foodCategory ='채소';
 
   final _valueList = ['채소','고기','해산물','샐러드','국','밥','면','찌개','기타'];
 
@@ -70,7 +70,7 @@ class _UploadTabState extends State<UploadTab> {
                         pickImage();
                       },
                       child: imageFile != null ? Container(
-                          child: Image.file(imageFile!,width: double.infinity,height: 160,))
+                          child: Image.file(File(imageFile!.path),width: double.infinity,height: 160,))
                           : DottedBorder(
                         dashPattern: [15,5],
                         color: outline,
@@ -236,7 +236,7 @@ class _UploadTabState extends State<UploadTab> {
     final XFile? photo1 = await picker.pickImage(source: ImageSource.gallery);
     if (photo1 != null) {
       setState(() {
-        imageFile = File(photo1.path);
+        imageFile = photo1;
       });
     }
   }
