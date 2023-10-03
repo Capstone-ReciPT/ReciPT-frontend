@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
@@ -29,9 +31,10 @@ Future<void> checkJwtValidity(String jwt) async {
     print('JWT is invalid or could not be decoded.');
   }
 }
-Future<void> storeJwt(String jwt) async {
+Future<void> storeJwt(String accessToken, String refreshToken) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('jwt', jwt);
+  await prefs.setString('jwt', accessToken);
+  await prefs.setString('refresh', refreshToken);
 }
 
 Future<String> getJwt() async {
@@ -41,3 +44,4 @@ Future<String> getJwt() async {
   print(jwt);
   return jwt;
 }
+

@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:recipt/Server/CategoryServer.dart';
 
+import 'JWT/jwt.dart';
+
 class GPTSuggest{
   final int code;
   final String message;
@@ -23,12 +25,17 @@ class GPTSuggest{
 Future<List<String>> fetchGPTsuggest(String ingre) async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
+  String jwt = await getJwt();
   final response = await dio.post('$baseUrl/api/chat/send',
       data: {ingre},
     options: Options(
-      headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
+      headers: {
+        'Content-Type': 'text/plain',
+        'Authorization': 'Bearer $jwt',
+      }, // Content-Type 헤더 설정
     ),
   );
+  print(response);
   return parseStringToList(response.data['data']);
 }
 

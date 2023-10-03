@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -26,7 +27,7 @@ class UploadRecipe{
     return 'UploadRecipe{thumbnail: $thumbnail, foodName: $foodName, comment: $comment, category: $category, ingredients: $ingredients, recipe: $recipe, images: $images}';
   }
 }
-Future<void> fetchUploadRecipe(
+Future<bool> fetchUploadRecipe(
     XFile thumbnail,
     String foodName,
     String comment,
@@ -40,37 +41,46 @@ Future<void> fetchUploadRecipe(
 
   String? baseUrl = dotenv.env['BASE_URL'];
   var jwt = await getJwt();
-  final Uri uri = Uri.parse('$baseUrl/api/register/save');
+  print(jwt);
 
   final thumbnailBinary = MultipartFile.fromFileSync(thumbnail.path,  contentType: MediaType("image", "jpg"));
   final List<MultipartFile> files = images.map((img) => MultipartFile.fromFileSync(img.path,  contentType: MediaType("image", "jpg"))).toList();
-
+  recipe.removeWhere((element) => element == null);
+  print(recipe);
   FormData formData = FormData.fromMap({
     'thumbnail': thumbnailBinary,
     'foodName': foodName,
     'comment': comment,
     'category': category,
     'ingredients': ingredients,
-    'recipe': recipe,
-    'images[]': files,
+    'contexts': recipe,
+    'images': files,
   });
 
   try {
     final response = await dio.post(
-      '$baseUrl/api/register/save',
+      '$baseUrl/api/register/save/typing',
       data: formData,
       options: Options(
         headers: {
-          'Authorization': jwt,
+          'accesToken': jwt,
+          'Authorization': 'Bearer $jwt',
         },
         contentType: 'multipart/form-data'
       ),
     );
-
     print(response);
+    if(response.statusCode == 200){
+      return true;
+    }
+    else{
+      return false;
+    }
+
     // 여기에서 응답을 처리할 수 있습니다.
   } catch (e) {
     // 오류 처리
+    return false;
   }
 }
 Future<Uint8List> readFileAsBytes(File file) async {

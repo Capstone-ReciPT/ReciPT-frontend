@@ -46,7 +46,7 @@ class _GPTanswerState extends State<GPTanswer> {
                   onPressed: () async {
                     //onWillpop에 true가 전달되어 앱이 종료 된다.
                     fetchGPTRefresh();
-                    SystemNavigator.pop(); // 앱 종료
+                    Get.offAll(MyApp());
                   },
                   child: Text('끝내기',style: TextStyle(color: SecondaryText),)),
               TextButton(

@@ -74,7 +74,6 @@ class _SignUpAgeState extends State<SignUpAge> {
                               child: InkWell(
                                 onTap: () async {
                                   final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
-                                  await _picker.pickImage(source: ImageSource.gallery);
                                   if (photo != null) {
                                     setState(() {
                                       _selectedImageFile = File(photo.path);

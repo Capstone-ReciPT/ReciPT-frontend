@@ -25,13 +25,14 @@ class GPTRecipe{
 Future<GPTRecipe> fetchGPTRecipe(String food) async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  String jwt = await getJwt();
+    String jwt = await getJwt();
   final response = await dio.post('$baseUrl/api/chat/send',
     data: {food},
     options: Options(
       headers: {
         'Content-Type': 'text/plain',
-        'Authorization': jwt,
+        'Authorization': 'Bearer $jwt',
+        'accessToken': jwt,
       }, // Content-Type 헤더 설정
     ),
   );

@@ -50,7 +50,7 @@ Future<List<CategoryRecipe>> fetchSearch(String userInput) async{
       '$baseUrl/api/search/recipes?foodName=$userInput&like=&view=',
     options: Options(
       headers: {
-        'Authorization': jwt,  // jwt 토큰 추가
+        'accessToken': jwt,  // jwt 토큰 추가
       },
     ),
   );

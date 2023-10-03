@@ -15,7 +15,7 @@ Future<int> heartInsertFunc(id) async {
       '$baseUrl/api/db/insert/${id.toString()}',
       options: Options(
         headers: {
-          'Authorization': jwt,  // jwt 토큰 추가
+          'accessToken': jwt,  // jwt 토큰 추가
         },
       ),
   );

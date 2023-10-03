@@ -51,7 +51,9 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.offAll(MyApp());
+                            },
                             child: Text(
                               "취소",
                               style: Theme.of(context)
@@ -156,15 +158,17 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                                   List<String> ingredients = getControllersValue(ingreControllers);
                                   List<String> recipes = getControllersValue(recipeControllers);
                                   print(_imageFiles);
-                                  await fetchUploadRecipe(
+                                  if (await fetchUploadRecipe(
                                       widget.imageFile,
                                       widget.foodName,
                                       widget.foodDescription,
                                       widget.foodCategory,
                                       ingredients,
                                       recipes,
-                                      _imageFiles);
-                                  openDialog();
+                                      _imageFiles)){
+                                    openDialog();
+                                  }
+
                                 },
                                 text: "다음",color: Colors.black,)),
                       ],

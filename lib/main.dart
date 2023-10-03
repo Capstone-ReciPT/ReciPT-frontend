@@ -56,16 +56,18 @@ Future main() async {
           ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(),
       ),
-      home : FutureBuilder<String?>(
+      home : FutureBuilder<String>(
         future: getJwt(),
-        builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
             final jwt = snapshot.data;
-            if (jwt != '') {
+            print('메인에서');
+            print(jwt);
+            if (jwt!='') {
               // JWT가 있는 경우 MyApp을 표시합니다.
               return MyApp();
             } else {

@@ -202,7 +202,7 @@ class _YoloImageState extends State<YoloImage> {
   Future<void> loadYoloModel() async {
     await vision.loadYoloModel(
         labels: 'assets/yolo/coco2.txt',
-        modelPath: 'assets/yolo/newModel.tflite',
+        modelPath: 'assets/yolo/model.tflite',
         modelVersion: "yolov8",
         numThreads: 2,
         useGpu: true);
