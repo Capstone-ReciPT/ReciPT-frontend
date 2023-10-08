@@ -7,90 +7,90 @@ import 'package:recipt/constans/colors.dart';
 
 import '../../Server/account/MyPageServer.dart';
 
-class MyPage extends StatelessWidget {
-  const MyPage ({Key? key}) : super(key: key);
+class MyPage extends StatefulWidget {
+  const MyPage({Key? key}) : super(key: key);
 
   @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-            body: Column(
-              children: [
-                FutureBuilder<MypageUser>(
-                  future: fetchUser(),
-                  builder: (BuildContext context, AsyncSnapshot<MypageUser> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      // 데이터를 기다리는 동안 로딩 인디케이터 표시
-                      return CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      // 오류가 발생한 경우
-                      return Text("오류: ${snapshot.error}");
-                    } else if (!snapshot.hasData) {
-                      // 데이터가 없는 경우
-                      return Text("데이터가 없습니다.");
-                    } else {
-                      MypageUser user = snapshot.data!;
-                      // 받아온 사용자 데이터를 사용하여 위젯 구성
-                      return Container(
-                        width: 800,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1),
-                          color: Colors.black87,
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 40),
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.blueGrey,
-                                backgroundImage: MemoryImage(user.profileData), // 서버 이미지 사용
-                              ),
+    return FutureBuilder<MypageUser>(
+        future: fetchUser(),
+        builder: (BuildContext context, AsyncSnapshot<MypageUser> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // 데이터를 기다리는 동안 로딩 인디케이터 표시
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            // 오류가 발생한 경우
+            return Text("오류: ${snapshot.error}");
+          } else if (!snapshot.hasData) {
+            // 데이터가 없는 경우
+            return Text("데이터가 없습니다.");
+          } else {
+            MypageUser user = snapshot.data!;
+            // 받아온 사용자 데이터를 사용하여 위젯 구성
+            return DefaultTabController(
+              length: 3,
+              child: Scaffold(
+                body: Column(
+                  children: [
+                    Container(
+                      width: 800,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1),
+                        color: Colors.black87,
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 40),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.blueGrey,
+                              backgroundImage: MemoryImage(user.profileData), // 서버 이미지 사용
                             ),
-                            SizedBox(width: 50,),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(user.username, style: TextStyle(color: Colors.white, fontSize: 30),), // 사용자 이름 사용
-                                SizedBox(height: 8,),
-                                TextButton(
-                                  onPressed: (){
-                                    Get.to(UploadTab());
-                                  },
-                                  style: ButtonStyle(
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                        side: BorderSide(width: 1, color: Colors.greenAccent),
-                                      ),
+                          ),
+                          SizedBox(width: 50,),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(user.username, style: TextStyle(color: Colors.white, fontSize: 30),), // 사용자 이름 사용
+                              SizedBox(height: 8,),
+                              TextButton(
+                                onPressed: (){
+                                  Get.to(UploadTab());
+                                },
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      side: BorderSide(width: 1, color: Colors.greenAccent),
                                     ),
                                   ),
-                                  child: Text('레시피 등록', style: TextStyle(color: Colors.greenAccent),),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  },
+                                ),
+                                child: Text('레시피 등록', style: TextStyle(color: Colors.greenAccent),),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8,),
+                    Notice(user),
+                  ],
                 ),
-                SizedBox(height: 8,),
-                Notice(),
-              ],
-            )
-        )
+              ),
+            );
+          }
+        },
     );
   }
-}
-class Notice extends StatelessWidget {
 
-  const Notice({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Notice(user){
     return Container(
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
         DefaultTabController(
@@ -115,7 +115,7 @@ class Notice extends StatelessWidget {
                   ),
                   child: TabBarView(children: <Widget>[
                     Container(
-                      child: MyRecipes(),
+                      child: MyRecipes(user),
                     ),
                     Container(
                       child: FoodReview(),
@@ -130,15 +130,13 @@ class Notice extends StatelessWidget {
       ]),
     );
   }
-}
-class MyRecipes extends StatelessWidget {
-  const MyRecipes({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
+  MyRecipes(user){
+    print(user.registerRecipe);
+    if (user.registerRecipe.length > 0){
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: 5,
+      itemCount: user.registerRecipe.length,
       itemBuilder: (context, index) {
         return Container(
             decoration: BoxDecoration(border: Border(
@@ -168,9 +166,15 @@ class MyRecipes extends StatelessWidget {
             )
         );
       },
-    );
+    );}
+    else{
+      return Center(
+        child: Text("no data"),
+      );
+    }
   }
 }
+
 class FoodReview extends StatelessWidget {
   const FoodReview({Key? key}) : super(key: key);
 

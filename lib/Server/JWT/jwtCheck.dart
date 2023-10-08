@@ -21,6 +21,9 @@ Future<String> checkIssue() async{
         }, // Content-Type 헤더 설정
       ),
     );
+    Future.delayed(Duration(minutes: 10), () {
+      checkIssue();
+    });
     return jwt;
   } catch(e){
     print(e);
@@ -28,3 +31,4 @@ Future<String> checkIssue() async{
    return '';
   }
 }
+

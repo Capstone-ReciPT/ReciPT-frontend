@@ -66,14 +66,4 @@ void fetchGPTRefresh() async{
 
 // GPT 레시피 검색
 
-Future<GPTRecipe> fetchGPTNoRecipe(String food) async{
-  String? baseUrl = dotenv.env['BASE_URL'];
-  final dio = Dio();
-  final response = await dio.post('$baseUrl/api/chat/search',
-    data: {food},
-    options: Options(
-      headers: {'Content-Type': 'text/plain'}, // Content-Type 헤더 설정
-    ),
-  );
-  return parseStringToRecipe(response.data['data']);
-}
+

@@ -9,6 +9,8 @@ import 'package:recipt/Server/gpt/GPTRecipeServer.dart';
 import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
 
+import '../../Server/search/GptNoRecipe.dart';
+
 class gptNoRecipe extends StatefulWidget {
   gptNoRecipe({required this.selectedFood,Key? key}) : super(key: key);
 

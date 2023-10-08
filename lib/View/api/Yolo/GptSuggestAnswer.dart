@@ -73,7 +73,7 @@ class _GptSuggestAnswerState extends State<GptSuggestAnswer> {
             children: [
               SizedBox(height: 20,),
               Text('GPT의 추천 레시피',style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 34),),
-              SizedBox(height: 70,),
+              SizedBox(height: 30,),
               FutureBuilder<List<List<String>>>(
                   future: widget.GPTSuggestList,
                   builder: (context, snapshot) {
@@ -86,14 +86,6 @@ class _GptSuggestAnswerState extends State<GptSuggestAnswer> {
                           return Container(
                             child: Column(
                               children: [
-                                // Row(
-                                //   children: [
-                                //     Text("현재 재료와 매치율",style: Theme.of(context).textTheme.bodySmall,),
-                                //     Text(snapshot.data![index][0],style: Theme.of(context).textTheme.bodySmall,),
-                                //
-                                //   ],
-                                // ),
-
                                 CustomButton(
                                   onTap: (){
                                     Get.to(SelectedRecipePage(selectedFood: snapshot.data?[index][0]));
@@ -102,7 +94,14 @@ class _GptSuggestAnswerState extends State<GptSuggestAnswer> {
                                 textColor: mainText,
                                 color: Colors.black12,
                                 ),
-                                Text("필수 재료 : ${snapshot.data![index][1]}",style: Theme.of(context).textTheme.bodySmall,)
+                                Text("필수 재료 : ${snapshot.data![index][1]}",style: Theme.of(context).textTheme.bodySmall,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("현재 재료와 매치율 : ",style: Theme.of(context).textTheme.bodySmall,),
+                                    Text(snapshot.data![index][2],style: Theme.of(context).textTheme.bodySmall,),
+                                  ],
+                                ),
                               ],
                             ),
                           );

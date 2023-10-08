@@ -7,21 +7,105 @@ import 'dart:convert';
 
 import 'package:recipt/Server/JWT/jwt.dart';
 
+import 'dart:convert';
+import 'dart:typed_data';
+
 class MypageUser {
   final int userId;
   final String username;
+  final String loginId;
+  final String password;
+  final int age;
   final Uint8List profileData;
 
-  MypageUser(this.userId, this.username, this.profileData,);
+  final List<RegisterRecipe> registerRecipe;
 
-  factory MypageUser.fromJson(Map<String, dynamic> mainContent, String profile) {
+
+  MypageUser({
+    required this.userId,
+    required this.username,
+    required this.loginId,
+    required this.password,
+    required this.age,
+    required this.profileData,
+    required this.registerRecipe,
+  });
+
+  factory MypageUser.fromJson(Map<String, dynamic> jsonData, String profile) {
+    List<RegisterRecipe> toClass = (jsonData['registerResponseDtos'] as List)
+        .map((item) => RegisterRecipe.fromJson(item))
+        .toList();
+    print(toClass.toString());
     return MypageUser(
-      mainContent['userId'],
-      mainContent['username'],
-      base64Decode(profile ?? ''),
+      userId: jsonData['userId'],
+      username: jsonData['username'],
+      loginId: jsonData['loginId'],
+      password: jsonData['password'],
+      age: jsonData['age'],
+      profileData: base64Decode(profile ?? ''),
+      registerRecipe: toClass
     );
   }
 }
+
+class RecipeHeart {
+  final int userId;
+  final int recipeId;
+  final String foodName;
+  final String category;
+  final String ingredient;
+
+  RecipeHeart({
+    required this.userId,
+    required this.recipeId,
+    required this.foodName,
+    required this.category,
+    required this.ingredient,
+  });
+
+  factory RecipeHeart.fromJson(Map<String, dynamic> jsonData) {
+    return RecipeHeart(
+      userId: jsonData['userId'],
+      recipeId: jsonData['recipeId'],
+      foodName: jsonData['foodName'],
+      category: jsonData['category'],
+      ingredient: jsonData['ingredient'],
+    );
+  }
+}
+
+class RegisterRecipe {
+  final String comment;
+  final String category;
+  final String ingredient;
+  final String context;
+  final String thumbnailImage;
+  final List<String> images;
+  final DateTime lastModifiedDate;
+
+  RegisterRecipe({
+    required this.comment,
+    required this.category,
+    required this.ingredient,
+    required this.context,
+    required this.thumbnailImage,
+    required this.images,
+    required this.lastModifiedDate,
+  });
+
+  factory RegisterRecipe.fromJson(Map<String, dynamic> json) {
+    return RegisterRecipe(
+      comment: json['comment'],
+      category: json['category'],
+      ingredient: json['ingredient'],
+      context: json['context'],
+      thumbnailImage: json['thumbnailImage'],
+      images: List<String>.from(json['images']),
+      lastModifiedDate: DateTime.parse(json['lastModifiedDate']),
+    );
+  }
+}
+
 Future<MypageUser> fetchUser() async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
@@ -37,7 +121,9 @@ Future<MypageUser> fetchUser() async{
       }, // Content-Type 헤더 설정
     ),
   );
-  return MypageUser.fromJson(response.data['data'],response.data['profile']);
+  var result = MypageUser.fromJson(response.data['data'],response.data['profile']);
+  print(result);
+  return result;
 }
 //
 // class RegisterRecipe{

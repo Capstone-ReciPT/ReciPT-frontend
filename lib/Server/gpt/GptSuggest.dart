@@ -35,6 +35,7 @@ Future<List<List<String>>> fetchGPTsuggest(String ingre) async{
       }, // Content-Type 헤더 설정
     ),
   );
+  print(response.data);
   return parseStringToList(response.data);
 }
 
@@ -51,6 +52,7 @@ Future<List<List<String>>> parseStringToList(Map<String, dynamic> jsonData) {
     List<String> foodInfo = [
       item['recommendedFood'].toString(),
       ingredients, // 재료들은 한 문자열로 합쳐져 있습니다.
+      item['percent']
     ];
     result.add(foodInfo);
   }

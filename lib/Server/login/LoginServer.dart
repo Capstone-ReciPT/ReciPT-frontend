@@ -49,11 +49,13 @@ Future<bool> logout() async {
   );
   print(response);
 
-  if(response.data['state'] == 200){
-    return true;
-  }
-  else{
-    return false;
-  }
+  // if(response.data['state'] == 200){
+  //   return true;
+  // }
+  // else{
+  //   return false;
+  // }
 
+  return true;
 }
+
