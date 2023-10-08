@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Server/MainPageServer.dart';
-import 'package:recipt/View/Other/Ingredient.dart';
 import 'package:recipt/constans/colors.dart';
 
 class CustomBoardMenu extends StatelessWidget {

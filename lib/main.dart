@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/TotalController.dart';
 import 'package:recipt/Server/JWT/jwtCheck.dart';
-import 'package:recipt/View/BNB/Home/HomePage.dart';
-import 'package:recipt/View/BNB/Mypage.dart';
-import 'package:recipt/View/Other/Start/StartScreen.dart';
+import 'package:recipt/View/Home/Mypage.dart';
+import 'package:recipt/View/Home/main/HomePage.dart';
+import 'package:recipt/View/api/Yolo/FridgeRecipeSuggest.dart';
+import 'package:recipt/View/login/StartScreen.dart';
 import 'package:recipt/constans/colors.dart';
 import 'Server/JWT/jwt.dart';
-import 'View/BNB/Yolo/RecipeRecommend.dart';
-import 'View/BNB/Category.dart';
+import 'View/Home/Category.dart';
 import 'package:recipt/Controller/PageController.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -125,7 +125,7 @@ class MyApp extends StatelessWidget {
     return WillPopScope(
       onWillPop: () => onBackKey(context),
       child: SafeArea(child: Scaffold(
-          body: Obx(() => [HomePage(),SelectCategory(),YoloImage(),MyPage()][c.currentTab.value]),
+          body: Obx(() => [HomePage(),SelectCategory(),FridgeRecipeSuggest(),MyPage()][c.currentTab.value]),
           bottomNavigationBar: DefalutBNB()
       )),
     );

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import 'package:recipt/View/Other/Search/SearchPage.dart';
+import 'package:recipt/View/Search/SearchPage.dart';
 import 'package:recipt/constans/colors.dart';
 
 class CustomButton extends StatelessWidget {
@@ -63,7 +63,7 @@ class ButtonToSearchTab extends StatelessWidget {
       margin: EdgeInsets.only(top: 20,left: 5,right: 5,bottom: 10),
       child: TextButton(
         onPressed: (){
-          Get.to(SearchScreen());
+          Get.to(SearchPage());
         },
         style: ButtonStyle(
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(

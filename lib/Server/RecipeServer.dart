@@ -2,14 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RecipeDataInput{
+  bool heartCheck;
   int heartCount;
   int reviewCount;
   RecipeData data;
 
-  RecipeDataInput(this.heartCount,this.reviewCount,this.data);
+  RecipeDataInput(this.heartCheck,this.heartCount,this.reviewCount,this.data);
 
   factory RecipeDataInput.fromJson(Map<String, dynamic> mainContent) {
     return RecipeDataInput(
+      mainContent['heartCheck'],
       mainContent['heartCount'],
       mainContent['reviewCount'],
       RecipeData.fromJson(mainContent['data'],),
@@ -70,7 +72,7 @@ Future<RecipeDataInput> fetchRecipe(id) async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
   final response = await dio.get('$baseUrl/api/db/$id');
-
+  print(response.data);
   return makeRecipePage(response.data);
 }
 
