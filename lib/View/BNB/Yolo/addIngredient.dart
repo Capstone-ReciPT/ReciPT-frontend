@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/IngredientController.dart';
-import 'package:recipt/View/BNB/Yolo/GPTanswer.dart';
+import 'package:recipt/View/BNB/Yolo/GptSuggestAnswer.dart';
 import 'package:recipt/Widget/CustomTextFieldInUpload.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/constans/colors.dart';

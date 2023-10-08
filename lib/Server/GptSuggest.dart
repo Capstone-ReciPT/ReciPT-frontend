@@ -22,7 +22,7 @@ class GPTSuggest{
   }
 }
 
-Future<List<String>> fetchGPTsuggest(String ingre) async{
+Future<List<List<String>>> fetchGPTsuggest(String ingre) async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
   String jwt = await getJwt();
@@ -35,24 +35,28 @@ Future<List<String>> fetchGPTsuggest(String ingre) async{
       }, // Content-Type 헤더 설정
     ),
   );
-  print(response);
-  return parseStringToList(response.data['data']);
+  return parseStringToList(response.data);
 }
 
 
-List<String> parseStringToList(String jsonString) {
-  List<String> resultList = [];
+Future<List<List<String>>> parseStringToList(Map<String, dynamic> jsonData) {
+  final String innerData = jsonData['data'];
+  final Map<String, dynamic> parsedInnerData = jsonDecode(innerData);
+  final List<dynamic> responseList = parsedInnerData['response'];
 
-  // JSON 문자열을 파싱하여 Map 형태로 변환
-  Map<String, dynamic> parsedJson = jsonDecode(jsonString);
+  print(responseList);
+  List<List<String>> result = [];
+  for (var item in responseList) {
+    String ingredients = item['requiredIngredient'].toString();
+    List<String> foodInfo = [
+      item['recommendedFood'].toString(),
+      ingredients, // 재료들은 한 문자열로 합쳐져 있습니다.
+    ];
+    result.add(foodInfo);
+  }
 
-  // "recommendFood" 키의 값을 가져옴
-  String recommendFood = parsedJson['recommendFood'];
-
-  // 쉼표를 기준으로 문자열을 분리하여 리스트에 추가
-  resultList = recommendFood.split(',').map((e) => e.trim()).toList();
-
-  return resultList;
+  print(result);
+  return Future.value(result);
 }
 
 

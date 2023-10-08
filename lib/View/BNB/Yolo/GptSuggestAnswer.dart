@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Server/GPTRecipeServer.dart';
-import 'package:recipt/Server/GPTsend.dart';
+import 'package:recipt/Server/GptSuggest.dart';
 import 'package:recipt/View/BNB/Yolo/SelectedRecipePage.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import 'package:recipt/constans/colors.dart';
@@ -73,7 +73,7 @@ class _GPTanswerState extends State<GPTanswer> {
               SizedBox(height: 20,),
               Text('GPT의 추천 레시피',style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 34),),
               SizedBox(height: 70,),
-              FutureBuilder<List<String>>(
+              FutureBuilder<List<List<String>>>(
                   future: widget.GPTSuggestList,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -82,13 +82,28 @@ class _GPTanswerState extends State<GPTanswer> {
                         shrinkWrap: true,
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return CustomButton(
-                            onTap: (){
-                              Get.to(SelectedRecipe(selectedFood: snapshot.data?[index]));
-                            },
-                            text: snapshot.data?[index],
-                            textColor: mainText,
-                            color: Colors.black12,
+                          return Container(
+                            child: Column(
+                              children: [
+                                // Row(
+                                //   children: [
+                                //     Text("현재 재료와 매치율",style: Theme.of(context).textTheme.bodySmall,),
+                                //     Text(snapshot.data![index][0],style: Theme.of(context).textTheme.bodySmall,),
+                                //
+                                //   ],
+                                // ),
+
+                                CustomButton(
+                                  onTap: (){
+                                    Get.to(SelectedRecipe(selectedFood: snapshot.data?[index][0]));
+                                  },
+                                text: snapshot.data?[index][0],
+                                textColor: mainText,
+                                color: Colors.black12,
+                                ),
+                                Text(snapshot.data![index][1],style: Theme.of(context).textTheme.bodySmall,)
+                              ],
+                            ),
                           );
                           // return gptSelectContainer(context,snapshot.data?[index]);
                         },

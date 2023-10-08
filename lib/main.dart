@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/TotalController.dart';
+import 'package:recipt/Server/JWT/jwtCheck.dart';
 import 'package:recipt/View/BNB/Home/HomePage.dart';
 import 'package:recipt/View/BNB/Mypage.dart';
 import 'package:recipt/View/Other/Start/StartScreen.dart';
@@ -57,10 +58,12 @@ Future main() async {
         bottomNavigationBarTheme: BottomNavigationBarThemeData(),
       ),
       home : FutureBuilder<String>(
-        future: getJwt(),
+        future: checkIssue(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Scaffold(
+              body: CircularProgressIndicator(),
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {

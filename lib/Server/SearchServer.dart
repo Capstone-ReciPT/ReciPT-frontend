@@ -51,6 +51,7 @@ Future<List<CategoryRecipe>> fetchSearch(String userInput) async{
     options: Options(
       headers: {
         'accessToken': jwt,  // jwt 토큰 추가
+        'Authorization': 'Bearer $jwt',
       },
     ),
   );
