@@ -174,7 +174,6 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
     if(snapshot.data!.heartCheck){
       print("하트있음");
       setState(() {
-
         onLikeButtonTapped();
       });
     }
@@ -397,7 +396,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                     width: 270,
                     child: Text(
                       snapshot.data!.data.context[index],
-                      maxLines: 3,
+                      maxLines: 6,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
