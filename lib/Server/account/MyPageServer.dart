@@ -32,10 +32,11 @@ class MypageUser {
   });
 
   factory MypageUser.fromJson(Map<String, dynamic> jsonData, String profile) {
-    List<RegisterRecipe> toClass = (jsonData['registerResponseDtos'] as List)
+    List<dynamic>? rawList = jsonData['registerResponseDtos'];
+    List<RegisterRecipe> toClass = (rawList ?? [])
         .map((item) => RegisterRecipe.fromJson(item))
         .toList();
-    print(toClass.toString());
+
     return MypageUser(
       userId: jsonData['userId'],
       username: jsonData['username'],
@@ -75,6 +76,7 @@ class RecipeHeart {
 }
 
 class RegisterRecipe {
+  final String foodName;
   final String comment;
   final String category;
   final String ingredient;
@@ -84,6 +86,7 @@ class RegisterRecipe {
   final DateTime lastModifiedDate;
 
   RegisterRecipe({
+    required this.foodName,
     required this.comment,
     required this.category,
     required this.ingredient,
@@ -95,6 +98,7 @@ class RegisterRecipe {
 
   factory RegisterRecipe.fromJson(Map<String, dynamic> json) {
     return RegisterRecipe(
+      foodName : json['foodName'],
       comment: json['comment'],
       category: json['category'],
       ingredient: json['ingredient'],
@@ -122,7 +126,6 @@ Future<MypageUser> fetchUser() async{
     ),
   );
   var result = MypageUser.fromJson(response.data['data'],response.data['profile']);
-  print(result);
   return result;
 }
 //
