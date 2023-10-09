@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:recipt/Server/JWT/jwt.dart';
 
 class RecipeDataInput{
   bool heartCheck;
@@ -71,8 +72,17 @@ class RecipeData{
 Future<RecipeDataInput> fetchRecipe(id) async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
-  final response = await dio.get('$baseUrl/api/db/$id');
-  print(response.data);
+  String jwt = await getJwt();
+
+  final response = await dio.get(
+      '$baseUrl/api/db/$id',
+    options: Options(
+      headers: {
+        'accessToken': jwt,  // jwt 토큰 추가
+        'Authorization': 'Bearer $jwt',
+      },
+    ),
+  );
   return makeRecipePage(response.data);
 }
 

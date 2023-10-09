@@ -59,11 +59,6 @@ class PopularRecipe extends StatelessWidget {
                                 child: Stack(
                                   children: [
                                     Image.network(data.thumbnailImage ?? '',width:400,height: 220,fit: BoxFit.fill),
-                                    Positioned(
-                                      top: 5,
-                                      right: 5,
-                                      child: LikeButtonWidget(),
-                                    )
                                   ],
                                 ),
                               ),

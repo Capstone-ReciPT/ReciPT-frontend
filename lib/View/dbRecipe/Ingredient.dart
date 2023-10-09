@@ -52,11 +52,13 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
   final TotalController totalController = Get.put(TotalController());
   var heartCount;
   var recipeId;
-  var _isLiked = false;
+  var _isLiked;
+  var heartCountServer;
   bool isButtonDisabled = false; // 버튼 비활성화 여부를 나타내는 변수 추가
 
   onLikeButtonTapped() async {
     print('버튼 잠금 $isButtonDisabled');
+    heartCountServer = heartCount;
     if (isButtonDisabled) return; // 버튼이 비활성화된 경우 처리
     // 버튼 비활성화
     setState(() {
@@ -65,16 +67,17 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
 
     print('isliked = $_isLiked');
     if (!_isLiked) {
-      heartCount = await heartInsertFunc(recipeId);
+      heartCountServer = await heartInsertFunc(recipeId);
     } else {
-      heartCount = await heartCancelFunc(recipeId);
+      heartCountServer = await heartCancelFunc(recipeId);
     }
 
-    // 버튼 활성화
-    setState(() {
-      isButtonDisabled = false;
-      _isLiked = !_isLiked;
-    });
+    if(heartCountServer != heartCount){
+      setState(() {
+        isButtonDisabled = false;
+        _isLiked = !_isLiked;
+      });
+    }
 
     return;
   }
@@ -93,8 +96,8 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
             heartCount = snapshot.data?.heartCount;
             if (snapshot.hasData) {
               _isLiked = snapshot.data!.heartCheck;
-              print("하트체크가 있나요 ${snapshot.data?.heartCheck}");
-              print(_isLiked);
+              heartCount = snapshot.data!.heartCount;
+              print("서버에서 받아온 하트체크 $_isLiked");
               return SafeArea(
                   child: Scaffold(
                     body: Stack(
@@ -171,12 +174,6 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
   }
 
   scroll(snapshot,heartCount) {
-    if(snapshot.data!.heartCheck){
-      print("하트있음");
-      setState(() {
-        onLikeButtonTapped();
-      });
-    }
     return DraggableScrollableSheet(
         initialChildSize: 0.6,
         maxChildSize: 1.0,

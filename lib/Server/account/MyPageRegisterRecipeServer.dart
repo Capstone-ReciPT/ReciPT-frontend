@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:recipt/Server/JWT/jwt.dart';
@@ -29,7 +32,7 @@ class UserData {
     required this.userRegisterDtos,
   });
 
-  factory UserData.fromJson(Map<String, dynamic> json) {
+  factory UserData.fromJson(Map<String, dynamic> json,data) {
     return UserData(
       userId: json['userId'],
       username: json['username'],
@@ -42,7 +45,7 @@ class UserData {
       recipeReviewResponseDtos: json['recipeReviewResponseDtos'],
       registerRecipeReviewResponseDtos: json['registerRecipeReviewResponseDtos'],
       userRegisterDtos: (json['userRegisterDtos'] as List)
-          .map((i) => UserRegisterDto.fromJson(i))
+          .map((i) => UserRegisterDto.fromJson(i,data))
           .toList(),
     );
   }
@@ -57,7 +60,7 @@ class UserRegisterDto {
   int likeCount;
   double ratingResult;
   int ratingPeople;
-  String thumbnailImage;
+  Uint8List thumbnailImage;
   List<String> images;
   String lastModifiedDate;
 
@@ -75,7 +78,7 @@ class UserRegisterDto {
     required this.lastModifiedDate,
   });
 
-  factory UserRegisterDto.fromJson(Map<String, dynamic> json) {
+  factory UserRegisterDto.fromJson(Map<String, dynamic> json,data) {
     return UserRegisterDto(
       foodName: json['foodName'],
       comment: json['comment'],
@@ -85,7 +88,7 @@ class UserRegisterDto {
       likeCount: json['likeCount'],
       ratingResult: json['ratingResult'].toDouble(),
       ratingPeople: json['ratingPeople'],
-      thumbnailImage: json['thumbnailImage'],
+      thumbnailImage: base64Decode(data['registerProfile'] ?? ''),
       images: List<String>.from(json['images']),
       lastModifiedDate: json['lastModifiedDate'],
     );
@@ -107,6 +110,6 @@ Future<UserData> fetchUserRegisterRecipe() async{
       }, // Content-Type 헤더 설정
     ),
   );
-  var result = UserData.fromJson(response.data['data']);
+  var result = UserData.fromJson(response.data['data'],response.data);
   return result;
 }

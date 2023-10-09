@@ -73,7 +73,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                   title: Obx(() => Text('Step ${menuController.index.value+1}/${snapshot.data!.data.context.length}',style: TextStyle(fontWeight: FontWeight.w400,color: Colors.black))),
                   actions: [
                     IconButton(onPressed: (){
-                      Get.to(MyApp());
+                      Get.offAll(MyApp());
                       menuController.index.value = 0;
                     }, icon: Icon(Icons.close),color: Colors.black,)
                   ],

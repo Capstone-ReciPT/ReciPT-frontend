@@ -56,11 +56,6 @@ class TodayRecipe extends StatelessWidget {
                             child: Stack(
                               children: [
                                 Image.network(snapshot.data![index].thumbnailImage,fit: BoxFit.fill,height: 200,),
-                                Positioned(
-                                  top: 5,
-                                  right: 5,
-                                  child: LikeButtonWidget(),
-                                )
                               ],
                             )
                         ),
