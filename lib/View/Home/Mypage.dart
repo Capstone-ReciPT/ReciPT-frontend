@@ -20,75 +20,75 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<MypageUser>(
-        future: fetchUser(),
-        builder: (BuildContext context, AsyncSnapshot<MypageUser> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // 데이터를 기다리는 동안 로딩 인디케이터 표시
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            // 오류가 발생한 경우
-            return Text("오류: ${snapshot.error}");
-          } else if (!snapshot.hasData) {
-            // 데이터가 없는 경우
-            return Text("데이터가 없습니다.");
-          } else {
-            MypageUser user = snapshot.data!;
-            // 받아온 사용자 데이터를 사용하여 위젯 구성
-            return DefaultTabController(
-              length: 3,
-              child: Scaffold(
-                body: Column(
-                  children: [
-                    Container(
-                      width: 800,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1),
-                        color: Colors.black87,
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 40),
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Colors.blueGrey,
-                              backgroundImage: MemoryImage(user.profileData), // 서버 이미지 사용
-                            ),
+      future: fetchUser(),
+      builder: (BuildContext context, AsyncSnapshot<MypageUser> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // 데이터를 기다리는 동안 로딩 인디케이터 표시
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // 오류가 발생한 경우
+          return Text("오류: ${snapshot.error}");
+        } else if (!snapshot.hasData) {
+          // 데이터가 없는 경우
+          return Text("데이터가 없습니다.");
+        } else {
+          MypageUser user = snapshot.data!;
+          // 받아온 사용자 데이터를 사용하여 위젯 구성
+          return DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              body: Column(
+                children: [
+                  Container(
+                    width: 800,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1),
+                      color: Colors.black87,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 40),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.blueGrey,
+                            backgroundImage: MemoryImage(user.profile), // 서버 이미지 사용
                           ),
-                          SizedBox(width: 50,),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(user.username, style: TextStyle(color: Colors.white, fontSize: 30),), // 사용자 이름 사용
-                              SizedBox(height: 8,),
-                              TextButton(
-                                onPressed: (){
-                                  Get.to(UploadTab());
-                                },
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      side: BorderSide(width: 1, color: Colors.greenAccent),
-                                    ),
+                        ),
+                        SizedBox(width: 50,),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(user.data.username, style: TextStyle(color: Colors.white, fontSize: 30),), // 사용자 이름 사용
+                            SizedBox(height: 8,),
+                            TextButton(
+                              onPressed: (){
+                                Get.to(UploadTab());
+                              },
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    side: BorderSide(width: 1, color: Colors.greenAccent),
                                   ),
                                 ),
-                                child: Text('레시피 등록', style: TextStyle(color: Colors.greenAccent),),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
+                              ),
+                              child: Text('레시피 등록', style: TextStyle(color: Colors.greenAccent),),
+                            )
+                          ],
+                        )
+                      ],
                     ),
-                    SizedBox(height: 8,),
-                    Notice(user),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 8,),
+                  Notice(user),
+                ],
               ),
-            );
-          }
-        },
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -117,13 +117,13 @@ class _MyPageState extends State<MyPage> {
                   ),
                   child: TabBarView(children: <Widget>[
                     Container(
-                      child: MyRecipe(),
+                      child: MyRecipe(user),
                     ),
                     Container(
                       child: FoodReview(),
                     ),
                     Container(
-                      child: MyFavorite(),
+                      child: MyFavorite(user),
                     ),
                   ])
               )
@@ -131,8 +131,97 @@ class _MyPageState extends State<MyPage> {
         ),
       ]),
     );
-  }
 
+
+  }
+  MyRecipe(user){
+    if (user.data.userRegisterDtos.length == 0){
+      return Center(
+        child: Text('등록한 게시물이 없습니다!',style: context.textTheme.displayLarge,),
+      );
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: user.data.userRegisterDtos.length,
+      itemBuilder: (context, index) {
+        return Container(
+            decoration: BoxDecoration(border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey, width: 1,
+                )
+            )),
+            margin: EdgeInsets.only(bottom: 10),
+            child: TextButton(
+              child: Row(
+                children: [
+                  Image(
+                    image: MemoryImage(user.data.userRegisterDtos[index].thumbnailImageByte),
+                    width: 100,
+                    height: 100,
+                  ),
+                  SizedBox(width: 12,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(user.data.userRegisterDtos[index].foodName,style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
+                      Text(user.data.userRegisterDtos[index].category,style: TextStyle(color: Colors.black45)),
+                      Text(user.data.userRegisterDtos[index].comment,style: TextStyle(color: Colors.black45)),
+                    ],
+                  ),
+                ],
+              ),
+              onPressed: (){
+                Get.to(CategoryClick());
+              },
+            )
+        );
+      },
+    );
+  }
+  MyFavorite(user){
+    if (user.data.recipeHeartDtos.length == 0){
+      return Center(
+        child: Text('좋아요한 게시물이 없습니다!',style: context.textTheme.displayLarge,),
+      );
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: user.data.recipeHeartDtos.length,
+      itemBuilder: (context, index) {
+        return Container(
+            decoration: BoxDecoration(border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey, width: 1,
+                )
+            )),
+            margin: EdgeInsets.only(bottom: 10),
+            child: TextButton(
+              child: Row(
+                children: [
+                  // Image(
+                  //   image: MemoryImage(user.data.recipeHeartDtos[index].thumbnailImageByte),
+                  //   width: 100,
+                  //   height: 100,
+                  // ),
+                  SizedBox(width: 12,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(user.data.recipeHeartDtos[index].foodName,style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
+                      Text(user.data.recipeHeartDtos[index].category,style: TextStyle(color: Colors.black45)),
+                    //   Text(user.data.recipeHeartDtos[index].comment,style: TextStyle(color: Colors.black45)),
+                    ],
+                  ),
+                ],
+              ),
+              onPressed: (){
+                Get.to(CategoryClick());
+              },
+            )
+        );
+      },
+    );
+  }
 }
 
 class FoodReview extends StatelessWidget {

@@ -20,7 +20,7 @@ class RecipeDataInput{
   }
 }
 class RecipeData{
-  int recipeId;
+  var recipeId;
   String foodName;
   List<String> ingredient;
   String category;
@@ -31,7 +31,7 @@ class RecipeData{
   int viewCount;
   double ratingScore;
   int ratingPeople;
-  List<ReviewResponseDtos> reviewResponseDtos;
+  List<ReviewResponseDto> reviewResponseDtos;
   List<HeartDtos> heartDtos;
 
   RecipeData(
@@ -43,12 +43,19 @@ class RecipeData{
       );
 
   factory RecipeData.fromJson(Map<String, dynamic> mainContent) {
+    print(mainContent);
     List<String> imageList = mainContent['image'].split(', ');
     List<String> ingredientList = mainContent['ingredient'].split(',');
     List<String> contextList = mainContent['context'].split(new RegExp(r'\d+\.'));
     contextList.removeAt(0);
-    List<ReviewResponseDtos> reviewList = (mainContent['reviewResponseDtos'] as List?)?.map((item) => ReviewResponseDtos.fromJson(item)).toList() ?? [];
+    List<ReviewResponseDto> reviewList = (mainContent['reviewResponseDtos'] as List?)?.map((item) => ReviewResponseDto.fromJson(item)).toList() ?? [];
     List<HeartDtos> heartList = (mainContent['heartDtos'] as List?)?.map((item) => HeartDtos.fromJson(item)).toList() ?? [];
+
+    if (mainContent['recipeId'] is String){
+      print('string');
+    } else if(mainContent['recipeId'] is int){
+      print("int");
+    }
 
     return RecipeData(
       mainContent['recipeId'] ?? 0,
@@ -83,34 +90,43 @@ Future<RecipeDataInput> fetchRecipe(id) async{
       },
     ),
   );
-  return makeRecipePage(response.data);
+  var a = makeRecipePage(response.data);
+  return a;
 }
 
 RecipeDataInput makeRecipePage(Map<String, dynamic> data) {
   return RecipeDataInput.fromJson(data);
 }
 
-class ReviewResponseDtos{
-  int reviewId;
-  String username;
-  String comment;
-  int likeCount;
-  double ratingScore;
-  String recipeThumbnailImage;
+class ReviewResponseDto {
+  final String foodName;
+  final String username;
+  final String comment;
+  final int likeCount;
+  final double ratingScore;
+  final String recipeThumbnailImage;
 
-  ReviewResponseDtos(this.reviewId,this.username,this.comment,this.likeCount,this.ratingScore,this.recipeThumbnailImage);
+  ReviewResponseDto({
+    required this.foodName,
+    required this.username,
+    required this.comment,
+    required this.likeCount,
+    required this.ratingScore,
+    required this.recipeThumbnailImage,
+  });
 
-  factory ReviewResponseDtos.fromJson(Map<String, dynamic> json) {
-    return ReviewResponseDtos(
-      json['reviewId'],
-      json['username'],
-      json['comment'],
-      json['likeCount'],
-      json['ratingScore'],
-      json['recipeThumbnailImage'],
+  factory ReviewResponseDto.fromJson(Map<String, dynamic> json) {
+    return ReviewResponseDto(
+      foodName: json['foodName'],
+      username: json['username'],
+      comment: json['comment'],
+      likeCount: json['likeCount'],
+      ratingScore: json['ratingScore'].toDouble(),
+      recipeThumbnailImage: json['recipeThumbnailImage'],
     );
   }
 }
+
 
 class HeartDtos{
   int userId;
