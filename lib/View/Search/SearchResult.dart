@@ -40,44 +40,104 @@ class SearchResult extends StatelessWidget {
                     ),
                   ),
                 ),
-                FutureBuilder<List<CategoryRecipe>>(
+                SizedBox(height: 20,),
+                FutureBuilder<SearchJson>(
                     future: fetchSearch(userInput),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        if(snapshot.data!.length > 0){
-                        return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                                decoration: BoxDecoration(border: Border(
-                                    bottom: BorderSide(
-                                      color: Colors.grey, width: 1,
+                        int resultSize =  snapshot.data!.recipeCount + snapshot.data!.registerRecipeCount;
+
+                        if((resultSize) > 0){
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Text('ReciPT 레시피',style: Theme.of(context).textTheme.displayMedium,),
+                              SizedBox(height: 20,),
+                              snapshot.data!.recipeCount > 0 ?
+                              ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.recipeCount,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                      decoration: BoxDecoration(border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors.grey, width: 1,
+                                          )
+                                      )),
+                                      margin: EdgeInsets.only(bottom: 10),
+                                      child: TextButton(
+                                        child: Row(
+                                          children: [
+                                            Image.network(snapshot.data!.recipeList[index].thumbnailImage, width: 100, height: 100),
+                                            SizedBox(width: 12,),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(snapshot.data!.recipeList[index].foodName,style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
+                                                Text(snapshot.data!.recipeList[index].category,style: TextStyle(color: Colors.black45)),
+                                                Text('',style: TextStyle(color: Colors.black),),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        onPressed: (){
+                                          Get.to(ProductItemScreen(id: snapshot.data!.recipeList[index].recipeId));
+                                        },
+                                      )
+                                  );
+                                },
+                              ) : Text('등록된 레시피가 없습니다.',style: Theme.of(context).textTheme.bodySmall,),
+                              SizedBox(height: 40,),
+                              Divider(
+                                color: Colors.grey,
+                                height: 5,
+                                thickness: 2,
+                              ),
+                              SizedBox(height: 20,),
+                              Text('유저 등록 레시피',style: Theme.of(context).textTheme.displayMedium,),
+                              SizedBox(height: 12,),
+                              ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.registerRecipeCount,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                    decoration: BoxDecoration(border: Border(
+                                        bottom: BorderSide(
+                                          color: Colors.grey, width: 1,
+                                        )
+                                    )),
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    child: TextButton(
+                                        child: Row(
+                                            children: [
+                                              Image(
+                                                  image: MemoryImage(snapshot.data!.registerRecipeList[index].thumbnailImageByte),
+                                                width: 100,
+                                                height: 100,
+                                              ),
+                                        // : Image.network(snapshot.data![index].thumbnailImage, width: 100, height: 100),
+                                              SizedBox(width: 12,),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(snapshot.data!.registerRecipeList[index].foodName,style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
+                                                  Text(snapshot.data!.registerRecipeList[index].category,style: TextStyle(color: Colors.black45)),
+                                                  Text('',style: TextStyle(color: Colors.black),),
+                                                ],
+                                              ),
+                                            ],
+                                        ),
+                                      onPressed: (){
+                                          Get.to(ProductItemScreen(id: snapshot.data!.registerRecipeList[index].registerId));
+                                          },
                                     )
-                                )),
-                                margin: EdgeInsets.only(bottom: 10),
-                                child: TextButton(
-                                  child: Row(
-                                    children: [
-                                      Image.network(snapshot.data![index].thumbnailImage, width: 100, height: 100),
-                                      SizedBox(width: 12,),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(snapshot.data![index].foodName.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
-                                          Text(snapshot.data![index].category.toString(),style: TextStyle(color: Colors.black45)),
-                                          Text('',style: TextStyle(color: Colors.black),),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  onPressed: (){
-                                    Get.to(ProductItemScreen(id: snapshot.data![index].recipeId));
-                                  },
-                                )
-                            );
-                          },
+                                );
+                              },
+                            )
+                            ],
+                          ),
                         );}
                         else {
                           return Column(

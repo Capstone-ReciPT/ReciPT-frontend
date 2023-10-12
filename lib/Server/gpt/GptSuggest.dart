@@ -26,6 +26,10 @@ Future<List<List<String>>> fetchGPTsuggest(String ingre) async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
   String jwt = await getJwt();
+  if (ingre.endsWith(", ")) {
+    ingre = ingre.substring(0, ingre.length - 2);
+  }
+  print(ingre);
   final response = await dio.post('$baseUrl/api/chat/send',
       data: {ingre},
     options: Options(
@@ -45,7 +49,6 @@ Future<List<List<String>>> parseStringToList(Map<String, dynamic> jsonData) {
   final Map<String, dynamic> parsedInnerData = jsonDecode(innerData);
   final List<dynamic> responseList = parsedInnerData['response'];
 
-  print(responseList);
   List<List<String>> result = [];
   for (var item in responseList) {
     String ingredients = item['requiredIngredient'].toString();

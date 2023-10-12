@@ -1,13 +1,9 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Server/gpt/GPTRecipeServer.dart';
+import 'package:recipt/Widget/Floating_Button.dart';
 import 'package:recipt/constans/colors.dart';
-import 'package:recipt/main.dart';
 
 class SelectedRecipePage extends StatefulWidget {
   SelectedRecipePage({required this.selectedFood,Key? key}) : super(key: key);
@@ -29,17 +25,16 @@ class _SelectedRecipePageState extends State<SelectedRecipePage> {
           return AlertDialog(
             backgroundColor: Color(0xFFFFFFFF),
             title: Text(
-              'GPT 레시피를 종료하시겠습니까?',
+              '이전 메뉴로 돌아가시겠습니까?',
               style: TextStyle(color: mainText,fontSize: 18),
             ),
             actions: [
               TextButton(
                   onPressed: () async {
                     //onWillpop에 true가 전달되어 앱이 종료 된다.
-                    fetchGPTRefresh();
-                    Get.offAll(MyApp());
+                    Get.back();
                   },
-                  child: Text('끝내기',style: TextStyle(color: SecondaryText),)),
+                  child: Text('예',style: TextStyle(color: SecondaryText),)),
               TextButton(
                   onPressed: () {
                     //onWillpop에 false 전달되어 앱이 종료되지 않는다.
@@ -93,6 +88,13 @@ class _SelectedRecipePageState extends State<SelectedRecipePage> {
                   //     },
                   //     child: canSttFlag == true ? Icon(Icons.stop) : Icon(Icons.keyboard_voice)
                   // ),
+                  floatingActionButton: FloatingActionButton(
+                      backgroundColor: Colors.green,
+                      onPressed: (){
+                        // fetchGPTRecipeSave()
+                      },
+                      child: floatingButtons()
+                  ),
                 ),
               );
             }
@@ -125,8 +127,7 @@ class _SelectedRecipePageState extends State<SelectedRecipePage> {
       padding: const EdgeInsets.all(20.0),
       child: InkWell(
         onTap: () {
-          fetchGPTRefresh();
-          Get.to(MyApp());
+          Get.back();
         },
         child: Container(
           clipBehavior: Clip.hardEdge,
@@ -165,8 +166,8 @@ class _SelectedRecipePageState extends State<SelectedRecipePage> {
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(20),
-                  topRight: const Radius.circular(20)),
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20)),
             ),
             child: SingleChildScrollView(
               controller: scrollController,

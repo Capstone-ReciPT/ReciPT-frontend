@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:recipt/Server/category/CategoryServer.dart';
@@ -6,16 +9,16 @@ import 'package:recipt/Server/JWT/jwt.dart';
 class SearchJson{
   int recipeCount;
   int registerRecipeCount;
-  RecipeList recipeList;
-  final registerRecipeList;
+  List<RecipeList> recipeList;
+  List<RegisterRecipeList> registerRecipeList;
 
   SearchJson(this.recipeCount,this.registerRecipeCount,this.recipeList,this.registerRecipeList);
   factory SearchJson.fromJson(Map<String, dynamic> mainContent) {
     return SearchJson(
-      mainContent['heartCount'],
-      mainContent['reviewCount'],
-      RecipeList.fromJson(mainContent['data'],),
-      mainContent['registerRecipeList']
+      mainContent['recipeCount'],
+      mainContent['registerRecipeCount'],
+        (mainContent['recipeList'] as List).map((item) => RecipeList.fromJson(item)).toList(),
+        (mainContent['registerRecipeList'] as List).map((item) => RegisterRecipeList.fromJson(item)).toList()
     );
   }
 }
@@ -33,16 +36,49 @@ class RecipeList{
     return RecipeList(
       mainContent['recipeId'] ?? 0,
       mainContent['foodName'] ?? '',
-      mainContent['thumbnailImage'] ?? 'https://previews.123rf.com/images/urfingus/urfingus1406/urfingus140600001/29322328-%EC%A0%91%EC%8B%9C%EC%99%80-%ED%8F%AC%ED%81%AC%EC%99%80-%EC%B9%BC%EC%9D%84-%EB%93%A4%EA%B3%A0-%EC%86%90%EC%9D%84-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD.jpg',
+      mainContent['thumbnailImage'] ?? '',
       mainContent['likeCount'] ?? 0,
       mainContent['category'] ?? '',
     );
   }
 }
 
+class RegisterRecipeList{
+  final int registerId;
+  final String username;
+  final String foodName;
+  final int likeCount;
+  final String category;
+  final String thumbnailImage;
+  final Uint8List thumbnailImageByte;
+
+  RegisterRecipeList({
+    required this.registerId,
+    required this.username,
+    required this.foodName,
+    required this.likeCount,
+    required this.category,
+    required this.thumbnailImage,
+    required this.thumbnailImageByte,
+  });
+
+  factory RegisterRecipeList.fromJson(Map<String, dynamic> json) {
+    print(json);
+    return RegisterRecipeList(
+      registerId: json['registerId'],
+      username: json['username'],
+      foodName: json['foodName'],
+      likeCount: json['likeCount'],
+      category: json['category'],
+      thumbnailImage: json['thumbnailImage'],
+      thumbnailImageByte: base64Decode(json['thumbnailImageByte']),
+    );
+  }
+}
 
 
-Future<List<CategoryRecipe>> fetchSearch(String userInput) async{
+
+Future<SearchJson> fetchSearch(String userInput) async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
   String jwt = await getJwt();
@@ -55,17 +91,10 @@ Future<List<CategoryRecipe>> fetchSearch(String userInput) async{
       },
     ),
   );
+  print(response.data);
   return makeSearchedList(response.data);
 }
 
-List<CategoryRecipe> makeSearchedList(Map<String, dynamic> data) {
-  List<CategoryRecipe> res  = [];
-
-  for(int i = 0; i < data['recipeCount']; i++) {
-    res.add(CategoryRecipe.fromJson(data['recipeList'][i]));
-  }
-  for(int i = 0; i < data['registerRecipeCount']; i++) {
-    res.add(CategoryRecipe.fromJson(data['registerRecipeList'][i]));
-  }
-  return res;
+SearchJson makeSearchedList(Map<String, dynamic> data) {
+  return SearchJson.fromJson(data);
 }

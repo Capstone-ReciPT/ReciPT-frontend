@@ -23,8 +23,6 @@ Future<String> fetchChat(userRequest) async{
   final dio = Dio();
   String jwt = await getJwt();
 
-  fetchGPTRefresh();
-
   final response = await dio.post(
       '$baseUrl/api/chat/recommend',
     data: {userRequest},

@@ -45,15 +45,24 @@ Future<bool> fetchUploadRecipe(
 
   final thumbnailBinary = MultipartFile.fromFileSync(thumbnail.path,  contentType: MediaType("image", "jpg"));
   final List<MultipartFile> files = images.map((img) => MultipartFile.fromFileSync(img.path,  contentType: MediaType("image", "jpg"))).toList();
-  recipe.removeWhere((element) => element == null);
-  print(recipe);
+
+  String ingredientsString = ingredients.join(', ');
+  print(ingredientsString);
+  String recipeString = recipe.asMap().entries.map((entry) {
+    int idx = entry.key + 1;
+    String value = entry.value;
+    return '$idx. $value.';
+  }).join(' ');(', ');
+
+  print(recipeString);
+
   FormData formData = FormData.fromMap({
     'thumbnail': thumbnailBinary,
     'foodName': foodName,
     'comment': comment,
     'category': category,
-    'ingredients': ingredients,
-    'contexts': recipe,
+    'ingredients': ingredientsString,
+    'contexts': recipeString,
     'images': files,
   });
 

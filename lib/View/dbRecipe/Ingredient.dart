@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -54,6 +55,8 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
   var recipeId;
   var _isLiked;
   var heartCountServer;
+
+  var reFlag;
   bool isButtonDisabled = false; // 버튼 비활성화 여부를 나타내는 변수 추가
 
   onLikeButtonTapped() async {
@@ -89,22 +92,48 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
         Get.offAll(MyApp());
         return Future.value(true);
       },
-      child: FutureBuilder<RecipeDataInput>(
+      child: FutureBuilder<RecipeDataInputFlag>(
           future: fetchRecipe(widget.id),
           builder: (context, snapshot) {
-            recipeId = snapshot.data?.data.recipeId;
-            heartCount = snapshot.data?.heartCount;
+            print(snapshot.data?.registerFlag);
             if (snapshot.hasData) {
-              _isLiked = snapshot.data!.heartCheck;
-              heartCount = snapshot.data!.heartCount;
+              recipeId = snapshot.data?.recipeDataInput.data.recipeId;
+              _isLiked = snapshot.data!.recipeDataInput.heartCheck;
+              heartCount = snapshot.data!.recipeDataInput.heartCount;
               print("서버에서 받아온 하트체크 $_isLiked");
-              return SafeArea(
+              return (snapshot.data!.registerFlag == true) ?
+              SafeArea(
                   child: Scaffold(
                     body: Stack(
                       children: [
                         SizedBox(
                           width: double.infinity,
-                          child: Image.network(snapshot.data!.data.thumbnailImage),
+                          child: Image(
+                              image: MemoryImage(MemoryImage(snapshot.data!.recipeDataInput.data.thumbnailImageBytes) as Uint8List)
+                          )
+                        ),
+                        buttonArrow(context),
+                        scroll(snapshot,heartCount),
+                      ],
+                    ),
+                    floatingActionButton: FloatingActionButton(
+                      onPressed: (){
+                        Get.to(RecipeMainPage(id: widget.id,));
+                      },
+                      child: Icon(Icons.navigate_next),
+                      heroTag: 'ToRecipe',
+                    ),
+                  ))
+                  : SafeArea(
+                  child: Scaffold(
+                    body: Stack(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Image.network(snapshot.data!.recipeDataInput.data.thumbnailImage),
+                          // child: reFlag
+                          //     ? Image(image: MemoryImage(MemoryImage(snapshot.data!.recipeDataInput.data.thumbnailImageBytes) as Uint8List))
+                          //     : Image.network(snapshot.data!.recipeDataInput.data.thumbnailImage),
                         ),
                         buttonArrow(context),
                         scroll(snapshot,heartCount),
@@ -209,7 +238,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                   Row(
                     children: [
                       Text(
-                        snapshot.data!.data.foodName,
+                        snapshot.data!.recipeDataInput.data.foodName,
                         style: Theme.of(context).textTheme.displayMedium,
                       ),
                       const Spacer(),
@@ -320,7 +349,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: snapshot.data!.data.ingredient.length,
+                    itemCount: snapshot.data?.recipeDataInput.data.ingredient.length,
                     itemBuilder: (context, index) => ingredients(context,snapshot,index),
                   ),
                   const Padding(
@@ -339,7 +368,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: snapshot.data!.data.context.length,
+                    itemCount: snapshot.data?.recipeDataInput.data.context.length,
                     itemBuilder: (context, index) => steps(context, index,snapshot),
                   ),
                 ],
@@ -366,7 +395,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
             width: 10,
           ),
           Text(
-            snapshot.data!.data.ingredient[index],
+            snapshot.data?.recipeDataInput.data.ingredient[index],
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
@@ -392,7 +421,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                   SizedBox(
                     width: 270,
                     child: Text(
-                      snapshot.data!.data.context[index],
+                      snapshot.data?.recipeDataInput.data.context[index],
                       maxLines: 6,
                       style: Theme.of(context)
                           .textTheme
@@ -403,13 +432,13 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  index >= snapshot.data!.data.image.length
+                  index >= snapshot.data!.recipeDataInput.data.image.length
                       ? Image.network(
                     'https://previews.123rf.com/images/urfingus/urfingus1406/urfingus140600001/29322328-%EC%A0%91%EC%8B%9C%EC%99%80-%ED%8F%AC%ED%81%AC%EC%99%80-%EC%B9%BC%EC%9D%84-%EB%93%A4%EA%B3%A0-%EC%86%90%EC%9D%84-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD.jpg',
                     height: 200,
                     width: 300,
                   ) : Image.network(
-                    snapshot.data!.data.image[index],
+                    snapshot.data!.recipeDataInput.data.image[index],
                     height: 200,
                     width: 300,
                     fit: BoxFit.fill,
