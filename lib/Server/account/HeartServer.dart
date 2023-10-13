@@ -12,7 +12,7 @@ Future<int> heartInsertFunc(id) async {
   String? baseUrl = dotenv.env['BASE_URL'];
   String jwt = await getJwt();
   var response = await dio.post(
-      '$baseUrl/api/db/insert/${id.toString()}',
+      '$baseUrl/api/db/insert/$id',
       options: Options(
         headers: {
           'Authorization': 'Bearer $jwt',
@@ -20,33 +20,46 @@ Future<int> heartInsertFunc(id) async {
         },
       ),
   );
-  print(response);
+  print(response.data);
+  if(response.data['code'] == 500){
+    response = await dio.post(
+      '$baseUrl/api/register/insert/$id',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $jwt',
+          'accessToken': jwt,
+        },
+      ),
+    );
+  }
   return response.data['heartCount'];
-
 }
 
 Future<int> heartCancelFunc(id) async {
   final dio = Dio();
   String? baseUrl = dotenv.env['BASE_URL'];
   var jwt = await getJwt();
-  try {
-    var response = await dio.post(
-      '$baseUrl/api/db/cancel/$id',
+  var response = await dio.post(
+    '$baseUrl/api/db/cancel/$id',
+    options: Options(
+      headers: {
+        'Authorization': 'Bearer $jwt',
+        'accessToken': jwt,
+      },
+    ),
+  );
+  print(response.data);
+  if(response.data['code'] == 500){
+    response = await dio.post(
+      '$baseUrl/api/register/cancel/$id',
       options: Options(
         headers: {
-          'Authorization': 'Bearer $jwt',  // jwt 토큰 추가
+          'Authorization': 'Bearer $jwt',
+          'accessToken': jwt,
         },
       ),
     );
-    if (response.statusCode == 200) {
-      // 요청이 성공한 경우
-      return response.data['heartCount'];
-    } else {
-      // 요청이 실패한 경우
-      return 0;
-    }
-  } catch (e) {
-    print('Error: $e');
-    return 0;
   }
+
+  return response.data['heartCount'];
 }

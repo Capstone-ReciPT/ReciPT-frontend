@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipt/Server/JWT/jwt.dart';
-import 'package:recipt/Server/account/MyPageRegisterRecipeServer.dart';
 import 'package:recipt/View/Home/Category.dart';
-import 'package:recipt/View/Home/MypageRecipe.dart';
 import 'package:recipt/View/Upload/UploadCoverAndDes.dart';
-import 'package:recipt/constans/colors.dart';
+import 'package:recipt/View/dbRecipe/Ingredient.dart';
 
 import '../../Server/account/MyPageServer.dart';
 
@@ -19,9 +16,9 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<MypageUser>(
+    return FutureBuilder<UserProfile>(
       future: fetchUser(),
-      builder: (BuildContext context, AsyncSnapshot<MypageUser> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // 데이터를 기다리는 동안 로딩 인디케이터 표시
           return CircularProgressIndicator();
@@ -32,7 +29,7 @@ class _MyPageState extends State<MyPage> {
           // 데이터가 없는 경우
           return Text("데이터가 없습니다.");
         } else {
-          MypageUser user = snapshot.data!;
+          UserData user = snapshot.data!.data;
           // 받아온 사용자 데이터를 사용하여 위젯 구성
           return DefaultTabController(
             length: 3,
@@ -53,14 +50,14 @@ class _MyPageState extends State<MyPage> {
                           child: CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.blueGrey,
-                            backgroundImage: MemoryImage(user.profile), // 서버 이미지 사용
+                            backgroundImage: MemoryImage(snapshot.data!.profile), // 서버 이미지 사용
                           ),
                         ),
                         SizedBox(width: 50,),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(user.data.username, style: TextStyle(color: Colors.white, fontSize: 30),), // 사용자 이름 사용
+                            Text(user.username, style: TextStyle(color: Colors.white, fontSize: 30),), // 사용자 이름 사용
                             SizedBox(height: 8,),
                             TextButton(
                               onPressed: (){
@@ -171,7 +168,7 @@ class _MyPageState extends State<MyPage> {
                 ],
               ),
               onPressed: (){
-                Get.to(CategoryClick());
+                Get.to(ProductItemScreen(id: user.data.userRegisterDtos[index].recipeId,));
               },
             )
         );
@@ -215,7 +212,7 @@ class _MyPageState extends State<MyPage> {
                 ],
               ),
               onPressed: (){
-                Get.to(CategoryClick());
+                Get.to(ProductItemScreen(id: user.data.recipeHeartDtos[index].recipeId,));
               },
             )
         );

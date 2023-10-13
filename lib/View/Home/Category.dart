@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Server/category/CategoryServer.dart';
@@ -119,15 +121,41 @@ class BoardPage extends StatelessWidget {
                   ),
                 ),
               ),
-              FutureBuilder<List<CategoryRecipe>>(
+              FutureBuilder<RecipeResponse>(
                   future: fetchCategory(selectedCategory),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
+                      final items = [
+                        ...snapshot.data!.recipeList.map((recipe) => Item(
+                            id: recipe.recipeId,
+                            thumbnailImage: recipe.thumbnailImage,
+                            thumbnailImageByte: null,
+                            name: recipe.foodName,
+                            category: recipe.category)),
+                        ...snapshot.data!.registerRecipeList.map((recipe) => Item(
+                            id: recipe.registerId,
+                            thumbnailImage: null,
+                            thumbnailImageByte: recipe.thumbnailImageByte,
+                            name: recipe.foodName,
+                            category: recipe.category))
+                      ];
+
                       return ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: snapshot.data!.length,
+                        itemCount: items.length,
                         itemBuilder: (context, index) {
+                          Widget imageWidget;
+                          if (items[index].thumbnailImageByte != null) {
+                            imageWidget = Image.memory(
+                              items[index].thumbnailImageByte!,
+                              width: 100,
+                              height: 100,
+                            );
+                          } else {
+                            imageWidget = Image.network(items[index].thumbnailImage!,
+                                width: 100, height: 100);
+                          }
                           return Container(
                               decoration: BoxDecoration(border: Border(
                                   bottom: BorderSide(
@@ -138,21 +166,21 @@ class BoardPage extends StatelessWidget {
                               child: TextButton(
                                 child: Row(
                                   children: [
-                                    Image.network(snapshot.data![index].thumbnailImage, width: 100, height: 100),
+                                    imageWidget,
                                     SizedBox(width: 12,),
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(snapshot.data![index].foodName.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.black),),
+                                        Text(snapshot.data!.recipeList[index].foodName.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.black),),
                                         SizedBox(height: 8,),
-                                        Text(snapshot.data![index].category.toString(),style: TextStyle(color: Colors.black45)),
+                                        Text(snapshot.data!.recipeList[index].category.toString(),style: TextStyle(color: Colors.black45)),
                                         Text('',style: TextStyle(color: Colors.black),),
                                       ],
                                     ),
                                   ],
                                 ),
                                 onPressed: (){
-                                  Get.to(ProductItemScreen(id: snapshot.data![index].recipeId,));
+                                  Get.to(ProductItemScreen(id: snapshot.data!.recipeList[index].recipeId,));
                                 },
                               )
                           );
@@ -171,6 +199,7 @@ class BoardPage extends StatelessWidget {
     )));
   }
 }
+
 
 class Top10ForYear extends StatelessWidget {
   const Top10ForYear({Key? key}) : super(key: key);

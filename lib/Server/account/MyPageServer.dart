@@ -10,14 +10,14 @@ import 'package:recipt/Server/JWT/jwt.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
-class MypageUser {
+class UserProfile {
   int heartCount;
   int reviewCount;
   int registerRecipeSize;
   UserData data;
-  Uint8List profile; // 바이트 코드의 경우 String으로 처리했으나 실제 데이터 타입에 따라 변경이 필요합니다.
+  Uint8List profile;
 
-  MypageUser({
+  UserProfile({
     required this.heartCount,
     required this.reviewCount,
     required this.registerRecipeSize,
@@ -25,13 +25,13 @@ class MypageUser {
     required this.profile,
   });
 
-  factory MypageUser.fromJson(Map<String, dynamic> json) {
-    return MypageUser(
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
       heartCount: json['heartCount'],
       reviewCount: json['reviewCount'],
       registerRecipeSize: json['registerRecipeSize'],
       data: UserData.fromJson(json['data']),
-      profile: base64Decode(json['profile'] ?? ''),
+      profile: base64Decode(json['profile']),
     );
   }
 }
@@ -42,11 +42,11 @@ class UserData {
   String loginId;
   String password;
   int age;
-  String profile;
-  List<dynamic> recipeHeartDtos; // 리스트의 정확한 타입이 제공되지 않았기 때문에 일단 dynamic으로 설정했습니다.
-  List<dynamic> registerHeartDtos;
-  List<dynamic> recipeReviewResponseDtos;
-  List<dynamic> registerRecipeReviewResponseDtos;
+  Uint8List profile;
+  List<RecipeHeartDto> recipeHeartDtos;
+  List<RegisterHeartDto> registerHeartDtos;
+  List<dynamic> recipeReviewResponseDtos; // Assuming no structure provided
+  List<dynamic> registerRecipeReviewResponseDtos; // Assuming no structure provided
   List<UserRegisterDto> userRegisterDtos;
 
   UserData({
@@ -70,71 +70,29 @@ class UserData {
       loginId: json['loginId'],
       password: json['password'],
       age: json['age'],
-      profile: json['profile'],
+      profile: base64Decode(json['profile'] ?? ''),
       recipeHeartDtos: (json['recipeHeartDtos'] as List)
-          .map((e) => RecipeHeartDto.fromJson(e))
+          .map((i) => RecipeHeartDto.fromJson(i))
           .toList(),
-      registerHeartDtos: json['registerHeartDtos'],
-      recipeReviewResponseDtos: json['recipeReviewResponseDtos'],
-      registerRecipeReviewResponseDtos: json['registerRecipeReviewResponseDtos'],
+      registerHeartDtos: (json['registerHeartDtos'] as List)
+          .map((i) => RegisterHeartDto.fromJson(i))
+          .toList(),
+      recipeReviewResponseDtos: json['recipeReviewResponseDtos'], // Assuming list of dynamic objects
+      registerRecipeReviewResponseDtos: json['registerRecipeReviewResponseDtos'], // Assuming list of dynamic objects
       userRegisterDtos: (json['userRegisterDtos'] as List)
-          .map((e) => UserRegisterDto.fromJson(e))
+          .map((i) => UserRegisterDto.fromJson(i))
           .toList(),
     );
   }
 }
 
-class UserRegisterDto {
+class RecipeHeartDto {
+  int userId;
+  int recipeId;
   String foodName;
-  String comment;
   String category;
   String ingredient;
-  String context;
-  int likeCount;
-  double ratingResult;
-  int ratingPeople;
   String thumbnailImage;
-  Uint8List thumbnailImageByte;
-  String lastModifiedDate;
-
-  UserRegisterDto({
-    required this.foodName,
-    required this.comment,
-    required this.category,
-    required this.ingredient,
-    required this.context,
-    required this.likeCount,
-    required this.ratingResult,
-    required this.ratingPeople,
-    required this.thumbnailImage,
-    required this.thumbnailImageByte,
-    required this.lastModifiedDate,
-  });
-
-  factory UserRegisterDto.fromJson(Map<String, dynamic> json) {
-    return UserRegisterDto(
-      foodName: json['foodName'],
-      comment: json['comment'],
-      category: json['category'],
-      ingredient: json['ingredient'],
-      context: json['context'],
-      likeCount: json['likeCount'],
-      ratingResult: json['ratingResult'].toDouble(),
-      ratingPeople: json['ratingPeople'],
-      thumbnailImage: json['thumbnailImage'],
-      thumbnailImageByte: base64Decode(json['thumbnailImageByte'] ?? ''),
-      lastModifiedDate: json['lastModifiedDate'],
-    );
-  }
-}
-
-class RecipeHeartDto{
-  final int userId;
-  final int recipeId;
-  final String foodName;
-  final String category;
-  final String ingredient;
-  final String thumbnailImage;
 
   RecipeHeartDto({
     required this.userId,
@@ -155,21 +113,79 @@ class RecipeHeartDto{
       thumbnailImage: json['thumbnailImage'],
     );
   }
+}
 
-  Map<String, dynamic> toJson() {
-    return {
-      'userId': userId,
-      'recipeId': recipeId,
-      'foodName': foodName,
-      'category': category,
-      'ingredient': ingredient,
-      'thumbnailImage': thumbnailImage,
-    };
+class RegisterHeartDto {
+  int userId;
+  int registerId;
+  String foodName;
+  String category;
+  String ingredient;
+  Uint8List thumbnailImageByte;
+
+  RegisterHeartDto({
+    required this.userId,
+    required this.registerId,
+    required this.foodName,
+    required this.category,
+    required this.ingredient,
+    required this.thumbnailImageByte,
+  });
+
+  factory RegisterHeartDto.fromJson(Map<String, dynamic> json) {
+    return RegisterHeartDto(
+      userId: json['userId'],
+      registerId: json['registerId'],
+      foodName: json['foodName'],
+      category: json['category'],
+      ingredient: json['ingredient'],
+      thumbnailImageByte: base64Decode(json['thumbnailImageByte']),
+    );
   }
 }
 
+class UserRegisterDto {
+  String foodName;
+  String comment;
+  String category;
+  String ingredient;
+  String context;
+  int likeCount;
+  double ratingResult;
+  int ratingPeople;
+  Uint8List thumbnailImageByte;
+  DateTime lastModifiedDate;
 
-Future<MypageUser> fetchUser() async{
+  UserRegisterDto({
+    required this.foodName,
+    required this.comment,
+    required this.category,
+    required this.ingredient,
+    required this.context,
+    required this.likeCount,
+    required this.ratingResult,
+    required this.ratingPeople,
+    required this.thumbnailImageByte,
+    required this.lastModifiedDate,
+  });
+
+  factory UserRegisterDto.fromJson(Map<String, dynamic> json) {
+    return UserRegisterDto(
+      foodName: json['foodName'],
+      comment: json['comment'],
+      category: json['category'],
+      ingredient: json['ingredient'],
+      context: json['context'],
+      likeCount: json['likeCount'],
+      ratingResult: json['ratingResult'].toDouble(),
+      ratingPeople: json['ratingPeople'],
+      thumbnailImageByte: base64Decode(json['thumbnailImageByte']),
+      lastModifiedDate: DateTime.parse(json['lastModifiedDate']),
+    );
+  }
+}
+
+Future<UserProfile> fetchUser() async{
   String? baseUrl = dotenv.env['BASE_URL'];
   final dio = Dio();
   String jwt = await getJwt();
@@ -184,12 +200,6 @@ Future<MypageUser> fetchUser() async{
       }, // Content-Type 헤더 설정
     ),
   );
-  var result = MypageUser.fromJson(response.data);
+  var result = UserProfile.fromJson(response.data);
   return result;
 }
-//
-// class RegisterRecipe{
-//   final String comment;
-//   final String category;
-//   final String
-// }

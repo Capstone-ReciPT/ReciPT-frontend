@@ -95,9 +95,10 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
       child: FutureBuilder<RecipeDataInputFlag>(
           future: fetchRecipe(widget.id),
           builder: (context, snapshot) {
-            print(snapshot.data?.registerFlag);
             if (snapshot.hasData) {
-              recipeId = snapshot.data?.recipeDataInput.data.recipeId;
+              snapshot.data!.registerFlag
+                ? recipeId = 52
+                : recipeId = snapshot.data!.recipeDataInput.data.recipeId;
               _isLiked = snapshot.data!.recipeDataInput.heartCheck;
               heartCount = snapshot.data!.recipeDataInput.heartCount;
               print("서버에서 받아온 하트체크 $_isLiked");
@@ -109,7 +110,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                         SizedBox(
                           width: double.infinity,
                           child: Image(
-                              image: MemoryImage(MemoryImage(snapshot.data!.recipeDataInput.data.thumbnailImageBytes) as Uint8List)
+                              image: MemoryImage(snapshot.data!.recipeDataInput.data.thumbnailByte)
                           )
                         ),
                         buttonArrow(context),
@@ -432,17 +433,34 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  index >= snapshot.data!.recipeDataInput.data.image.length
-                      ? Image.network(
-                    'https://previews.123rf.com/images/urfingus/urfingus1406/urfingus140600001/29322328-%EC%A0%91%EC%8B%9C%EC%99%80-%ED%8F%AC%ED%81%AC%EC%99%80-%EC%B9%BC%EC%9D%84-%EB%93%A4%EA%B3%A0-%EC%86%90%EC%9D%84-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD.jpg',
-                    height: 200,
-                    width: 300,
-                  ) : Image.network(
-                    snapshot.data!.recipeDataInput.data.image[index],
-                    height: 200,
-                    width: 300,
-                    fit: BoxFit.fill,
+                  snapshot.data!.registerFlag
+                      ? (
+                      index >= snapshot.data!.recipeDataInput.data.imageByte.length
+                          ? Image.network(
+                        'https://previews.123rf.com/images/urfingus/urfingus1406/urfingus140600001/29322328-%EC%A0%91%EC%8B%9C%EC%99%80-%ED%8F%AC%ED%81%AC%EC%99%80-%EC%B9%BC%EC%9D%84-%EB%93%A4%EA%B3%A0-%EC%86%90%EC%9D%84-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD.jpg',
+                        height: 200,
+                        width: 300,
+                      ) : Image(
+                        image : MemoryImage(snapshot.data!.recipeDataInput.data.imageByte[index]),
+                        height: 200,
+                        width: 300,
+                        fit: BoxFit.fill,
+                      )
                   )
+                      : (
+                      index >= snapshot.data!.recipeDataInput.data.image.length
+                          ? Image.network(
+                        'https://previews.123rf.com/images/urfingus/urfingus1406/urfingus140600001/29322328-%EC%A0%91%EC%8B%9C%EC%99%80-%ED%8F%AC%ED%81%AC%EC%99%80-%EC%B9%BC%EC%9D%84-%EB%93%A4%EA%B3%A0-%EC%86%90%EC%9D%84-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD.jpg',
+                        height: 200,
+                        width: 300,
+                      ) : Image.network(
+                        snapshot.data!.recipeDataInput.data.image[index],
+                        height: 200,
+                        width: 300,
+                        fit: BoxFit.fill,
+                      )
+                  )
+
                 ],
               )
           ),
