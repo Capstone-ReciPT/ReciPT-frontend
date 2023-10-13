@@ -15,7 +15,14 @@ class MyImageLoader extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<Image> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // 이미지 로딩 중일 때는 CircularProgressIndicator를 표시합니다.
-          return CircularProgressIndicator();
+          return Container(
+              width: 150,
+              height: 80,
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                radius: 40.0,
+              )
+          );
         } else if (snapshot.hasError) {
           // 이미지 로딩에 실패한 경우, 에러 메시지를 표시합니다.
           print('Error: ${snapshot.error}');

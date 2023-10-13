@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_vision/flutter_vision.dart';
 import 'package:recipt/Controller/IngredientController.dart';
+import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/View/api/Yolo/addIngredient.dart';
 import 'package:recipt/main.dart';
 
@@ -43,10 +44,13 @@ class _FridgeRecipeSuggestState extends State<FridgeRecipeSuggest> {
   @override
   void dispose() async {
     super.dispose();
-    await vision.closeYoloModel();
+    setState(() {
+      vision.closeYoloModel();
+    });
   }
 
   final IngreController ingreController = Get.put(IngreController());
+  Controller c = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +58,14 @@ class _FridgeRecipeSuggestState extends State<FridgeRecipeSuggest> {
     if (!isLoaded) {
       return SafeArea(child: Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: Container(
+              width: 150,
+              height: 80,
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                radius: 40.0,
+              )
+          ),
         ),
       ));
     }
@@ -116,7 +127,7 @@ class _FridgeRecipeSuggestState extends State<FridgeRecipeSuggest> {
               height: 50,
               child: TextButton(
                 onPressed: (){
-                  Get.back();
+                  c.currentTab.value = 0;
                 },
                 child: Text('다시하기',style: Theme.of(context).textTheme.displayLarge,),
               ),

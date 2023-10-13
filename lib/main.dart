@@ -62,7 +62,14 @@ Future main() async {
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(
-              body: CircularProgressIndicator(),
+              body: Container(
+                  width: 150,
+                  height: 80,
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                    radius: 40.0,
+                  )
+              ),
             );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');

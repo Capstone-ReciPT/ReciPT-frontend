@@ -42,7 +42,6 @@ class UserData {
   String loginId;
   String password;
   int age;
-  Uint8List profile;
   List<RecipeHeartDto> recipeHeartDtos;
   List<RegisterHeartDto> registerHeartDtos;
   List<dynamic> recipeReviewResponseDtos; // Assuming no structure provided
@@ -55,7 +54,6 @@ class UserData {
     required this.loginId,
     required this.password,
     required this.age,
-    required this.profile,
     required this.recipeHeartDtos,
     required this.registerHeartDtos,
     required this.recipeReviewResponseDtos,
@@ -70,7 +68,6 @@ class UserData {
       loginId: json['loginId'],
       password: json['password'],
       age: json['age'],
-      profile: base64Decode(json['profile'] ?? ''),
       recipeHeartDtos: (json['recipeHeartDtos'] as List)
           .map((i) => RecipeHeartDto.fromJson(i))
           .toList(),
@@ -145,6 +142,7 @@ class RegisterHeartDto {
 }
 
 class UserRegisterDto {
+  int? registerId;
   String foodName;
   String comment;
   String category;
@@ -157,6 +155,7 @@ class UserRegisterDto {
   DateTime lastModifiedDate;
 
   UserRegisterDto({
+    this.registerId,
     required this.foodName,
     required this.comment,
     required this.category,
@@ -171,6 +170,7 @@ class UserRegisterDto {
 
   factory UserRegisterDto.fromJson(Map<String, dynamic> json) {
     return UserRegisterDto(
+      registerId : json['registerId'],
       foodName: json['foodName'],
       comment: json['comment'],
       category: json['category'],

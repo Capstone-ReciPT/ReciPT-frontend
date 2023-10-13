@@ -113,7 +113,23 @@ class _GptSuggestAnswerState extends State<GptSuggestAnswer> {
                       return Text("${snapshot.error}");
                     }
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('레시피를 받아오고 있어요.',style: Theme.of(context).textTheme.displayLarge,),
+                          Text('잠시만 기다려주세요!',style: Theme.of(context).textTheme.displayLarge,),
+                          SizedBox(height: 12,),
+                          Container(
+                              width: 150,
+                              height: 80,
+                              child: CircleAvatar(
+                                backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                                radius: 40.0,
+                              )
+                          ),
+                        ],
+                      ),
                     );
                   }
               ),

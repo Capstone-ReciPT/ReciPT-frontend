@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/View/Home/Mypage.dart';
 import 'package:recipt/View/Home/Setting.dart';
 import 'package:recipt/View/Home/main/NewRecipe.dart';
@@ -42,8 +43,9 @@ class HomePage extends StatelessWidget {
 
 
 class MainButtons extends StatelessWidget {
-  const MainButtons({Key? key}) : super(key: key);
+  MainButtons({Key? key}) : super(key: key);
 
+  Controller c = Get.find();
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -52,7 +54,7 @@ class MainButtons extends StatelessWidget {
       children: [
         TextButton(
             onPressed: (){
-              Get.to(FridgeRecipeSuggest());
+              c.currentTab.value = 2;
             },
             child: Column(
               children: [

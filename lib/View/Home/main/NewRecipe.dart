@@ -70,7 +70,14 @@ class NewRecipe extends StatelessWidget {
             else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
-            return CircularProgressIndicator();
+            return Container(
+                width: 150,
+                height: 80,
+                child: CircleAvatar(
+                  backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                  radius: 40.0,
+                )
+            );
           }
       ),
     );

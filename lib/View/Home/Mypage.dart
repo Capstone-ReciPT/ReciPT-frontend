@@ -20,8 +20,16 @@ class _MyPageState extends State<MyPage> {
       future: fetchUser(),
       builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // 데이터를 기다리는 동안 로딩 인디케이터 표시
-          return CircularProgressIndicator();
+          return Center(
+            child: Container(
+                width: 150,
+                height: 80,
+                child: CircleAvatar(
+                  backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                  radius: 40.0,
+                )
+            ),
+          );
         } else if (snapshot.hasError) {
           // 오류가 발생한 경우
           return Text("오류: ${snapshot.error}");
@@ -89,7 +97,7 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  Notice(user){
+  Notice(UserData user){
     return Container(
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
         DefaultTabController(
@@ -131,15 +139,15 @@ class _MyPageState extends State<MyPage> {
 
 
   }
-  MyRecipe(user){
-    if (user.data.userRegisterDtos.length == 0){
+  MyRecipe(UserData user){
+    if (user.userRegisterDtos.isEmpty){
       return Center(
         child: Text('등록한 게시물이 없습니다!',style: context.textTheme.displayLarge,),
       );
     }
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: user.data.userRegisterDtos.length,
+      itemCount: user.userRegisterDtos.length,
       itemBuilder: (context, index) {
         return Container(
             decoration: BoxDecoration(border: Border(
@@ -152,7 +160,7 @@ class _MyPageState extends State<MyPage> {
               child: Row(
                 children: [
                   Image(
-                    image: MemoryImage(user.data.userRegisterDtos[index].thumbnailImageByte),
+                    image: MemoryImage(user.userRegisterDtos[index].thumbnailImageByte),
                     width: 100,
                     height: 100,
                   ),
@@ -160,31 +168,56 @@ class _MyPageState extends State<MyPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(user.data.userRegisterDtos[index].foodName,style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
-                      Text(user.data.userRegisterDtos[index].category,style: TextStyle(color: Colors.black45)),
-                      Text(user.data.userRegisterDtos[index].comment,style: TextStyle(color: Colors.black45)),
+                      Text(user.userRegisterDtos[index].foodName,style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
+                      Text(user.userRegisterDtos[index].category,style: TextStyle(color: Colors.black45)),
+                      Text(user.userRegisterDtos[index].comment,style: TextStyle(color: Colors.black45)),
                     ],
                   ),
                 ],
               ),
               onPressed: (){
-                Get.to(ProductItemScreen(id: user.data.userRegisterDtos[index].recipeId,));
+                Get.to(ProductItemScreen(id: user.userRegisterDtos[index].registerId,));
               },
             )
         );
       },
     );
   }
-  MyFavorite(user){
-    if (user.data.recipeHeartDtos.length == 0){
+  MyFavorite(UserData user){
+    if (user.recipeHeartDtos.isEmpty){
       return Center(
         child: Text('좋아요한 게시물이 없습니다!',style: context.textTheme.displayLarge,),
       );
     }
+    List<dynamic> combinedList = [];
+    for (var dto in user.recipeHeartDtos) {
+      combinedList.add({
+        "id": dto.recipeId,
+        "foodName": dto.foodName,
+        "category": dto.category,
+        "thumbnailImage": dto.thumbnailImage,
+        "registerCheck" : false
+        // "thumbnailImageByte": convertImageUrlToByte(dto["thumbnailImage"]),
+        // 원래 이미지 변환 로직이 필요하면 주석을 해제하시고 해당 함수를 사용하세요.
+      });
+    }
+
+    for (var dto in user.registerHeartDtos) {
+      combinedList.add({
+        "id": dto.registerId,
+        "foodName": dto.foodName,
+        "category": dto.category,
+        "thumbnailImage": dto.thumbnailImageByte,
+        "registerCheck" : true
+      });
+    }
+
+
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: user.data.recipeHeartDtos.length,
+      itemCount: combinedList.length,
       itemBuilder: (context, index) {
+        var currentItem = combinedList[index];  // 현재 아이템에 대한 참조를 가져옵니다.
         return Container(
             decoration: BoxDecoration(border: Border(
                 bottom: BorderSide(
@@ -195,24 +228,31 @@ class _MyPageState extends State<MyPage> {
             child: TextButton(
               child: Row(
                 children: [
-                  // Image(
-                  //   image: MemoryImage(user.data.recipeHeartDtos[index].thumbnailImageByte),
-                  //   width: 100,
-                  //   height: 100,
-                  // ),
+                  currentItem['registerCheck']
+                  ?
+                  Image(
+                    image: MemoryImage(currentItem['thumbnailImage']),
+                    width: 100,
+                    height: 100,
+                  )
+                  : Image.network(
+                      currentItem['thumbnailImage'],
+                    width: 100,
+                    height: 100,
+                  ),
                   SizedBox(width: 12,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(user.data.recipeHeartDtos[index].foodName,style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
-                      Text(user.data.recipeHeartDtos[index].category,style: TextStyle(color: Colors.black45)),
+                      Text(currentItem["foodName"],style: TextStyle(fontWeight: FontWeight.w800,color: Colors.green),),
+                      Text(currentItem["category"],style: TextStyle(color: Colors.black45)),
                     //   Text(user.data.recipeHeartDtos[index].comment,style: TextStyle(color: Colors.black45)),
                     ],
                   ),
                 ],
               ),
               onPressed: (){
-                Get.to(ProductItemScreen(id: user.data.recipeHeartDtos[index].recipeId,));
+                Get.to(ProductItemScreen(id: user.recipeHeartDtos[index].recipeId,));
               },
             )
         );

@@ -155,7 +155,14 @@ class ChatScreenState extends State<ChatScreen> {
         children: [
           defaultText('GPT가 입력중입니다. \n잠시만 기다려주세요!',context),
           SizedBox(height: 15,),
-          CircularProgressIndicator()
+          Container(
+              width: 150,
+              height: 80,
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                radius: 40.0,
+              )
+          )
         ],
       )));
     });

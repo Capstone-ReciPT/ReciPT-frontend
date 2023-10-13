@@ -115,7 +115,14 @@ class _gptNoRecipeState extends State<gptNoRecipe> {
                       Text('GPT가 레시피를 생성중입니다!',style: Theme.of(context).textTheme.displayLarge),
                       Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
                       SizedBox(height: 20,),
-                      CircularProgressIndicator()
+                      Container(
+                          width: 150,
+                          height: 80,
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                            radius: 40.0,
+                          )
+                      ),
                     ],
                   ),
                 )

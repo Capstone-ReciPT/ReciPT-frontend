@@ -176,7 +176,16 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                         print(snapshot.error);
                         return Text("${snapshot.error}");
                       }
-                      return CircularProgressIndicator();
+                      return Center(
+                        child: Container(
+                            width: 150,
+                            height: 80,
+                            child: CircleAvatar(
+                              backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                              radius: 40.0,
+                            )
+                        ),
+                      );
                     }
                 ),
                 floatingActionButton: Stack(
@@ -224,7 +233,10 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                     Align(
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
-                        onPressed: (){
+                        onPressed: () async{
+                          if(playNow){
+                            ttsController.stopTTS();
+                          }
                           menuController.nextIndex();
                           if(menuController.index.value >= snapshot.data!.recipeDataInput.data.context.length){
                             menuController.pageLimit = snapshot.data!.recipeDataInput.data.context.length;
@@ -252,8 +264,26 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
             else if (snapshot.hasError) {
               print(snapshot.error);
               return Text("${snapshot.error}");
+            } else{
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('레시피를 로딩중입니다!',style: Theme.of(context).textTheme.displayLarge),
+                    Text('잠시만 기다려주세요',style: Theme.of(context).textTheme.displayLarge),
+                    SizedBox(height: 20,),
+                    Container(
+                        width: 150,
+                        height: 80,
+                        child: CircleAvatar(
+                          backgroundImage: AssetImage("assets/icons/voice2.gif"),
+                          radius: 40.0,
+                        )
+                    )
+                  ],
+                ),
+              );
             }
-            return CircularProgressIndicator();
           }
       ),
     );
