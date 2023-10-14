@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
+import 'package:recipt/Controller/RatingStarController.dart';
 
 class RatingStar extends StatelessWidget {
-  const RatingStar({Key? key}) : super(key: key);
+  RatingStar({Key? key}) : super(key: key);
 
+  final RatingStarController c = Get.find();
   @override
   Widget build(BuildContext context) {
     return RatingBar.builder(
@@ -20,6 +23,7 @@ class RatingStar extends StatelessWidget {
       ),
       onRatingUpdate: (rating) {
         print(rating);
+        c.rating.value = rating;
       },
     );
   }

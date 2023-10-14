@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:recipt/View/Upload/LoadGptRecipe.dart';
 import 'package:recipt/View/Upload/UploadRecipeAll.dart';
 import 'package:recipt/Widget/Custom_button.dart';
 import '../../../Widget/Custom_Text_Form_field.dart';
@@ -52,7 +53,7 @@ class _UploadTabState extends State<UploadTab> {
                     ),
                     TextButton(
                         onPressed: (){
-                          Get.back();
+                          Get.to(LoadGptRecipe());
                         },
                         child: Text(
                           'GPT 레시피 불러오기',

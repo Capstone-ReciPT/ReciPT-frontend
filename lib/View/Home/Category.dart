@@ -139,7 +139,7 @@ class BoardPage extends StatelessWidget {
                             name: recipe.foodName,
                             category: recipe.category))
                       ];
-
+                      print(items.length);
                       return ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -171,16 +171,16 @@ class BoardPage extends StatelessWidget {
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(snapshot.data!.recipeList[index].foodName.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.black),),
+                                        Text(items[index].name.toString(),style: TextStyle(fontWeight: FontWeight.w800,color: Colors.black),),
                                         SizedBox(height: 8,),
-                                        Text(snapshot.data!.recipeList[index].category.toString(),style: TextStyle(color: Colors.black45)),
+                                        Text(items[index].category.toString(),style: TextStyle(color: Colors.black45)),
                                         Text('',style: TextStyle(color: Colors.black),),
                                       ],
                                     ),
                                   ],
                                 ),
                                 onPressed: (){
-                                  Get.to(ProductItemScreen(id: snapshot.data!.recipeList[index].recipeId,));
+                                  Get.to(ProductItemScreen(id: items[index].id,));
                                 },
                               )
                           );

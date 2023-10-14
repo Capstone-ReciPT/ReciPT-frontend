@@ -47,21 +47,25 @@ class RecipeDataInput{
 }
 
 class RegisterRecipe {
+  final int registerRecipeId;
   final String foodName;
   final String comment;
   final String category;
   final List<String> ingredient;
   final List<String> context;
+  final double ratingScore;
   final Uint8List thumbnailByte;
   final List<Uint8List> imageByte;
   final String lastModifiedDate;
 
   RegisterRecipe({
+    required this.registerRecipeId,
     required this.foodName,
     required this.comment,
     required this.category,
     required this.ingredient,
     required this.context,
+    required this.ratingScore,
     required this.thumbnailByte,
     required this.imageByte,
     required this.lastModifiedDate,
@@ -72,11 +76,13 @@ class RegisterRecipe {
     List<String> contextList = json['context'].split(RegExp(r'\d+\.'));
     contextList.removeAt(0);
     return RegisterRecipe(
+      registerRecipeId: json['registerRecipeId'],
       foodName: json['foodName'],
       comment: json['comment'],
       category: json['category'],
       ingredient: ingredientList,
       context: contextList,
+      ratingScore : json['ratingScore'] ?? 0.0,
       thumbnailByte : base64Decode(json['thumbnailByte'] ?? ''),
       imageByte: (json['imageByte'] as List).map((image) => base64Decode(image ?? '') as Uint8List).toList(),
       lastModifiedDate: json['lastModifiedDate'],
@@ -195,7 +201,7 @@ class ReviewResponseDto {
       username: json['username'],
       comment: json['comment'],
       likeCount: json['likeCount'],
-      ratingScore: json['ratingScore'].toDouble(),
+      ratingScore: json['ratingScore'].toDouble() ?? 0.0,
       recipeThumbnailImage: json['recipeThumbnailImage'],
     );
   }

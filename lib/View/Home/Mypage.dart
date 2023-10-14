@@ -184,7 +184,7 @@ class _MyPageState extends State<MyPage> {
     );
   }
   MyFavorite(UserData user){
-    if (user.recipeHeartDtos.isEmpty){
+    if (user.recipeHeartDtos.isEmpty && user.registerHeartDtos.isEmpty){
       return Column(
         children: [
           SizedBox(height: 80,),

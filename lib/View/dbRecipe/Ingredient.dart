@@ -97,7 +97,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               snapshot.data!.registerFlag
-                ? recipeId = 52
+                ? recipeId = snapshot.data!.recipeDataInput.data.registerRecipeId
                 : recipeId = snapshot.data!.recipeDataInput.data.recipeId;
               _isLiked = snapshot.data!.recipeDataInput.heartCheck;
               heartCount = snapshot.data!.recipeDataInput.heartCount;

@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/PageController.dart';
+import 'package:recipt/Controller/RatingStarController.dart';
+import 'package:recipt/Server/LikeServer.dart';
 import 'package:recipt/main.dart';
 
 import 'RatingStar.dart';
 
 class RecipeEndReview extends StatelessWidget {
 
-  RecipeEndReview({this.registerFlag,Key? key}) : super(key: key);
+  RecipeEndReview({this.id,this.registerFlag,Key? key}) : super(key: key);
 
   var registerFlag;
+  var id;
   final CookingMenuController menuController = Get.find();
   final TtsController ttsController = Get.find();
 
-
+  final RatingStarController rsc = Get.put(RatingStarController());
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -49,7 +52,8 @@ class RecipeEndReview extends StatelessWidget {
         ),
         TextButton(
           child: Text('확인'),
-          onPressed: () {
+          onPressed: () async {
+            await fetchLike(id,rsc.rating.value);
             Get.to(MyApp());
             ttsController.stopTTS();
             menuController.index.value = 0;
