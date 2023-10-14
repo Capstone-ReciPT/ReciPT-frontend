@@ -211,7 +211,7 @@ class _FridgeRecipeSuggestState extends State<FridgeRecipeSuggest> {
   Future<void> loadYoloModel() async {
     await vision.loadYoloModel(
         labels: 'assets/yolo/coco2.txt',
-        modelPath: 'assets/yolo/model.tflite',
+        modelPath: 'assets/yolo/finalModel.tflite',
         modelVersion: "yolov8",
         numThreads: 2,
         useGpu: true);

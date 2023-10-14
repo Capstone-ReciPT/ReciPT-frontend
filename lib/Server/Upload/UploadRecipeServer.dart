@@ -66,29 +66,22 @@ Future<bool> fetchUploadRecipe(
     'images': files,
   });
 
-  try {
-    final response = await dio.post(
-      '$baseUrl/api/register/save/typing',
-      data: formData,
-      options: Options(
+  final response = await dio.post(
+    '$baseUrl/api/register/save/typing',
+    data: formData,
+    options: Options(
         headers: {
           'accesToken': jwt,
           'Authorization': 'Bearer $jwt',
         },
         contentType: 'multipart/form-data'
-      ),
-    );
-    print(response);
-    if(response.statusCode == 200){
-      return true;
-    }
-    else{
-      return false;
-    }
-
-    // 여기에서 응답을 처리할 수 있습니다.
-  } catch (e) {
-    // 오류 처리
+    ),
+  );
+  print(response);
+  if(response.data['code'] != 500){
+    return true;
+  }
+  else{
     return false;
   }
 }

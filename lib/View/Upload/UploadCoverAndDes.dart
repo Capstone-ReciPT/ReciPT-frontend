@@ -50,6 +50,15 @@ class _UploadTabState extends State<UploadTab> {
                           style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 20,color: Secondary),
                         )
                     ),
+                    TextButton(
+                        onPressed: (){
+                          Get.back();
+                        },
+                        child: Text(
+                          'GPT 레시피 불러오기',
+                          style: Theme.of(context).textTheme.displaySmall,
+                        )
+                    ),
                     Text(
                       "1/2",
                       style: Theme.of(context)

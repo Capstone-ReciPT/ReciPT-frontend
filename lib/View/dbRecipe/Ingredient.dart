@@ -245,31 +245,37 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                   ),
                   Row(
                     children: [
-                      Text(
-                        snapshot.data!.recipeDataInput.data.foodName,
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                      const Spacer(),
+                      SizedBox(width: 12,),
                       Column(
                         children: [
-                          IconButton(
-                            onPressed: (){
-
-                            },
-                            icon: Icon(Icons.message,size: 30,),
-                            padding: EdgeInsets.only(top: 15),
-                          ),
-                          SizedBox(height: 8,),
+                          SizedBox(height: 20,),
                           Text(
-                            "후기",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(color: mainText),
+                            snapshot.data!.recipeDataInput.data.foodName,
+                            style: Theme.of(context).textTheme.displayMedium,
                           ),
+                          SizedBox(height: 15,),
+                          Text("별점 : ${snapshot.data!.recipeDataInput.data.ratingScore}",style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 15))
                         ],
                       ),
-                      SizedBox(width: 10,),
+                      const Spacer(),
+                      // Column(
+                      //   children: [
+                      //     IconButton(
+                      //       onPressed: (){
+                      //       },
+                      //       icon: Icon(Icons.message,size: 30,),
+                      //       padding: EdgeInsets.only(top: 15),
+                      //     ),
+                      //     SizedBox(height: 8,),
+                      //     Text(
+                      //       "후기",
+                      //       style: Theme.of(context)
+                      //           .textTheme
+                      //           .displaySmall!
+                      //           .copyWith(color: mainText),
+                      //     ),
+                      //   ],
+                      // ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -303,7 +309,8 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                                 .copyWith(color: mainText),
                           ),
                         ],
-                      )
+                      ),
+                      SizedBox(width: 12,)
 
                     ],
                   ),

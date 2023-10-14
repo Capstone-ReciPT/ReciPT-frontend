@@ -71,8 +71,8 @@ class NewRecipe extends StatelessWidget {
               return Text("${snapshot.error}");
             }
             return Container(
-                width: 150,
-                height: 80,
+                width: 75,
+                height: 40,
                 child: CircleAvatar(
                   backgroundImage: AssetImage("assets/icons/voice2.gif"),
                   radius: 40.0,

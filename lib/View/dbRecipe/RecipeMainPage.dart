@@ -43,6 +43,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
               TextButton(
                   onPressed: () async {
                     menuController.index.value = 0;
+                    ttsController.stopTTS();
                     Get.offAll(MyApp());
                   },
                   child: Text('끝내기',style: TextStyle(color: SecondaryText),)),
@@ -245,7 +246,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                                 context: context,
                                 barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
                                 builder: (BuildContext context) {
-                                  return RecipeEndReview();
+                                  return RecipeEndReview(registerFlag : snapshot.data?.registerFlag);
                                 }
                             );
                           } else {

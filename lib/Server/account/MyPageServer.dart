@@ -142,7 +142,7 @@ class RegisterHeartDto {
 }
 
 class UserRegisterDto {
-  int? registerId;
+  int? registerRecipeId;
   String foodName;
   String comment;
   String category;
@@ -155,7 +155,7 @@ class UserRegisterDto {
   DateTime lastModifiedDate;
 
   UserRegisterDto({
-    this.registerId,
+    this.registerRecipeId,
     required this.foodName,
     required this.comment,
     required this.category,
@@ -170,7 +170,7 @@ class UserRegisterDto {
 
   factory UserRegisterDto.fromJson(Map<String, dynamic> json) {
     return UserRegisterDto(
-      registerId : json['registerId'],
+      registerRecipeId : json['registerRecipeId'],
       foodName: json['foodName'],
       comment: json['comment'],
       category: json['category'],

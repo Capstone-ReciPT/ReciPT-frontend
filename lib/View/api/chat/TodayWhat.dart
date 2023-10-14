@@ -47,7 +47,7 @@ class _TodayWhatState extends State<TodayWhat> {
                   ),
                 ),
               ),
-              Text('몇 명이서 먹으실 생각인가요?',style: Theme.of(context).textTheme.displayLarge,),
+              Text('이번 요리를 몇 명이 드실 예정인가요?',style: Theme.of(context).textTheme.displayLarge,),
               SizedBox(height: 15,),
               CustomTextFormField(
                 validator: (value) {
@@ -59,7 +59,7 @@ class _TodayWhatState extends State<TodayWhat> {
                 },
                 onChanged:(value) {
                   setState(() {
-                    userCommandInputs['몇명이서'] = value;
+                    userCommandInputs['식사인원'] = value;
                   });
                 },
                 onEditingComplete: () {
@@ -69,7 +69,7 @@ class _TodayWhatState extends State<TodayWhat> {
                 prefixIcon: Icons.edit_note_sharp,
               ),
               SizedBox(height: 24,),
-              Text('선호하는 요리 난이도를 말해주세요.',style: Theme.of(context).textTheme.displayLarge,),
+              Text('어느 정도의 요리 난이도를 선호하시나요?',style: Theme.of(context).textTheme.displayLarge,),
               SizedBox(height: 15,),
               CustomTextFormField(
                 validator: (value) {
@@ -91,7 +91,7 @@ class _TodayWhatState extends State<TodayWhat> {
                 prefixIcon: Icons.edit_note_sharp,
               ),
               SizedBox(height: 24,),
-              Text('특별히 사용하고 싶은 재료가 있나요?',style: Theme.of(context).textTheme.displayLarge,),
+              Text('알려진 음식 알레르기가 있으신가요?',style: Theme.of(context).textTheme.displayLarge,),
               SizedBox(height: 20,),
               CustomTextFormField(
                 validator: (value) {
@@ -103,47 +103,17 @@ class _TodayWhatState extends State<TodayWhat> {
                 },
                 onChanged:(value) {
                   setState(() {
-                    userCommandInputs['선호 재료'] = value;
-                  });
-                },
-                onEditingComplete: () {
-
-                },
-                hint: 'ex) 고기 / 야채',
-                prefixIcon: Icons.edit_note_sharp,
-              ),
-              SizedBox(height: 24,),
-              Text('피하고 싶은 재료가 있나요?',style: Theme.of(context).textTheme.displayLarge,),
-              SizedBox(height: 20,),
-              CustomTextFormField(
-                onChanged:(value) {
-                  setState(() {
-                    userCommandInputs['비선호 재료'] = value;
-                  });
-                },
-                onEditingComplete: () {
-
-                },
-                hint: 'ex) 생선, 피망',
-                prefixIcon: Icons.edit_note_sharp,
-              ),
-              SizedBox(height: 24,),
-              Text('알려진 음식 알레르기가 있으신가요?',style: Theme.of(context).textTheme.displayLarge,),
-              SizedBox(height: 20,),
-              CustomTextFormField(
-                onChanged:(value) {
-                  setState(() {
                     userCommandInputs['알레르기 정보'] = value;
                   });
                 },
                 onEditingComplete: () {
 
                 },
-                hint: 'ex) 땅콩 알레르기',
+                hint: 'ex) 생선 / 땅콩',
                 prefixIcon: Icons.edit_note_sharp,
               ),
               SizedBox(height: 24,),
-              Text('어떤 종류의 음식을 원하시나요?',style: Theme.of(context).textTheme.displayLarge,),
+              Text('어떤 종류의 음식을 원하시나요? ',style: Theme.of(context).textTheme.displayLarge,),
               SizedBox(height: 20,),
               CustomTextFormField(
                 onChanged:(value) {
@@ -158,21 +128,21 @@ class _TodayWhatState extends State<TodayWhat> {
                 prefixIcon: Icons.edit_note_sharp,
               ),
               SizedBox(height: 24,),
-              Text('조리에 얼마나 많은 시간을 하실 건가요?',style: Theme.of(context).textTheme.displayLarge,),
+              Text('추가 요청 사항을 적어주세요!',style: Theme.of(context).textTheme.displayLarge,),
               SizedBox(height: 20,),
               CustomTextFormField(
                 onChanged:(value) {
                   setState(() {
-                    userCommandInputs['조리 시간'] = value;
+                    userCommandInputs['추가요청사항'] = value;
                   });
                 },
                 onEditingComplete: () {
 
                 },
-                hint: 'ex) 20분, 1시간',
+                hint: 'ex) 상황 / 디테일한 정보',
                 prefixIcon: Icons.edit_note_sharp,
               ),
-
+              SizedBox(height: 24,),
               CustomButton(onTap: (){
                 setState(() {
                   if (key.currentState!.validate()){

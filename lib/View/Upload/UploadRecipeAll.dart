@@ -31,7 +31,7 @@ class SecondUploadScreen extends StatefulWidget {
 
 class _SecondUploadScreenState extends State<SecondUploadScreen> {
   List ingredients = [''];
-  List steps = [];
+  List steps = [''];
   List ingreControllers = [TextEditingController()];
   List recipeControllers = [TextEditingController()];
   List _imageFiles = [];
@@ -158,7 +158,30 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                                   List<String> ingredients = getControllersValue(ingreControllers);
                                   List<String> recipes = getControllersValue(recipeControllers);
                                   print(_imageFiles);
-                                  if (await fetchUploadRecipe(
+                                  if((ingreControllers.length != ingredients.length)
+                                        ||  (recipeControllers.length != recipes.length)
+                                  ){
+                                    return await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: Color(0xFFFFFFFF),
+                                            title: Text(
+                                              '모든 항목을 채워 넣어주세요!',
+                                              style: TextStyle(color: mainText,fontSize: 18),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    //onWillpop에 false 전달되어 앱이 종료되지 않는다.
+                                                    Navigator.of(context).pop(false); // 대화 상자 닫기
+                                                  },
+                                                  child: Text('확인',style: TextStyle(color: SecondaryText),)),
+                                            ],
+                                          );
+                                        }) ?? false; // 취소 버튼이 눌릴 경우 false 반환
+                                  }
+                            if (await fetchUploadRecipe(
                                       widget.imageFile,
                                       widget.foodName,
                                       widget.foodDescription,
@@ -167,7 +190,36 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
                                       recipes,
                                       _imageFiles)){
                                     openDialog();
-                                  }
+                                  } else{
+                              await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor: Color(0xFFFFFFFF),
+                                      title: Column(
+                                        children: [
+                                          Text(
+                                            '레시피 등록에 실패했습니다.',
+                                            style: TextStyle(color: mainText,fontSize: 18),
+                                          ),
+                                          SizedBox(height: 12,),
+                                          Text(
+                                            '다시 시도해주세요!',
+                                            style: TextStyle(color: mainText,fontSize: 18),
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              //onWillpop에 false 전달되어 앱이 종료되지 않는다.
+                                              Navigator.of(context).pop(false); // 대화 상자 닫기
+                                            },
+                                            child: Text('확인',style: TextStyle(color: SecondaryText),)),
+                                      ],
+                                    );
+                                  }) ?? false;
+                            }
 
                                 },
                                 text: "다음",color: Colors.black,)),
@@ -253,6 +305,7 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
       onDismissed: (d) {
         setState(() {
           steps.removeAt(index);
+          recipeControllers.removeAt(index);
         });
       },
       child: Stack(
@@ -353,11 +406,13 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
             ),
           ),
         ));
+
   }
 
   List<String> getControllersValue(List<dynamic> controllers) {
     List<String> res = [];
     for (TextEditingController tec in controllers) {
+      if(tec.value.text == '') continue;
       res.add(tec.value.text);
     }
     print(res);

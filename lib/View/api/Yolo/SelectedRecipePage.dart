@@ -33,6 +33,7 @@ class _SelectedRecipePageState extends State<SelectedRecipePage> {
                   onPressed: () async {
                     //onWillpop에 true가 전달되어 앱이 종료 된다.
                     Get.back();
+                    Get.back();
                   },
                   child: Text('예',style: TextStyle(color: SecondaryText),)),
               TextButton(
@@ -93,7 +94,7 @@ class _SelectedRecipePageState extends State<SelectedRecipePage> {
                       onPressed: (){
                         // fetchGPTRecipeSave()
                       },
-                      child: floatingButtons()
+                      child: floatingButtons(context)
                   ),
                 ),
               );

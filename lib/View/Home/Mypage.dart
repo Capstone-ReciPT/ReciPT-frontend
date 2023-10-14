@@ -42,53 +42,55 @@ class _MyPageState extends State<MyPage> {
           return DefaultTabController(
             length: 3,
             child: Scaffold(
-              body: Column(
-                children: [
-                  Container(
-                    width: 800,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                      color: Colors.black87,
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 40),
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Colors.blueGrey,
-                            backgroundImage: MemoryImage(snapshot.data!.profile), // 서버 이미지 사용
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: 800,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1),
+                        color: Colors.black87,
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 40),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.blueGrey,
+                              backgroundImage: MemoryImage(snapshot.data!.profile), // 서버 이미지 사용
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 50,),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(user.username, style: TextStyle(color: Colors.white, fontSize: 30),), // 사용자 이름 사용
-                            SizedBox(height: 8,),
-                            TextButton(
-                              onPressed: (){
-                                Get.to(UploadTab());
-                              },
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                    side: BorderSide(width: 1, color: Colors.greenAccent),
+                          SizedBox(width: 50,),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(user.username, style: TextStyle(color: Colors.white, fontSize: 30),), // 사용자 이름 사용
+                              SizedBox(height: 8,),
+                              TextButton(
+                                onPressed: (){
+                                  Get.to(UploadTab());
+                                },
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      side: BorderSide(width: 1, color: Colors.greenAccent),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              child: Text('레시피 등록', style: TextStyle(color: Colors.greenAccent),),
-                            )
-                          ],
-                        )
-                      ],
+                                child: Text('레시피 등록', style: TextStyle(color: Colors.greenAccent),),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8,),
-                  Notice(user),
-                ],
+                    SizedBox(height: 8,),
+                    Notice(user),
+                  ],
+                ),
               ),
             ),
           );
@@ -98,54 +100,52 @@ class _MyPageState extends State<MyPage> {
   }
 
   Notice(UserData user){
-    return Container(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-        DefaultTabController(
-            length: 3, // length of tabs
-            initialIndex: 0,
-            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-              Container(
-                child: TabBar(
-                  labelColor: Colors.pink,
-                  unselectedLabelColor: Colors.black,
-                  tabs: [
-                    Tab(text: '레시피'),
-                    Tab(text: '요리 후기'),
-                    Tab(text: '좋아요'),
-                  ],
-                ),
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
+      DefaultTabController(
+          length: 2, // length of tabs
+          initialIndex: 0,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
+            Container(
+              child: TabBar(
+                labelColor: Colors.pink,
+                unselectedLabelColor: Colors.black,
+                tabs: [
+                  Tab(text: '레시피'),
+                  Tab(text: '좋아요'),
+                ],
               ),
-              Container(
-                  height: 400, //height of TabBarView
-                  decoration: BoxDecoration(
-                      border: Border(top: BorderSide(color: Colors.grey, width: 0.5))
+            ),
+            Container(
+                height: MediaQuery.of(context).size.height, //height of TabBarView
+                decoration: BoxDecoration(
+                    border: Border(top: BorderSide(color: Colors.grey, width: 0.5))
+                ),
+                child: TabBarView(children: <Widget>[
+                  Container(
+                    child: MyRecipe(user),
                   ),
-                  child: TabBarView(children: <Widget>[
-                    Container(
-                      child: MyRecipe(user),
-                    ),
-                    Container(
-                      child: FoodReview(),
-                    ),
-                    Container(
-                      child: MyFavorite(user),
-                    ),
-                  ])
-              )
-            ])
-        ),
-      ]),
-    );
+                  Container(
+                    child: MyFavorite(user),
+                  ),
+                ])
+            )
+          ])
+      ),
+    ]);
 
 
   }
   MyRecipe(UserData user){
     if (user.userRegisterDtos.isEmpty){
-      return Center(
-        child: Text('등록한 게시물이 없습니다!',style: context.textTheme.displayLarge,),
+      return Column(
+        children: [
+          SizedBox(height: 80,),
+          Text('등록한 게시물이 없습니다!',style: context.textTheme.displayLarge,),
+        ],
       );
     }
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: user.userRegisterDtos.length,
       itemBuilder: (context, index) {
@@ -176,7 +176,7 @@ class _MyPageState extends State<MyPage> {
                 ],
               ),
               onPressed: (){
-                Get.to(ProductItemScreen(id: user.userRegisterDtos[index].registerId,));
+                Get.to(ProductItemScreen(id: user.userRegisterDtos[index].registerRecipeId,));
               },
             )
         );
@@ -185,8 +185,11 @@ class _MyPageState extends State<MyPage> {
   }
   MyFavorite(UserData user){
     if (user.recipeHeartDtos.isEmpty){
-      return Center(
-        child: Text('좋아요한 게시물이 없습니다!',style: context.textTheme.displayLarge,),
+      return Column(
+        children: [
+          SizedBox(height: 80,),
+          Text('좋아요한 게시물이 없습니다!',style: context.textTheme.displayLarge,)
+        ],
       );
     }
     List<dynamic> combinedList = [];
@@ -211,9 +214,8 @@ class _MyPageState extends State<MyPage> {
         "registerCheck" : true
       });
     }
-
-
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: combinedList.length,
       itemBuilder: (context, index) {
