@@ -7,7 +7,7 @@ import 'package:recipt/Server/JWT/jwt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-Future<bool> loginFunc(id, pw) async {
+Future<int> loginFunc(id, pw) async {
   final dio = Dio();
   print('id = $id, pw = $pw');
 
@@ -19,15 +19,18 @@ Future<bool> loginFunc(id, pw) async {
       'password': pw,
     },
   );
-  if (response.statusCode == 200){
+  print(response.data);
+  if (response.data['state'] == 200){
     var data = response.data;
     print(data);
     storeJwt(data['data']['accessToken'],data['data']['refreshToken']);
-    return true;
+    return 200;
   }
-  else{
+  else if (response.data['state'] == 400){
     print(response.statusCode);
-    return false;
+    return 400;
+  } else{
+    return 500;
   }
 }
 

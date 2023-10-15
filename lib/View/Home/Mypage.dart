@@ -254,7 +254,8 @@ class _MyPageState extends State<MyPage> {
                 ],
               ),
               onPressed: (){
-                Get.to(ProductItemScreen(id: user.recipeHeartDtos[index].recipeId,));
+                print(currentItem["id"]);
+                Get.to(ProductItemScreen(id: currentItem["id"],));
               },
             )
         );

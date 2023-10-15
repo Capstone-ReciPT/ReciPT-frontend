@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
+import 'package:recipt/Controller/LoginController.dart';
 import 'package:recipt/Server/login/SignUpServer.dart';
 import 'package:recipt/View/login/Sign_up_screen.dart';
 import 'package:recipt/Widget/Custom_Text_Form_field.dart';
@@ -18,6 +19,8 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final LoginController lc = Get.put(LoginController());
+
   // 비밀번호 표시
   bool obscure = true;
   var _email;
@@ -98,26 +101,34 @@ class _SignInScreenState extends State<SignInScreen> {
                       ],
                     ),
                   )),
+                  Obx(() => Container(
+                    margin: EdgeInsets.only(top: 30),
+                      child: Text(lc.failMessage.value,style: Theme.of(context).textTheme.displayLarge,))),
                   Expanded(child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomButton(
                         onTap: () async {
                           if (key.currentState!.validate()){
-                            if (await loginFunc(_email,_pw)){
+                            var code = await loginFunc(_email,_pw);
+                            if (code == 200){
                               Get.offAll(MyApp());
+                            } else if (code == 400){
+                              lc.failMessage.value = "존재하지 않는 사용자입니다.";
+                            } else{
+                              lc.failMessage.value = "비밀번호가 맞지 않습니다.";
                             }
                           }
                         },
                         text: '로그인',color: Colors.black,
                       ),
-                      Text('또는',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: SecondaryText),
-                      ),
-                      CustomButton(onTap: (){}, text: 'G google',color: Secondary,),
+                      // Text('또는',
+                      //   style: Theme.of(context)
+                      //       .textTheme
+                      //       .bodyMedium!
+                      //       .copyWith(color: SecondaryText),
+                      // ),
+                      // CustomButton(onTap: (){}, text: 'G google',color: Secondary,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

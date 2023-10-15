@@ -26,6 +26,7 @@ Widget? floatingButtons(context) {
           labelBackgroundColor: Colors.indigo.shade900,
           onTap: () {
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (context) {
                 return FutureBuilder<bool>(

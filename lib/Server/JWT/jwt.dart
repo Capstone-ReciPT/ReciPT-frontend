@@ -21,5 +21,11 @@ Future<String> getRefresh() async {
   return refresh;
 }
 
+Future<void> removeJwt() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('jwt', '');
+  await prefs.setString('refresh', '');
+}
+
 
 

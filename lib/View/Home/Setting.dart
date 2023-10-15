@@ -88,6 +88,7 @@ class Setting extends StatelessWidget {
                     onPressed: () async {
                       print(getJwt());
                       if(await logout()){
+                        await removeJwt();
                         await showDialog(
                             context: context,
                             builder: (BuildContext context) {

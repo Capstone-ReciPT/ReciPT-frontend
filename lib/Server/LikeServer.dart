@@ -19,7 +19,7 @@ Future<bool> fetchLike(int id,double score) async{
     ),
   );
 
-  if(response.data['code'] == 500){
+  if(response.data == null ||response.data['code'] == 500){
     final response = await dio.post('$baseUrl/api/db/update/score/$id',
       data: {
         'inputRatingScore': score,  // 키 'score'와 값을 추가하였습니다.
