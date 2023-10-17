@@ -150,8 +150,9 @@ Future<RecipeDataInputFlag> fetchRecipe(id) async{
   String jwt = await getJwt();
 
   print(id);
+
   final response = await dio.get(
-      '$baseUrl/api/db/$id',
+    '$baseUrl/api/register/$id',
     options: Options(
       headers: {
         'accessToken': jwt,  // jwt 토큰 추가
@@ -159,9 +160,10 @@ Future<RecipeDataInputFlag> fetchRecipe(id) async{
       },
     ),
   );
+
   if(response.data['code'] == 500){
     final response = await dio.get(
-      '$baseUrl/api/register/$id',
+      '$baseUrl/api/db/$id',
       options: Options(
         headers: {
           'accessToken': jwt,  // jwt 토큰 추가
@@ -169,9 +171,9 @@ Future<RecipeDataInputFlag> fetchRecipe(id) async{
         },
       ),
     );
-    return makeRecipePage(response.data,true);
+    return makeRecipePage(response.data,false);
   }
-  return makeRecipePage(response.data,false);
+  return makeRecipePage(response.data,true);
 }
 
 RecipeDataInputFlag makeRecipePage(data,bool flag) {

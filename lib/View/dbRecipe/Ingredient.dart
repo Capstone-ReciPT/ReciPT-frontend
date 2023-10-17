@@ -254,7 +254,8 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                             style: Theme.of(context).textTheme.displayMedium,
                           ),
                           SizedBox(height: 15,),
-                          Text("별점 : ${snapshot.data!.recipeDataInput.data.ratingScore}",style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 15))
+                          Text("별점 : ${snapshot.data!.recipeDataInput.data.ratingScore}",style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 15)),
+                        //   Text("리뷰 인원 : ${snapshot.data!.recipeDataInput.data.ratingPeople}",style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 15)),
                         ],
                       ),
                       const Spacer(),

@@ -78,10 +78,12 @@ Future<bool> fetchUploadRecipe(
     ),
   );
   print(response);
-  if(response.data['code'] != 500){
-    return true;
+  if(response.data['code'] == 500){
+    return false;
   }
-  else{
+  else if (response.data['code'] == null){
+    return true;
+  } else{
     return false;
   }
 }

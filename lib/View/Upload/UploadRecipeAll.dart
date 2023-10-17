@@ -244,7 +244,9 @@ class _SecondUploadScreenState extends State<SecondUploadScreen> {
           : DismissDirection.none,
       onDismissed: (direction) {
         setState(() {
-          ingredients.removeAt(index);
+          if(ingredients[index] != ''){
+            ingredients.removeAt(index);
+          }
           ingreControllers.removeAt(index);
         });
       },

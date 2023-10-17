@@ -38,13 +38,16 @@ class _GptUploadAllState extends State<GptUploadAll> {
     // TODO: implement initState
     super.initState();
     fetchLoadGptRecipeAll(widget.gptId).then((data) {
-      for (var ingredient in data.ingredient) {
-        ingreControllers.add(TextEditingController(text: ingredient));
-      }
-      for (var step in data.context) {
-        recipeControllers.add(TextEditingController(text: step));
-      }
-      setState(() {});
+      setState(() {
+        for (var ingredient in data.ingredient) {
+          ingredients.add(ingredient);
+          ingreControllers.add(TextEditingController(text: ingredient));
+        }
+        for (var step in data.context) {
+          steps.add(step);
+          recipeControllers.add(TextEditingController(text: step));
+        }
+      });
     });
   }
   List ingredients = [];
@@ -177,6 +180,7 @@ class _GptUploadAllState extends State<GptUploadAll> {
                                 print(_imageFiles);
                                 if((ingreControllers.length != ingredients.length)
                                     ||  (recipeControllers.length != recipes.length)
+                                    || (_imageFiles.length != recipeControllers.length)
                                 ){
                                   return await showDialog(
                                       context: context,
@@ -184,8 +188,8 @@ class _GptUploadAllState extends State<GptUploadAll> {
                                         return AlertDialog(
                                           backgroundColor: Color(0xFFFFFFFF),
                                           title: Text(
-                                            '모든 항목을 채워 넣어주세요!',
-                                            style: TextStyle(color: mainText,fontSize: 18),
+                                            '모든 항목을 채워 넣어주세요! (사진 포함)',
+                                            style: TextStyle(color: mainText,fontSize: 14),
                                           ),
                                           actions: [
                                             TextButton(
@@ -261,7 +265,9 @@ class _GptUploadAllState extends State<GptUploadAll> {
           : DismissDirection.none,
       onDismissed: (direction) {
         setState(() {
-          ingredients.removeAt(index);
+          if(ingredients[index] != ''){
+            ingredients.removeAt(index);
+          }
           ingreControllers.removeAt(index);
         });
       },
@@ -283,8 +289,8 @@ class _GptUploadAllState extends State<GptUploadAll> {
       child: InkWell(
         onTap: () {
           setState(() {
-            ingreControllers.add(TextEditingController());
             ingredients.add(enterIngerediant(1));
+            ingreControllers.add(TextEditingController());
             print(ingredients);
             print(ingreControllers);
           });
