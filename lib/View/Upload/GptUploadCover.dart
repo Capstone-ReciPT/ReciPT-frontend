@@ -114,7 +114,6 @@ class _GptUploadCoverState extends State<GptUploadCover> {
                       SizedBox(height: 20,),
                       CustomTextFormField(
                         initialValue: foodName.toString(),
-                        enabled: false,
                         validator: (value) {
                           value = foodName.toString();
                           if (value.isEmpty) {

@@ -34,19 +34,19 @@ class _FridgeRecipeSuggestState extends State<FridgeRecipeSuggest> {
     super.initState();
     vision = FlutterVision();
     loadYoloModel().then((value) {
-      setState(() {
-        yoloResults = [];
-        isLoaded = true;
-      });
+      if (mounted) { // mounted 속성을 추가하여 상태 업데이트를 안전하게 처리
+        setState(() {
+          yoloResults = [];
+          isLoaded = true;
+        });
+      }
     });
   }
 
   @override
   void dispose() async {
     super.dispose();
-    setState(() {
-      vision.closeYoloModel();
-    });
+    vision.closeYoloModel();
   }
 
   final IngreController ingreController = Get.put(IngreController());

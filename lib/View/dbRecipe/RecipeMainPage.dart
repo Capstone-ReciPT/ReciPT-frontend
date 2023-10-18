@@ -197,6 +197,9 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                         margin: EdgeInsets.only(left: 30),
                         child: FloatingActionButton(
                           onPressed: (){
+                            if (playNow){
+                              ttsController.stopTTS();
+                            }
                             if(menuController.index.value > 0){
                               menuController.pageLimit = snapshot.data!.recipeDataInput.data.context.length;
                               menuController.prevIndex();
@@ -204,6 +207,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                               Get.to(ProductItemScreen(id: widget.id,));
                             }
                           },
+                          heroTag: 'prev',
                           child: Icon(Icons.chevron_left),
                         ),
                       ),
@@ -227,6 +231,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                               }));
                             }
                           },
+                          heroTag: 'play',
                           child: playNow == true ? Icon(Icons.pause) : Icon(Icons.play_arrow),
                         ),
                       ),
@@ -260,7 +265,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                           }
                         },
                         child: Icon(Icons.navigate_next),
-                        heroTag: 'Recipe',
+                        heroTag: 'next',
                       ),
                     )
                   ],

@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:recipt/Controller/PageController.dart';
 import 'package:recipt/Server/gpt/GPTRecipeServer.dart';
+import 'package:recipt/Widget/Floating_Button.dart';
 import 'package:recipt/constans/colors.dart';
 import 'package:recipt/main.dart';
 
@@ -98,6 +99,13 @@ class _gptNoRecipeState extends State<gptNoRecipe> {
                   //     },
                   //     child: canSttFlag == true ? Icon(Icons.stop) : Icon(Icons.keyboard_voice)
                   // ),
+                  floatingActionButton: FloatingActionButton(
+                      backgroundColor: Colors.green,
+                      onPressed: (){
+                        // fetchGPTRecipeSave()
+                      },
+                      child: floatingButtons(context)
+                  ),
                 ),
               );
             }
