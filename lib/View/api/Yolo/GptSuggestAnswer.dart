@@ -39,7 +39,7 @@ class _GptSuggestAnswerState extends State<GptSuggestAnswer> {
           return AlertDialog(
             backgroundColor: Color(0xFFFFFFFF),
             title: Text(
-              '냉장고 파먹기를 끝내시겠습니까?',
+              '이전 페이지로 돌아가시겠습니까?',
               style: TextStyle(color: mainText),
             ),
             actions: [
@@ -49,13 +49,13 @@ class _GptSuggestAnswerState extends State<GptSuggestAnswer> {
                     fetchGPTRefresh();
                     Get.offAll(MyApp());
                   },
-                  child: Text('끝내기',style: TextStyle(color: SecondaryText),)),
+                  child: Text('확인',style: TextStyle(color: SecondaryText),)),
               TextButton(
                   onPressed: () {
                     //onWillpop에 false 전달되어 앱이 종료되지 않는다.
                     Navigator.of(context).pop(false); // 대화 상자 닫기
                   },
-                  child: Text('아니요',style: TextStyle(color: SecondaryText),)),
+                  child: Text('취소',style: TextStyle(color: SecondaryText),)),
             ],
           );
         }) ?? false; // 취소 버튼이 눌릴 경우 false 반환

@@ -115,14 +115,24 @@ class RecipeData{
   factory RecipeData.fromJson(Map<String, dynamic> mainContent) {
 
     List<String>? imageList;
-    if (mainContent['image'][0].startsWith('s_')) {
+    String imageString = mainContent['image'].toString();
+    if (imageString.startsWith('s_')) {
       imageList = null;
     } else {
-      imageList = mainContent['image'].split(', ');
+      imageList = imageString
+          .split(', ')
+          .map((item) => Uri.decodeFull(item.trim()))
+          .toList()
+          .cast<String>();
     }
+
     List<String> ingredientList = mainContent['ingredient'].split(',');
-    List<String> contextList = mainContent['context'].split(RegExp(r'\d+\.'));
-    contextList.removeAt(0);
+    List<String> contextList = (mainContent['context'].toString())
+        .split('|')
+        .map((step) => step.trim().replaceFirst(RegExp(r'^\d+\.\s*'), ''))
+        .toList()
+        .cast<String>();
+
     List<ReviewResponseDto> reviewList = (mainContent['reviewResponseDtos'] as List?)?.map((item) => ReviewResponseDto.fromJson(item)).toList() ?? [];
     List<HeartDtos> heartList = (mainContent['heartDtos'] as List?)?.map((item) => HeartDtos.fromJson(item)).toList() ?? [];
     return RecipeData(
@@ -171,10 +181,12 @@ Future<RecipeDataInputFlag> fetchRecipe(id) async{
         },
       ),
     );
+    print(response.data);
     return makeRecipePage(response.data,false);
   }
   return makeRecipePage(response.data,true);
 }
+
 
 RecipeDataInputFlag makeRecipePage(data,bool flag) {
   return RecipeDataInputFlag.fromJson(data, flag);

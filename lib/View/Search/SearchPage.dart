@@ -79,25 +79,25 @@ class _SearchPageState extends State<SearchPage> {
                               },
                             ),
                           ),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  showModalBottomSheet(
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(25),
-                                        ),
-                                      ),
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      context: context,
-                                      builder: (context) =>
-                                          _custombottomSheetFilter(context));
-                                });
-                              },
-                              icon: const Icon(
-                                IconlyBold.filter,
-                                color: mainText,
-                              )),
+                          // IconButton(
+                          //     onPressed: () {
+                          //       setState(() {
+                          //         showModalBottomSheet(
+                          //             shape: const RoundedRectangleBorder(
+                          //               borderRadius: BorderRadius.vertical(
+                          //                 top: Radius.circular(25),
+                          //               ),
+                          //             ),
+                          //             clipBehavior: Clip.antiAliasWithSaveLayer,
+                          //             context: context,
+                          //             builder: (context) =>
+                          //                 _custombottomSheetFilter(context));
+                          //       });
+                          //     },
+                          //     icon: const Icon(
+                          //       IconlyBold.filter,
+                          //       color: mainText,
+                          //     )),
                         ],
                       ),
                     ),

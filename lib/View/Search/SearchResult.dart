@@ -144,7 +144,7 @@ class SearchResult extends StatelessWidget {
                             children: [
                               SizedBox(height: 40,),
                               Center(
-                                child: Text("찾는 레시피가 없습니다.",style: Theme.of(context).textTheme.displayLarge,),
+                                child: Text("\"$userInput\" 레시피가 없습니다.",style: Theme.of(context).textTheme.displayLarge,),
                               ),
                               SizedBox(height: 80,),
                               InkWell(

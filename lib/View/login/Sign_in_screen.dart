@@ -64,7 +64,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               _email = value;
                             });
                           },
-                            hint: '이메일 또는 전화번호',
+                            hint: '이메일',
                             prefixIcon: IconlyBroken.message,
                         ),
                         CustomTextFormField(
@@ -92,12 +92,12 @@ class _SignInScreenState extends State<SignInScreen> {
                             });
                           },
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text('비밀번호를 잊었다면?',style: Theme.of(context).textTheme.bodyMedium,)
-                          ],
-                        )
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.end,
+                        //   children: [
+                        //     Text('비밀번호를 잊었다면?',style: Theme.of(context).textTheme.bodyMedium,)
+                        //   ],
+                        // )
                       ],
                     ),
                   )),

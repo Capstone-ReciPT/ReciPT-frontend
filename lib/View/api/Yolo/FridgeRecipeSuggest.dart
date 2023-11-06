@@ -214,7 +214,7 @@ class _FridgeRecipeSuggestState extends State<FridgeRecipeSuggest> {
         modelPath: 'assets/yolo/FinalFinalModel.tflite',
         modelVersion: "yolov8",
         numThreads: 2,
-        useGpu: true);
+        useGpu: false);
     setState(() {
       isLoaded = true;
     });

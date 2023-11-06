@@ -183,7 +183,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
       padding: const EdgeInsets.all(20.0),
       child: InkWell(
         onTap: () {
-          Get.to(MyApp());
+          Get.back();
         },
         child: Container(
           clipBehavior: Clip.hardEdge,

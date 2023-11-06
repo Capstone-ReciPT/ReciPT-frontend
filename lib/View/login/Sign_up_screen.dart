@@ -18,7 +18,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // The variable related to showing or hidingf the text
   bool obscure = true;
 
-  bool developFlag = true;
+  bool developFlag = false;
   //The variable key related to the txt fild
   final key = GlobalKey<FormState>();
 
@@ -73,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 _id = value;
                               });
                             },
-                            hint: "이메일 또는 전화번호",
+                            hint: "이메일",
                             prefixIcon: IconlyBroken.message,
                           ),
                           CustomTextFormField(

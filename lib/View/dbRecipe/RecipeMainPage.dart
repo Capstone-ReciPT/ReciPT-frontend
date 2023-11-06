@@ -74,8 +74,9 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                   title: Obx(() => Text('Step ${menuController.index.value+1}/${snapshot.data!.recipeDataInput.data.context.length}',style: TextStyle(fontWeight: FontWeight.w400,color: Colors.black))),
                   actions: [
                     IconButton(onPressed: (){
-                      Get.offAll(MyApp());
+                      ttsController.stopTTS();
                       menuController.index.value = 0;
+                      Get.offAll(MyApp());
                     }, icon: Icon(Icons.close),color: Colors.black,)
                   ],
                 ),
@@ -90,7 +91,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Obx(() =>
-                                menuController.index.value >= snapshot.data!.recipeDataInput.data.context.length
+                                menuController.index.value > snapshot.data!.recipeDataInput.data.context.length
                                     ? Image.network('https://previews.123rf.com/images/urfingus/urfingus1406/urfingus140600001/29322328-%EC%A0%91%EC%8B%9C%EC%99%80-%ED%8F%AC%ED%81%AC%EC%99%80-%EC%B9%BC%EC%9D%84-%EB%93%A4%EA%B3%A0-%EC%86%90%EC%9D%84-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD.jpg',width: 300,height: 200,)
                                     : Image(
                                         image : MemoryImage(snapshot.data!.recipeDataInput.data.imageByte![menuController.index.value]),fit: BoxFit.fill,width: 300,height: 200,
@@ -135,7 +136,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>{
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Obx(() =>
-                                menuController.index.value >= snapshot.data!.recipeDataInput.data.context.length-1
+                                menuController.index.value > snapshot.data!.recipeDataInput.data.context.length-1
                                     ? Image.network('https://previews.123rf.com/images/urfingus/urfingus1406/urfingus140600001/29322328-%EC%A0%91%EC%8B%9C%EC%99%80-%ED%8F%AC%ED%81%AC%EC%99%80-%EC%B9%BC%EC%9D%84-%EB%93%A4%EA%B3%A0-%EC%86%90%EC%9D%84-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD.jpg',width: 300,height: 200,)
                                     : Image.network(snapshot.data!.recipeDataInput.data.image![menuController.index.value],fit: BoxFit.fill,width: 300,height: 200,)
                                 ),
